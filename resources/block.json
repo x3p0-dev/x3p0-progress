@@ -1,0 +1,83 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "x3p0/progress",
+	"version": "1.0.0",
+	"title": "X3P0 - Progress Bar",
+	"category": "widgets",
+	"description": "Displays a progress bar.",
+	"example": {},
+	"attributes": {
+		"textAlign": {
+			"type": "string"
+		},
+		"height": {
+			"type": "number"
+		},
+		"heightUnit": {
+			"type": "string"
+		},
+		"label": {
+			"type": "string"
+		},
+		"progressValue": {
+			"type": "integer",
+			"default": 50
+		},
+		"progressColor": {
+			"type": "string"
+		},
+		"progressBackgroundColor": {
+			"type": "string"
+		},
+		"showLabel": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"anchor": false,
+		"align": true,
+		"html": false,
+		"__experimentalBorder": {
+			"__experimentalSkipSerialization": true,
+			"radius": true,
+			"color": true,
+			"width": true,
+			"style": true,
+			"__experimentalDefaultControls": {
+				"radius": true
+			}
+		},
+		"__experimentalLayout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"default": {
+				"type": "flex",
+				"orientation": "vertical"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": false,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"blockGap": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"textdomain": "x3p0-progress",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

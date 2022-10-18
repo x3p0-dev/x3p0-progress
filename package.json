@@ -1,0 +1,30 @@
+{
+	"name": "x3p0-progress",
+	"version": "1.0.0",
+	"description": "Displays a progress element.",
+	"author": "justintadlock",
+	"homepage": "https://x3p0.com",
+	"main": "build/index.js",
+	"scripts": {
+		"prod": "wp-scripts build --webpack-src-dir=./resources --output-path=public",
+		"watch": "wp-scripts start --webpack-src-dir=./resources --output-path=public",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^22.4.0"
+	},
+	"dependencies": {
+		"@wordpress/block-editor": "^8.5.1",
+		"@wordpress/blocks": "^11.5.1",
+		"@wordpress/components": "^19.8.0",
+		"@wordpress/compose": "^5.17.0",
+		"@wordpress/element": "^4.17.0",
+		"@wordpress/i18n": "^4.6.0",
+		"@wordpress/icons": "^8.2.0",
+		"classnames": "^2.3.1"
+	}
+}

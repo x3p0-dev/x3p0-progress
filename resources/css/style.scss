@@ -1,0 +1,198 @@
+.wp-block-x3p0-progress {
+
+	// Set up some default custom properties.  Theme authors can overrule
+	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json` files.
+	--wp--custom--x3p0-progress--height: 2rem;
+
+	// Note that these two properties are attached to the block's `style`
+	// attribute when a user customizes them.  We must do this because the
+	// styling the `<progress>` element requires targeting pseudo-elements
+	// for various browsers.
+	--wp--custom--x3p0-progress--color: #0284c7;
+	--wp--custom--x3p0-progress--background: #f0f9ff;
+
+	// We need the extra call to `.editor-styles-wrapper` to overrule the
+	// default flex styles in the editor.
+	.editor-styles-wrapper &.is-layout-flex,
+	&.is-layout-flex {
+		gap: 1rem;
+	}
+
+	&.is-horizontal.is-content-justification-right {
+		flex-direction: row-reverse;
+	}
+
+	// Handling for the <label> element.
+	&.is-horizontal.is-content-justification-center {
+		.wp-block-x3p0-progress__label {
+			flex: 1;
+		}
+	}
+
+	&.is-horizontal.is-content-justification-space-between {
+		.wp-block-x3p0-progress__label {
+			flex: 1;
+		}
+	}
+
+	// Wrapper <div> for the <progress> element.
+	&__container {
+		box-sizing: border-box;
+		flex: 1;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	&.is-vertical {
+		.wp-block-x3p0-progress__container {
+			width: 100%;
+		}
+	}
+
+	// Handling for the <progress> element. It's probably best not to muck
+	// around with most of these values.  There is fire, smoke, and dragons
+	// ahead.  I've already walked through the fire and smoke to eventually
+	// slay the beast at the end.  But, hey, if there's a better cross-browser
+	// way of handling this, let me know.
+	&__bar {
+		// Kill browsers' default handling for this.
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		     appearance: none;
+
+		// Remove border from Firefox that's left over, despite setting
+		// the above `appearance` property.
+		border: none;
+
+		// Finally getting to the actual fun part of the CSS for our
+		// beloved `<progress>` element.
+		display: block;
+		border-radius: 0;
+		width: 100%;
+		height: var( --wp--custom--x3p0-progress--height );
+		background-color: var( --wp--custom--x3p0-progress--background );
+
+		// Maybe works in IE for the foreground color. Not bothering to
+		// actually check this because I value my sanity too much to
+		// ever install IE again.
+		color: var( --wp--custom--x3p0-progress--color );
+
+		// This is the background pseudo element for webkit browsers.
+		&::-webkit-progress-bar {
+			background: transparent;
+		}
+
+		// This is the foreground pseudo element for webkit browsers.
+		// Note that this must be kept separate from the following
+		// code for `::moz-progress-bar`.  Otherwise, it breaks in Edge,
+		// leaving the value at the default green color.
+		&::-webkit-progress-value {
+			height: 100%;
+			display: block;
+			background-color: var( --wp--custom--x3p0-progress--color );
+		}
+
+		// Foreground pseudo element for Firefox.
+		&::-moz-progress-bar {
+			height: 100%;
+			display: block;
+			background-color: var( --wp--custom--x3p0-progress--color );
+		}
+	}
+
+	// =====================================================================
+	// Custom block styles.
+	// =====================================================================
+
+	// Hand-drawn border styles.
+	&[class*=is-style-hand-drawn] .wp-block-x3p0-progress__container {
+		border: 2px solid var( --wp--custom--x3p0-progress--color );
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+	}
+
+	// Hand-drawn border style with padding.
+	&.is-style-hand-drawn-padded .wp-block-x3p0-progress__container {
+		padding: 8px;
+	}
+
+	&.is-style-hand-drawn-padded .wp-block-x3p0-progress__bar {
+		overflow: hidden;
+		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+	}
+
+	// Hatched style.
+	&.is-style-striped progress {
+		// Note that we're falling back to a transparent color here but
+		// still allowing it to be overwritten. This just looks better
+		// as a default compared to the default used for everything else.
+		--wp--custom--x3p0-progress--background: transparent;
+
+		background-image: repeating-linear-gradient(
+			135deg,
+			var( --wp--custom--x3p0-progress--color ),
+			var( --wp--custom--x3p0-progress--color ) 0.5rem,
+			transparent 0.5rem,
+			transparent 1rem
+		);
+	}
+
+	// Ruler style. The background gradients are kind of nutso, but they seem
+	// to be working.  I don't want to lose anymore sleep thinking about a
+	// better way to do them that doesn't create weird partial lines midway
+	// down the progress bar, throwing things off by half a pixel or so
+	// because of some weird results from `calc()`.  I will leave that for
+	// you, you crazy developer who is reading this far down into the bowels
+	// of this plugin's code.
+	&.is-style-ruler progress {
+		// Note that we're falling back to a transparent color here but
+		// still allowing it to be overwritten. This just looks better
+		// as a default compared to the default used for everything else.
+		--wp--custom--x3p0-progress--background: transparent;
+
+		background-repeat: repeat-x;
+		background-position: 0 bottom;
+		background-image:
+			linear-gradient(
+				to right,
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 1px,
+				transparent
+			),
+			linear-gradient(
+				to right,
+				transparent calc( 100% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 100%,
+				transparent
+			),
+			linear-gradient(
+				to right,
+				transparent calc( 50% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 50%,
+				transparent
+			),
+			linear-gradient(
+				to right,
+				transparent calc( 20% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 20%,
+				transparent calc( 40% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 40%,
+				transparent calc( 60% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 60%,
+				transparent calc( 80% - 1px ),
+				var( --wp--custom--x3p0-progress--color ) 1px,
+				transparent 80%,
+				transparent
+			);
+		background-size:
+			100% 100%,
+			10% 100%,
+			10% 66.67%,
+			5% 33.3%;
+	}
+}

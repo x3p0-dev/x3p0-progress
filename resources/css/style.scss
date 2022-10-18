@@ -1,21 +1,27 @@
 .wp-block-x3p0-progress {
-
 	// Set up some default custom properties.  Theme authors can overrule
-	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json` files.
-	--wp--custom--x3p0-progress--height: 2rem;
+	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json`
+	// files. Alternatively, use `settings.custom.x3p0-progress.{name}`.
+	// Don't blame me for the crazy hyphens. That's all on WP for
+	// hyphenating numbers + letters instead of by letter case.  Regardless,
+	// I'm fixing it in the actual CSS here so that it's somewhat readable,
+	// so feel free to use the sane versions if you need to target things
+	// via CSS.
+	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 2rem );
+	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 1rem 2rem );
 
 	// Note that these two properties are attached to the block's `style`
 	// attribute when a user customizes them.  We must do this because the
 	// styling the `<progress>` element requires targeting pseudo-elements
 	// for various browsers.
-	--wp--custom--x3p0-progress--color: #0284c7;
-	--wp--custom--x3p0-progress--background: #f0f9ff;
+	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
+	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
 
 	// We need the extra call to `.editor-styles-wrapper` to overrule the
 	// default flex styles in the editor.
 	.editor-styles-wrapper &.is-layout-flex,
 	&.is-layout-flex {
-		gap: 1rem;
+		gap: var( --x3p0-progress--gap );
 	}
 
 	&.is-horizontal.is-content-justification-right {
@@ -69,13 +75,13 @@
 		display: block;
 		border-radius: 0;
 		width: 100%;
-		height: var( --wp--custom--x3p0-progress--height );
-		background-color: var( --wp--custom--x3p0-progress--background );
+		height: var( --x3p0-progress--height );
+		background-color: var( --x3p0-progress--background );
 
 		// Maybe works in IE for the foreground color. Not bothering to
 		// actually check this because I value my sanity too much to
 		// ever install IE again.
-		color: var( --wp--custom--x3p0-progress--color );
+		color: var( --x3p0-progress--color );
 
 		// This is the background pseudo element for webkit browsers.
 		&::-webkit-progress-bar {
@@ -89,14 +95,14 @@
 		&::-webkit-progress-value {
 			height: 100%;
 			display: block;
-			background-color: var( --wp--custom--x3p0-progress--color );
+			background-color: var( --x3p0-progress--color );
 		}
 
 		// Foreground pseudo element for Firefox.
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;
-			background-color: var( --wp--custom--x3p0-progress--color );
+			background-color: var( --x3p0-progress--color );
 		}
 	}
 
@@ -106,7 +112,7 @@
 
 	// Hand-drawn border styles.
 	&[class*=is-style-hand-drawn] .wp-block-x3p0-progress__container {
-		border: 2px solid var( --wp--custom--x3p0-progress--color );
+		border: 2px solid var( --x3p0-progress--color );
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 	}
@@ -126,12 +132,12 @@
 		// Note that we're falling back to a transparent color here but
 		// still allowing it to be overwritten. This just looks better
 		// as a default compared to the default used for everything else.
-		--wp--custom--x3p0-progress--background: transparent;
+		--x3p0-progress--background: transparent;
 
 		background-image: repeating-linear-gradient(
 			135deg,
-			var( --wp--custom--x3p0-progress--color ),
-			var( --wp--custom--x3p0-progress--color ) 0.5rem,
+			var( --x3p0-progress--color ),
+			var( --x3p0-progress--color ) 0.5rem,
 			transparent 0.5rem,
 			transparent 1rem
 		);
@@ -148,44 +154,44 @@
 		// Note that we're falling back to a transparent color here but
 		// still allowing it to be overwritten. This just looks better
 		// as a default compared to the default used for everything else.
-		--wp--custom--x3p0-progress--background: transparent;
+		--x3p0-progress--background: transparent;
 
 		background-repeat: repeat-x;
 		background-position: 0 bottom;
 		background-image:
 			linear-gradient(
 				to right,
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 1px,
 				transparent
 			),
 			linear-gradient(
 				to right,
 				transparent calc( 100% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 100%,
 				transparent
 			),
 			linear-gradient(
 				to right,
 				transparent calc( 50% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 50%,
 				transparent
 			),
 			linear-gradient(
 				to right,
 				transparent calc( 20% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 20%,
 				transparent calc( 40% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 40%,
 				transparent calc( 60% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 60%,
 				transparent calc( 80% - 1px ),
-				var( --wp--custom--x3p0-progress--color ) 1px,
+				var( --x3p0-progress--color ) 1px,
 				transparent 80%,
 				transparent
 			);

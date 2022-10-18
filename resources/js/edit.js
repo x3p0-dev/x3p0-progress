@@ -230,8 +230,8 @@ export default function Edit( {
 		} ),
 		style: {
 			...style,
-			'--wp--custom--x3p0-progress--color': progressColor,
-			'--wp--custom--x3p0-progress--background': progressBackgroundColor
+			'--x3p0-progress--color': progressColor,
+			'--x3p0-progress--background': progressBackgroundColor
 		}
 	} );
 

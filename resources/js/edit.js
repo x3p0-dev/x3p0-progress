@@ -8,9 +8,14 @@
  */
 
 import classnames        from 'classnames';
-import { toggleLabel }   from './icons';
 import { useInstanceId } from '@wordpress/compose';
 import { __ }            from '@wordpress/i18n';
+
+import {
+	toggleIcon,
+	percentIcon,
+	rotateIcon
+} from './icons';
 
 import {
 	AlignmentControl,
@@ -19,7 +24,6 @@ import {
 	PanelColorSettings,
 	RichText,
 	useBlockProps,
-	useSetting,
 	__experimentalUnitControl as UnitControl,
 	__experimentalUseBorderProps as useBorderProps
 } from '@wordpress/block-editor';
@@ -29,13 +33,23 @@ import {
 	RangeControl,
 	ToolbarButton,
 	ToolbarGroup,
+	__experimentalGrid as Grid,
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
+
+import {
+	useEffect,
+	useState
+} from '@wordpress/element';
 
 const REM_HEIGHT_DEFAULT = 2;
 const PX_HEIGHT_DEFAULT = 32;
 const MIN_HEIGHT = 1;
 const MIN_HEIGHT_UNIT = 'px';
+
+const WIDTH_DEFAULT = 100;
+const MIN_WIDTH = 25;
+const MIN_WIDTH_UNIT = '%';
 
 /**
  * Exports the block edit function.
@@ -50,14 +64,44 @@ export default function Edit( {
 } ) {
 	const {
 		label,
+		flexDirection,
 		height,
 		heightUnit,
+		layout,
+		width,
+		widthUnit,
 		progressColor,
 		progressBackgroundColor,
 		progressValue,
-		textAlign,
-		showLabel
+		reversed,
+		showLabel,
+		showValue
 	} = attributes;
+
+	//const [direction, setDirection] = useState( flexDirection );
+
+	//const [ flexOrientation, setFlexOrientation ] = useState( orientation );
+
+	//console.log( layout );
+
+	/*
+	useEffect( () => {
+		if ( flexDirection ) {
+			setFlexDirection( flexDirection );
+			console.log( flexDirection );
+		}
+	}, [ layout ] );
+
+	const setFlexDirection = function( hasDirection ) {
+		// `vertical` is the default orientation, so we need to check
+		// against `horizontal`.
+		const reverse = 'horizontal' === layout.orientation
+		                 ? 'row-reverse'
+				 : 'column-reverse';
+
+		setAttributes( { flexDirection: reverse } );
+	};
+	*/
 
 	// =====================================================================
 	// Build the block toolbar controls.
@@ -66,11 +110,13 @@ export default function Edit( {
 	// Creates the "block" group toolbar controls.
 	const blockToolbarControls = (
 		<BlockControls group="block">
-			<AlignmentControl
-				value={ textAlign }
-				onChange={ ( value ) =>
-					setAttributes( { textAlign: value } )
-				}
+			<ToolbarButton
+				title={ __( 'Toggle the label and progress bar order', 'x3p0-progress' ) }
+				icon={ rotateIcon }
+				onClick={ () => {
+					setAttributes( { reversed: ! reversed } );
+				} }
+				className={ reversed ? 'is-pressed' : undefined }
 			/>
 		</BlockControls>
 	);
@@ -81,13 +127,23 @@ export default function Edit( {
 			<ToolbarGroup>
 				<ToolbarButton
 					title={ __( 'Toggle progress bar label', 'x3p0-progress' ) }
-					icon={ toggleLabel }
+					icon={ toggleIcon }
 					onClick={ () => {
 						setAttributes( {
 							showLabel: ! showLabel,
 						} );
 					} }
 					className={ showLabel ? 'is-pressed' : undefined }
+				/>
+				<ToolbarButton
+					title={ __( 'Toggle progress value in label', 'x3p0-progress' ) }
+					icon={ percentIcon }
+					onClick={ () => {
+						setAttributes( {
+							showValue: ! showValue,
+						} );
+					} }
+					className={ showValue ? 'is-pressed' : undefined }
 				/>
 			</ToolbarGroup>
 		</BlockControls>
@@ -119,7 +175,7 @@ export default function Edit( {
 		/>
 	);
 
-	// Get the instance ID for the height control.
+	// Get the instance ID for the height and width controls.
 	const unitControlInstanceId = useInstanceId( UnitControl );
 
 	// Creates a height control for the `<progress>` element.
@@ -159,12 +215,38 @@ export default function Edit( {
 		/>
 	);
 
+	// Creates a width control for the `<progress>` element.
+	const progressWidthControl = (
+		<UnitControl
+			label={ __( 'Width', 'x3p0-progress' ) }
+			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
+			min={ `${ MIN_WIDTH }${ MIN_WIDTH_UNIT }` }
+			value={ `${ width }${ widthUnit }` }
+			style={ { maxWidth: 80 } }
+			onChange={ ( value ) => {
+				setAttributes( { width: parseInt( value, 10 ) } );
+			} }
+			onUnitChange={ ( value ) => {
+				setAttributes( { widthUnit: value } );
+			} }
+			units={ useCustomUnits( {
+				availableUnits: [ '%' ],
+				defaultValues: {
+					'%': WIDTH_DEFAULT
+				},
+			} ) }
+		/>
+	);
+
 	// Creates the panel for the progress bar settings.  This should house
 	// the primary settings related to the output of the `<progress>` element.
 	const progressSettingsPanel = (
 		<PanelBody title={ __( 'Progress Bar Settings', 'x3p0-progress' ) }>
 			{ progressValueControl }
-			{ progressHeightControl }
+			<Grid columns={ 2 }>
+				{ progressHeightControl }
+				{ progressWidthControl }
+			</Grid>
 		</PanelBody>
 	);
 
@@ -226,7 +308,7 @@ export default function Edit( {
 	const blockProps = useBlockProps( {
 		className: classnames( {
 			className,
-			[ `has-text-align-${ textAlign }` ]: textAlign
+			'is-reversed': reversed
 		} ),
 		style: {
 			...style,
@@ -240,7 +322,7 @@ export default function Edit( {
 
 	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
 	// this off/on via a toggle in the toolbar.
-	const progressLabel = showLabel ? (
+	const progressLabelHtml = showLabel ? (
 		<RichText
 			tagName="label"
 			for={ `wp-block-x3p0-progress-${ blockInstanceId }` }
@@ -260,6 +342,17 @@ export default function Edit( {
 				'core/subscript'
 			] }
 		/>
+	) : '';
+
+	const progressValueHtml = showValue ? (
+		<div className="wp-block-x3p0-progress__value">{ progressValue }%</div>
+	) : '';
+
+	const progressCaptionHtml = progressLabelHtml || progressValueHtml ? (
+		<div className="wp-block-x3p0-progress__caption">
+			{ progressLabelHtml }
+			{ progressValueHtml }
+		</div>
 	) : '';
 
 	// Get the border props to use on the wrapping element.
@@ -290,7 +383,10 @@ export default function Edit( {
 				'wp-block-x3p0-progress__container',
 				borderProps.style.borderWidth ? 'has-border' : ''
 			) }
-			style={ { ...borderProps.style } }
+			style={ {
+				...borderProps.style,
+				'width': width ? `${ width }${ widthUnit ?? '%' }` : ''
+			} }
 		>
 			{ progressBar }
 		</div>
@@ -302,7 +398,7 @@ export default function Edit( {
 			{ toolbarControls }
 			{ inspectorControls }
 			<div { ...blockProps }>
-				{ progressLabel }
+				{ progressCaptionHtml }
 				{ progressWrap }
 			</div>
 		</>

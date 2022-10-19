@@ -8,13 +8,16 @@
 	"description": "Displays a progress bar.",
 	"example": {},
 	"attributes": {
-		"textAlign": {
-			"type": "string"
-		},
 		"height": {
 			"type": "number"
 		},
 		"heightUnit": {
+			"type": "string"
+		},
+		"width": {
+			"type": "number"
+		},
+		"widthUnit": {
 			"type": "string"
 		},
 		"label": {
@@ -30,9 +33,23 @@
 		"progressBackgroundColor": {
 			"type": "string"
 		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"gradient": {
+			"type": "string"
+		},
+		"reversed": {
+			"type": "boolean",
+			"default": false
+		},
 		"showLabel": {
 			"type": "boolean",
 			"default": true
+		},
+		"showValue": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

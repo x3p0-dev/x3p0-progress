@@ -8,7 +8,7 @@
 	// so feel free to use the sane versions if you need to target things
 	// via CSS.
 	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 2rem );
-	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 1rem 2rem );
+	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem 2rem );
 
 	// Note that these two properties are attached to the block's `style`
 	// attribute when a user customizes them.  We must do this because the
@@ -17,6 +17,9 @@
 	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
 	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
 
+	// Block styles.
+	width: 100%;
+
 	// We need the extra call to `.editor-styles-wrapper` to overrule the
 	// default flex styles in the editor.
 	.editor-styles-wrapper &.is-layout-flex,
@@ -24,29 +27,69 @@
 		gap: var( --x3p0-progress--gap );
 	}
 
-	&.is-horizontal.is-content-justification-right {
-		flex-direction: row-reverse;
+	&.is-reversed {
+		flex-direction: column-reverse !important;
 	}
 
-	// Handling for the <label> element.
-	&.is-horizontal.is-content-justification-center {
-		.wp-block-x3p0-progress__label {
-			flex: 1;
+	&.is-horizontal.is-reversed {
+		flex-direction: row-reverse !important;
+	}
+
+	// Handling for the caption.
+	&__caption {
+		display: flex;
+		flex-wrap: nowrap;
+		// Add a gap of a single character to replicate a natural space.
+		gap: 1ch;
+	}
+
+	// Align caption content to the right when entire block is aligned right.
+	&.is-horizontal.is-content-justification-right {
+		.wp-block-x3p0-progress__caption {
+			justify-content: flex-end;
+			flex: none;
+		}
+	}
+	&.is-horizontal {
+		.wp-block-x3p0-progress__caption {
+			flex: none;
 		}
 	}
 
+	// Grow the caption when we need space between.
 	&.is-horizontal.is-content-justification-space-between {
-		.wp-block-x3p0-progress__label {
-			flex: 1;
+		.wp-block-x3p0-progress__caption {
+		//	flex: initial;
+		}
+	}
+
+	&.is-horizontal.is-reversed.is-content-justification-space-between {
+		.wp-block-x3p0-progress__caption {
+		//	flex: 0;
+		}
+	}
+
+	&.is-horizontal.is-reversed.is-content-justification-right {
+		.wp-block-x3p0-progress__container {
+			margin-left: auto;
+		}
+	}
+
+	&.is-horizontal.is-reversed.is-content-justification-left {
+		.wp-block-x3p0-progress__caption {
+			margin-right: auto;
 		}
 	}
 
 	// Wrapper <div> for the <progress> element.
 	&__container {
 		box-sizing: border-box;
-		flex: 1;
 		width: 100%;
 		overflow: hidden;
+
+		@media ( max-width: 480px ) {
+			width: 100% !important;
+		}
 	}
 
 	&.is-vertical {

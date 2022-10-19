@@ -90,34 +90,43 @@ class Block
         public function render( array $attr, string $content, WP_Block $block ): string
         {
 		$attr = array_merge( [
-			'textAlign'               => '',
 			'height'                  => '',
 			'heightUnit'              => 'px',
+			'width'                   => '',
+			'widthUnit'               => '%',
 			'label'                   => '',
 			'progressValue'           => 50,
 			'progressColor'           => '',
 			'progressBackgroundColor' => '',
-			'showLabel'               => true
+			'showLabel'               => true,
+			'showValue'               => false,
+			'reverse'                 => false,
 		], $attr );
 
 		// Set up some empty variables that may or may not be assigned.
-		$block_class = $block_style = $progress_label = $bar_style = '';
+		$block_class =
+		$block_style =
+		$progress_label =
+		$bar_style =
+		$container_style =
+		$progress_value_html =
+		$progress_caption_html = '';
 
 		// Create a unique ID for the `<progress>` and `<label>` elements.
 		$block_id = uniqid( 'wp-block-x3p0-progress-' );
 
 		// Build the block class.
-		if ( $attr['textAlign'] ) {
-			$block_class = "has-text-align-{$attr['textAlign']}";
+		if ( $attr['reversed'] ) {
+			$block_class = "is-reversed";
 		}
 
 		// Build the block style attribute.
 		if ( $attr['progressColor'] ) {
-			$block_style .= "--wp--custom--x3p0-progress--color: {$attr['progressColor']};";
+			$block_style .= "--x3p0-progress--color: {$attr['progressColor']};";
 		}
 
 		if ( $attr['progressBackgroundColor'] ) {
-			$block_style .= "--wp--custom--x3p0-progress--background: {$attr['progressBackgroundColor']};";
+			$block_style .= "-x3p0-progress--background: {$attr['progressBackgroundColor']};";
 		}
 
 		// Build the `<progress>` element's style attribute.
@@ -134,7 +143,22 @@ class Block
 			$progress_label = sprintf(
 				'<label class="wp-block-x3p0-progress__label" for="%s">%s</label>',
 				esc_attr( $block_id ),
-				esc_html( $attr['label'] )
+				$attr['label']
+			);
+		}
+
+		if ( $attr['showValue'] ) {
+			$progress_value_html = sprintf(
+				'<div class="wp-block-x3p0-progress__value">%s</div>',
+				absint( $attr['progressValue'] ) . '%'
+			);
+		}
+
+		if ( $progress_label || $progress_value_html ) {
+			$progress_caption_html = sprintf(
+				'<div class="wp-block-x3p0-progress__caption">%s%s</div>',
+				$progress_label,
+				$progress_value_html
 			);
 		}
 
@@ -147,9 +171,19 @@ class Block
 			absint( $attr['progressValue'] ) . '%',
 		);
 
+		// Build the container element's style attribute.
+		if ( $attr['width'] && $attr['widthUnit'] ) {
+			$container_style = sprintf(
+				' style="width: %d%s;"',
+				absint( $attr['width'] ),
+				esc_attr( $attr['widthUnit'] )
+			);
+		}
+
 		// Creates the `<progress>` wrapping container.
 		$progress_container = sprintf(
-			'<div class="wp-block-x3p0-progress__container">%s</div>',
+			'<div class="wp-block-x3p0-progress__container"%s>%s</div>',
+			$container_style,
 			$progress_bar
 		);
 
@@ -160,7 +194,7 @@ class Block
                                 'class' => esc_attr( $block_class ),
 				'style' => esc_attr( $block_style )
                         ] ),
-			$progress_label,
+			$progress_caption_html,
 			$progress_container
                 );
         }

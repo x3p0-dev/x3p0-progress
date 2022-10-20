@@ -352,11 +352,10 @@ export default function Edit( {
 
 	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
 	// this off/on via a toggle in the toolbar.
-	const progressLabelHtml = showLabel ? (
+	const progressLabelTextHtml = showLabel ? (
 		<RichText
-			tagName="label"
-			for={ `wp-block-x3p0-progress-${ progressId }` }
-			className="wp-block-x3p0-progress__label"
+			tagName="span"
+			className="wp-block-x3p0-progress__label-text"
 			aria-label={ __( 'Label text', 'x3p0-progress' ) }
 			placeholder={ __( 'Add label…', 'x3p0-progress' ) }
 			value={ label }
@@ -402,18 +401,23 @@ export default function Edit( {
 	) : '';
 
 	const progressValueHtml = showValue ? (
-		<div className="wp-block-x3p0-progress__value">
+		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
-			{ new Intl.NumberFormat( locale ).format( progressValue ) }
+			<span className="wp-block-x3p0-progress__value-num">
+				{ new Intl.NumberFormat( locale ).format( progressValue ) }
+			</span>
 			{ progressValueAfterHtml }
-		</div>
+		</span>
 	) : '';
 
-	const progressCaptionHtml = progressLabelHtml || progressValueHtml ? (
-		<div className="wp-block-x3p0-progress__caption">
-			{ progressLabelHtml }
+	const progressLabelHtml = progressLabelTextHtml || progressValueHtml ? (
+		<label
+			className="wp-block-x3p0-progress__label"
+			for={ `wp-block-x3p0-progress-${ progressId }` }
+		>
+			{ progressLabelTextHtml }
 			{ progressValueHtml }
-		</div>
+		</label>
 	) : '';
 
 	// Get the border props to use on the wrapping element.
@@ -466,7 +470,7 @@ export default function Edit( {
 			{ toolbarControls }
 			{ inspectorControls }
 			<div { ...blockProps }>
-				{ progressCaptionHtml }
+				{ progressLabelHtml }
 				{ progressContainerHtml }
 			</div>
 		</>

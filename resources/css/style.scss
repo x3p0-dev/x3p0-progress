@@ -33,16 +33,18 @@
 	}
 
 	// Handling for the caption.
-	&__caption {
+	&__label {
 		display: flex;
 		flex-wrap: nowrap;
 		// Add a gap of a single character to replicate a natural space.
 		gap: 1ch;
+
+		&-text {}
 	}
 
 	// Align caption content to the right when entire block is aligned right.
 	&.is-horizontal.is-content-justification-right {
-		.wp-block-x3p0-progress__caption {
+		.wp-block-x3p0-progress__label {
 			justify-content: flex-end;
 			flex: none;
 		}
@@ -52,21 +54,8 @@
 			flex-wrap: wrap !important;
 		}
 
-		.wp-block-x3p0-progress__caption {
+		.wp-block-x3p0-progress__label {
 			flex: none;
-		}
-	}
-
-	// Grow the caption when we need space between.
-	&.is-horizontal.is-content-justification-space-between {
-		.wp-block-x3p0-progress__caption {
-		//	flex: initial;
-		}
-	}
-
-	&.is-horizontal.is-reversed.is-content-justification-space-between {
-		.wp-block-x3p0-progress__caption {
-		//	flex: 0;
 		}
 	}
 
@@ -77,7 +66,7 @@
 	}
 
 	&.is-horizontal.is-reversed.is-content-justification-left {
-		.wp-block-x3p0-progress__caption {
+		.wp-block-x3p0-progress__label {
 			margin-right: auto;
 		}
 	}

@@ -45,16 +45,15 @@ export default function Save( { attributes, className, style } )
 		showValue
 	} = attributes;
 
-	const progressLabelHtml = showLabel ? (
+	const progressLabelTextHtml = showLabel ? (
 		<RichText.Content
-			tagName="label"
-			className="wp-block-x3p0-progress__label"
-			for={ `wp-block-x3p0-progress-${ progressId }` }
+			tagName="span"
+			className="wp-block-x3p0-progress__label-text"
 			value={ label }
 		/>
 	) : '';
 
-	const progressValueBeforeHtml = showValue ? (
+	const progressValueBeforeHtml = showValue && progressValueBefore ? (
 		<RichText.Content
 			tagName="span"
 			className="wp-block-x3p0-progress__value-before"
@@ -62,7 +61,7 @@ export default function Save( { attributes, className, style } )
 		/>
 	) : '';
 
-	const progressValueAfterHtml = showValue ? (
+	const progressValueAfterHtml = showValue && progressValueAfter ? (
 		<RichText.Content
 			tagName="span"
 			className="wp-block-x3p0-progress__value-after"
@@ -71,18 +70,23 @@ export default function Save( { attributes, className, style } )
 	) : '';
 
 	const progressValueHtml = showValue ? (
-		<div className="wp-block-x3p0-progress__value">
+		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
-			{ new Intl.NumberFormat( locale ).format( progressValue ) }
+			<span className="wp-block-x3p0-progress__value-num">
+				{ new Intl.NumberFormat( locale ).format( progressValue ) }
+			</span>
 			{ progressValueAfterHtml }
-		</div>
+		</span>
 	) : '';
 
-	const progressCaptionHtml = progressLabelHtml || progressValueHtml ? (
-		<div className="wp-block-x3p0-progress__caption">
-			{ progressLabelHtml }
+	const progressLabelHtml = progressLabelTextHtml || progressValueHtml ? (
+		<label
+			className="wp-block-x3p0-progress__label"
+			for={ `wp-block-x3p0-progress-${ progressId }` }
+		>
+			{ progressLabelTextHtml }
 			{ progressValueHtml }
-		</div>
+		</label>
 	) : '';
 
 	//const blockProps = useBlockProps.save();
@@ -141,7 +145,7 @@ export default function Save( { attributes, className, style } )
 	// Return the final block edit component.
 	return (
 		<div { ...blockProps }>
-			{ progressCaptionHtml }
+			{ progressLabelHtml }
 			{ progressContainerHtml }
 		</div>
 	);

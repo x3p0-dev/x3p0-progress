@@ -24,6 +24,7 @@
 		gap: var( --x3p0-progress--gap );
 	}
 
+	// Reverse flex-direction when the user has chosen to reverse the layout.
 	&.is-reversed {
 		flex-direction: column-reverse !important;
 	}
@@ -32,24 +33,17 @@
 		flex-direction: row-reverse !important;
 	}
 
-	// Handling for the caption.
+	// Styles for the `<label>` element.
 	&__label {
 		display: flex;
 		flex-wrap: nowrap;
 		// Add a gap of a single character to replicate a natural space.
 		gap: 1ch;
-
-		&-text {}
 	}
 
-	// Align caption content to the right when entire block is aligned right.
-	&.is-horizontal.is-content-justification-right {
-		.wp-block-x3p0-progress__label {
-			justify-content: flex-end;
-			flex: none;
-		}
-	}
 	&.is-horizontal {
+		// Overrule `nowrap` on small screens, allowing the label and
+		// progress element to span individual lines.
 		@media ( max-width: 480px ) {
 			flex-wrap: wrap !important;
 		}
@@ -59,6 +53,16 @@
 		}
 	}
 
+	// Align label content to the right when entire block is aligned right.
+	&.is-horizontal.is-content-justification-right {
+		.wp-block-x3p0-progress__label {
+			justify-content: flex-end;
+		}
+	}
+
+	// For reversed, horizontal layouts, we need to set the horizontal
+	// margin (depending on the justification) for either the label or
+	// progress container.
 	&.is-horizontal.is-reversed.is-content-justification-right {
 		.wp-block-x3p0-progress__container {
 			margin-left: auto;
@@ -82,7 +86,11 @@
 		}
 	}
 
+	// Vertical layouts.
 	&.is-vertical {
+
+		// The progress container should always be full-width for
+		// vertical layouts.
 		.wp-block-x3p0-progress__container {
 			width: 100%;
 		}
@@ -144,11 +152,12 @@
 	// Custom block styles.
 	// =====================================================================
 
+	// Fall back to a default transparent background for specific styles.
+	// This is because we utilize the progress value (foreground) color as
+	// part of a gradient background design.  End-users can overrule the
+	// color as needed via the editor.
 	&.is-style-striped,
 	&.is-style-ruler {
-		// Note that we're falling back to a transparent color here but
-		// still allowing it to be overwritten. This just looks better
-		// as a default compared to the default used for everything else.
 		--x3p0-progress--background: transparent;
 	}
 
@@ -159,7 +168,7 @@
 		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 	}
 
-	// Hatched style.
+	// Striped style.
 	&.is-style-striped progress {
 		background-image: repeating-linear-gradient(
 			135deg,

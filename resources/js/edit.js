@@ -101,12 +101,15 @@ export default function Edit( {
 		</BlockControls>
 	) : '';
 
-	// Creates the "other" group toolbar controls.
+	// Creates the "other" group toolbar controls.  This includes two toggle
+	// buttons for enabling/displaying the label text and progress value from
+	// showing in the `<label>` element.  I'm not 100% happy with the icons,
+	// but it's the best we have right now.
 	const otherToolbarControls = (
 		<BlockControls group="other">
 			<ToolbarGroup>
 				<ToolbarButton
-					title={ __( 'Toggle progress bar label', 'x3p0-progress' ) }
+					title={ __( 'Toggle progress bar label text', 'x3p0-progress' ) }
 					icon={ toggleIcon }
 					onClick={ () => {
 						setAttributes( {
@@ -140,8 +143,11 @@ export default function Edit( {
 	// Build the block inspector sidebar controls.
 	// =====================================================================
 
-	// Creates a control for handling the value of the `<progress>` element.
-	// Note that this is a percentage between 0 and 100.
+	// Creates a control for handling the max-allowed value of the
+	// `<progress>` element. The `max` attribute must be a number greater
+	// than 0, but there is no upper limit. We're using the `NumberControl`
+	// here because of this infinite limit.
+	// @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#attr-max
 	const progressMaxControl = (
 		<BaseControl label={ __( 'Max Value', 'x3p0-progress' ) }>
 			<NumberControl
@@ -156,8 +162,13 @@ export default function Edit( {
 		</BaseControl>
 	);
 
-	// Creates a control for handling the value of the `<progress>` element.
-	// Note that this is a percentage between 0 and 100.
+	// Creates a control for handling the `value` attribute of the
+	// `<progress>` element. This can be any number from 0 to the value of
+	// `max` attribute (see control notes above).  The `RangeControl` works
+	// pretty well for this and is easier to use than `NumberControl`.
+	// However, the numbers can start being hidden when jumping to larger
+	// numbers.
+	// @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#attr-value
 	const progressValueControl = (
 		<RangeControl
 			label={ __( 'Value', 'x3p0-progress' ) }
@@ -215,54 +226,52 @@ export default function Edit( {
 	// Creates a width control for the `<progress>` element.
 	const progressWidthControl = (
 		<BaseControl
-			label={ __( 'Width' ) }
+			label={ __( 'Width', 'x3p0-progress' ) }
 			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
 		>
-		<UnitControl
-			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
-			min={ `${ MIN_WIDTH }${ MIN_WIDTH_UNIT }` }
-			value={ `${ width }${ widthUnit }` }
-			style={ { maxWidth: 80 } }
-			onChange={ ( value ) => {
-				setAttributes( { width: parseInt( value, 10 ) } );
-			} }
-			onUnitChange={ ( value ) => {
-				setAttributes( { widthUnit: value } );
-			} }
-			units={ useCustomUnits( {
-				availableUnits: [ '%' ],
-				defaultValues: {
-					'%': WIDTH_DEFAULT
-				},
-			} ) }
-		/>
-		<ButtonGroup
-			className="wp-block-search__components-button-group"
-			aria-label={ __( 'Percentage Width' ) }
-		>
-			{ [ 25, 50, 75, 100 ].map( ( value ) => {
-				return (
-					<Button
-						key={ value }
-						isSmall
-						variant={
-							`${ value }%` ===
-							`${ width }${ widthUnit }`
-								? 'primary'
-								: undefined
-						}
-						onClick={ () =>
-							setAttributes( {
+			<UnitControl
+				id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
+				min={ `${ MIN_WIDTH }${ MIN_WIDTH_UNIT }` }
+				value={ `${ width }${ widthUnit }` }
+				style={ { maxWidth: 80 } }
+				onChange={ ( value ) => {
+					setAttributes( { width: parseInt( value, 10 ) } );
+				} }
+				onUnitChange={ ( value ) => {
+					setAttributes( { widthUnit: value } );
+				} }
+				units={ useCustomUnits( {
+					availableUnits: [ '%' ],
+					defaultValues: {
+						'%': WIDTH_DEFAULT
+					},
+				} ) }
+			/>
+			<ButtonGroup
+				className="wp-block-x3p0-progress__components-button-group"
+				aria-label={ __( 'Percentage Width', 'x3p0-progress' ) }
+			>
+				{ [ 25, 50, 75, 100 ].map( ( value ) => {
+					return (
+						<Button
+							key={ value }
+							isSmall
+							variant={
+								`${ value }%` ===
+								`${ width }${ widthUnit }`
+									? 'primary'
+									: undefined
+							}
+							onClick={ () => setAttributes( {
 								width: value,
 								widthUnit: '%',
-							} )
-						}
-					>
-						{ value }%
-					</Button>
-				);
-			} ) }
-		</ButtonGroup>
+							} ) }
+						>
+							{ value }%
+						</Button>
+					);
+				} ) }
+			</ButtonGroup>
 		</BaseControl>
 	);
 
@@ -330,10 +339,9 @@ export default function Edit( {
 	// Build the block output for the content canvas.
 	// =====================================================================
 
-	// Get the block props and add a custom class for text alignment.
-	// *Wondering why WP doesn't just automatically handle this class...*
-	// Also adds some CSS custom properties for styling the pseudo elements
-	// on the `<progress>` element.
+	// Get the block props for the wrapping element.  We need to add custom
+	// CSS properties so that they can be used with `::-webkit-progress-bar`
+	// and `::-webkit-progress-value` in CSS.
 	const blockProps = useBlockProps( {
 		className: classnames( {
 			className,
@@ -347,7 +355,6 @@ export default function Edit( {
 	} );
 
 	// Get the ID of the current instance for label and progress elements.
-	//progressId = useInstanceId( Edit );
 	setAttributes( { progressId: useInstanceId( Edit ) } );
 
 	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
@@ -372,6 +379,7 @@ export default function Edit( {
 		/>
 	) : '';
 
+	// Creates the HTML for the value text prefix.
 	const progressValueBeforeHtml = showValue ? (
 		<RichText
 			tagName="span"
@@ -386,6 +394,7 @@ export default function Edit( {
 		/>
 	) : '';
 
+	// Creates the HTML for the value text suffix.
 	const progressValueAfterHtml = showValue ? (
 		<RichText
 			tagName="span"
@@ -400,6 +409,11 @@ export default function Edit( {
 		/>
 	) : '';
 
+	// Builds the progress value HTML for the label.  WordPress doesn't
+	// currently have a JS equivalent of `number_format_i18n` via
+	// `@wordpress/i18n`, so we're passing in the locale from WordPress and
+	// using `Intl.NumberFormat()`.
+	// @link https://github.com/WordPress/gutenberg/issues/22628
 	const progressValueHtml = showValue ? (
 		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
@@ -410,6 +424,7 @@ export default function Edit( {
 		</span>
 	) : '';
 
+	// Combine the inner label HTML into a `<label>` element.
 	const progressLabelHtml = progressLabelTextHtml || progressValueHtml ? (
 		<label
 			className="wp-block-x3p0-progress__label"
@@ -420,7 +435,8 @@ export default function Edit( {
 		</label>
 	) : '';
 
-	// Get the border props to use on the wrapping element.
+	// Get the border and spacing props. We're skipping serialization and
+	// using the border and padding props on the progress element container.
 	const borderProps = useBorderProps( attributes );
 	const spacingProps = useSpacingProps( attributes );
 
@@ -429,9 +445,7 @@ export default function Edit( {
 		( { paddingTop, paddingBottom, paddingRight, paddingLeft } )
 	)( spacingProps.style );
 
-	// Creates the `<progress>` bar element. Note that we need to add custom
-	// CSS properties so that they can be used with `::-webkit-progress-bar`
-	// and `::-webkit-progress-value` in CSS.
+	// Creates the `<progress>` bar element.
 	const progressBarHtml = (
 		<progress
 			id={ `wp-block-x3p0-progress-${ progressId }` }

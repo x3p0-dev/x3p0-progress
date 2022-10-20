@@ -45,6 +45,7 @@ export default function Save( { attributes, className, style } )
 		showValue
 	} = attributes;
 
+	// Create the progress label text HTML.
 	const progressLabelTextHtml = showLabel ? (
 		<RichText.Content
 			tagName="span"
@@ -53,6 +54,7 @@ export default function Save( { attributes, className, style } )
 		/>
 	) : '';
 
+	// Creates the HTML for the value text prefix.
 	const progressValueBeforeHtml = showValue && progressValueBefore ? (
 		<RichText.Content
 			tagName="span"
@@ -61,6 +63,7 @@ export default function Save( { attributes, className, style } )
 		/>
 	) : '';
 
+	// Creates the HTML for the value text suffix.
 	const progressValueAfterHtml = showValue && progressValueAfter ? (
 		<RichText.Content
 			tagName="span"
@@ -69,6 +72,11 @@ export default function Save( { attributes, className, style } )
 		/>
 	) : '';
 
+	// Builds the progress value HTML for the label.  WordPress doesn't
+	// currently have a JS equivalent of `number_format_i18n` via
+	// `@wordpress/i18n`, so we're passing in the locale from WordPress and
+	// using `Intl.NumberFormat()`.
+	// @link https://github.com/WordPress/gutenberg/issues/22628
 	const progressValueHtml = showValue ? (
 		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
@@ -79,6 +87,7 @@ export default function Save( { attributes, className, style } )
 		</span>
 	) : '';
 
+	// Combine the inner label HTML into a `<label>` element.
 	const progressLabelHtml = progressLabelTextHtml || progressValueHtml ? (
 		<label
 			className="wp-block-x3p0-progress__label"
@@ -89,7 +98,9 @@ export default function Save( { attributes, className, style } )
 		</label>
 	) : '';
 
-	//const blockProps = useBlockProps.save();
+	// Get the block props for the wrapping element.  We need to add custom
+	// CSS properties so that they can be used with `::-webkit-progress-bar`
+	// and `::-webkit-progress-value` in CSS.
 	const blockProps = useBlockProps.save( {
 		className: classnames( {
 			className,
@@ -102,7 +113,8 @@ export default function Save( { attributes, className, style } )
 		}
 	} );
 
-	// Get the border and spacing props to use on the wrapping element.
+	// Get the border and spacing props. We're skipping serialization and
+	// using the border and padding props on the progress element container.
 	const borderProps  = getBorderClassesAndStyles( attributes );
 	const spacingProps = getSpacingClassesAndStyles( attributes );
 
@@ -111,9 +123,7 @@ export default function Save( { attributes, className, style } )
 		( { paddingTop, paddingBottom, paddingRight, paddingLeft } )
 	)( spacingProps.style );
 
-	// Creates the `<progress>` bar element. Note that we need to add custom
-	// CSS properties so that they can be used with `::-webkit-progress-bar`
-	// and `::-webkit-progress-value` in CSS.
+	// Creates the `<progress>` bar element.
 	const progressBarHtml = (
 		<progress
 			id={ `wp-block-x3p0-progress-${ progressId }` }
@@ -126,6 +136,10 @@ export default function Save( { attributes, className, style } )
 		</progress>
 	);
 
+	// Creates a wrapper `<div>` around the `<progress>` element to give us
+	// more flexibility with the output.  Because browsers have wildly
+	// varying implementations of handling `<progress>`, it's just easier to
+	// have a wrapper that can be styled consistently.
 	const progressContainerHtml = (
 		<div
 			className={ classnames(
@@ -142,7 +156,7 @@ export default function Save( { attributes, className, style } )
 		</div>
 	);
 
-	// Return the final block edit component.
+	// Return the final block HTML.
 	return (
 		<div { ...blockProps }>
 			{ progressLabelHtml }

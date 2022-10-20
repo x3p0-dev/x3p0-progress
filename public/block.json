@@ -5,6 +5,7 @@
 	"version": "1.0.0",
 	"title": "X3P0 - Progress Bar",
 	"category": "widgets",
+	"keywords": [ "progress", "bar" ],
 	"description": "Displays a progress bar.",
 	"example": {},
 	"attributes": {
@@ -23,9 +24,23 @@
 		"label": {
 			"type": "string"
 		},
+		"progressId": {
+			"type": "integer",
+			"default": 0
+		},
+		"progressMax": {
+			"type": "integer",
+			"default": 100
+		},
 		"progressValue": {
 			"type": "integer",
 			"default": 50
+		},
+		"progressValueAfter": {
+			"type": "string"
+		},
+		"progressValueBefore": {
+			"type": "string"
 		},
 		"progressColor": {
 			"type": "string"
@@ -75,11 +90,12 @@
 			}
 		},
 		"spacing": {
-			"margin": true,
-			"padding": false,
+			"__experimentalSkipSerialization": [ "padding" ],
+			"padding": true,
 			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"blockGap": true
+				"blockGap": true,
+				"padding": true
 			}
 		},
 		"typography": {

@@ -7,7 +7,7 @@
 	// I'm fixing it in the actual CSS here so that it's somewhat readable,
 	// so feel free to use the sane versions if you need to target things
 	// via CSS.
-	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 2rem );
+	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 1.5rem );
 	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem 2rem );
 
 	// Note that these two properties are attached to the block's `style`
@@ -16,9 +16,6 @@
 	// for various browsers.
 	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
 	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
-
-	// Block styles.
-	width: 100%;
 
 	// We need the extra call to `.editor-styles-wrapper` to overrule the
 	// default flex styles in the editor.
@@ -51,6 +48,10 @@
 		}
 	}
 	&.is-horizontal {
+		@media ( max-width: 480px ) {
+			flex-wrap: wrap !important;
+		}
+
 		.wp-block-x3p0-progress__caption {
 			flex: none;
 		}
@@ -116,7 +117,8 @@
 		// Finally getting to the actual fun part of the CSS for our
 		// beloved `<progress>` element.
 		display: block;
-		border-radius: 0;
+		border-radius: inherit;
+		overflow: hidden;
 		width: 100%;
 		height: var( --x3p0-progress--height );
 		background-color: var( --x3p0-progress--background );
@@ -153,30 +155,23 @@
 	// Custom block styles.
 	// =====================================================================
 
-	// Hand-drawn border styles.
-	&[class*=is-style-hand-drawn] .wp-block-x3p0-progress__container {
+	&.is-style-striped,
+	&.is-style-ruler {
+		// Note that we're falling back to a transparent color here but
+		// still allowing it to be overwritten. This just looks better
+		// as a default compared to the default used for everything else.
+		--x3p0-progress--background: transparent;
+	}
+
+	// Hand-drawn style.
+	&.is-style-hand-drawn .wp-block-x3p0-progress__container {
 		border: 2px solid var( --x3p0-progress--color );
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 	}
 
-	// Hand-drawn border style with padding.
-	&.is-style-hand-drawn-padded .wp-block-x3p0-progress__container {
-		padding: 8px;
-	}
-
-	&.is-style-hand-drawn-padded .wp-block-x3p0-progress__bar {
-		overflow: hidden;
-		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
-	}
-
 	// Hatched style.
 	&.is-style-striped progress {
-		// Note that we're falling back to a transparent color here but
-		// still allowing it to be overwritten. This just looks better
-		// as a default compared to the default used for everything else.
-		--x3p0-progress--background: transparent;
-
 		background-image: repeating-linear-gradient(
 			135deg,
 			var( --x3p0-progress--color ),
@@ -194,11 +189,6 @@
 	// you, you crazy developer who is reading this far down into the bowels
 	// of this plugin's code.
 	&.is-style-ruler progress {
-		// Note that we're falling back to a transparent color here but
-		// still allowing it to be overwritten. This just looks better
-		// as a default compared to the default used for everything else.
-		--x3p0-progress--background: transparent;
-
 		background-repeat: repeat-x;
 		background-position: 0 bottom;
 		background-image:

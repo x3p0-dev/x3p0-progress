@@ -14,10 +14,12 @@ import './css/style.scss';
 import { registerBlockType } from '@wordpress/blocks';
 import { blockIcon }         from './js/icons';
 import blockEdit             from './js/edit';
+import blockSave             from './js/save';
 import blockData             from './block.json';
 
 // Register block type.
 registerBlockType( blockData, {
 	icon: blockIcon,
-	edit: blockEdit
+	edit: blockEdit,
+	save: blockSave
 } );

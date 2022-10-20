@@ -13,34 +13,37 @@ import { __ }            from '@wordpress/i18n';
 
 import {
 	toggleIcon,
-	percentIcon,
+	toggleOnIcon,
+	toggleOffIcon,
 	rotateIcon
 } from './icons';
 
 import {
-	AlignmentControl,
 	BlockControls,
 	InspectorControls,
 	PanelColorSettings,
 	RichText,
 	useBlockProps,
 	__experimentalUnitControl as UnitControl,
-	__experimentalUseBorderProps as useBorderProps
+	__experimentalUseBorderProps as useBorderProps,
+	__experimentalGetSpacingClassesAndStyles as useSpacingProps
 } from '@wordpress/block-editor';
 
 import {
+	BaseControl,
+	Button,
+	ButtonGroup,
 	PanelBody,
 	RangeControl,
 	ToolbarButton,
 	ToolbarGroup,
-	__experimentalGrid as Grid,
+	__experimentalNumberControl as NumberControl,
+	__experimentalVStack as VStack,
 	__experimentalUseCustomUnits as useCustomUnits,
 } from '@wordpress/components';
 
-import {
-	useEffect,
-	useState
-} from '@wordpress/element';
+// Localized script with plugin data.
+const { locale } = x3p0Progress;
 
 const REM_HEIGHT_DEFAULT = 2;
 const PX_HEIGHT_DEFAULT = 32;
@@ -64,51 +67,28 @@ export default function Edit( {
 } ) {
 	const {
 		label,
-		flexDirection,
 		height,
 		heightUnit,
-		layout,
 		width,
 		widthUnit,
 		progressColor,
 		progressBackgroundColor,
+		progressId,
 		progressValue,
+		progressMax,
+		progressValueAfter,
+		progressValueBefore,
 		reversed,
 		showLabel,
 		showValue
 	} = attributes;
-
-	//const [direction, setDirection] = useState( flexDirection );
-
-	//const [ flexOrientation, setFlexOrientation ] = useState( orientation );
-
-	//console.log( layout );
-
-	/*
-	useEffect( () => {
-		if ( flexDirection ) {
-			setFlexDirection( flexDirection );
-			console.log( flexDirection );
-		}
-	}, [ layout ] );
-
-	const setFlexDirection = function( hasDirection ) {
-		// `vertical` is the default orientation, so we need to check
-		// against `horizontal`.
-		const reverse = 'horizontal' === layout.orientation
-		                 ? 'row-reverse'
-				 : 'column-reverse';
-
-		setAttributes( { flexDirection: reverse } );
-	};
-	*/
 
 	// =====================================================================
 	// Build the block toolbar controls.
 	// =====================================================================
 
 	// Creates the "block" group toolbar controls.
-	const blockToolbarControls = (
+	const blockToolbarControls = showLabel || showValue ? (
 		<BlockControls group="block">
 			<ToolbarButton
 				title={ __( 'Toggle the label and progress bar order', 'x3p0-progress' ) }
@@ -119,7 +99,7 @@ export default function Edit( {
 				className={ reversed ? 'is-pressed' : undefined }
 			/>
 		</BlockControls>
-	);
+	) : '';
 
 	// Creates the "other" group toolbar controls.
 	const otherToolbarControls = (
@@ -137,13 +117,12 @@ export default function Edit( {
 				/>
 				<ToolbarButton
 					title={ __( 'Toggle progress value in label', 'x3p0-progress' ) }
-					icon={ percentIcon }
+					icon={ showValue ? toggleOnIcon : toggleOffIcon }
 					onClick={ () => {
 						setAttributes( {
 							showValue: ! showValue,
 						} );
 					} }
-					className={ showValue ? 'is-pressed' : undefined }
 				/>
 			</ToolbarGroup>
 		</BlockControls>
@@ -163,11 +142,29 @@ export default function Edit( {
 
 	// Creates a control for handling the value of the `<progress>` element.
 	// Note that this is a percentage between 0 and 100.
+	const progressMaxControl = (
+		<BaseControl label={ __( 'Max Value', 'x3p0-progress' ) }>
+			<NumberControl
+				min="1"
+				value={ progressMax }
+				onChange={ ( value ) => {
+					const newValue = value !== '' ? parseInt( value, 10 ) : 1;
+
+					setAttributes( { progressMax: newValue } );
+				} }
+			/>
+		</BaseControl>
+	);
+
+	// Creates a control for handling the value of the `<progress>` element.
+	// Note that this is a percentage between 0 and 100.
 	const progressValueControl = (
 		<RangeControl
 			label={ __( 'Value', 'x3p0-progress' ) }
 			min="0"
-			max="100"
+			max={ progressMax }
+			allowReset={ true }
+			resetFallbackValue={ progressMax / 2 }
 			value={ progressValue }
 			onChange={ ( value ) =>
 				setAttributes( { progressValue: value } )
@@ -217,8 +214,11 @@ export default function Edit( {
 
 	// Creates a width control for the `<progress>` element.
 	const progressWidthControl = (
+		<BaseControl
+			label={ __( 'Width' ) }
+			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
+		>
 		<UnitControl
-			label={ __( 'Width', 'x3p0-progress' ) }
 			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
 			min={ `${ MIN_WIDTH }${ MIN_WIDTH_UNIT }` }
 			value={ `${ width }${ widthUnit }` }
@@ -236,17 +236,46 @@ export default function Edit( {
 				},
 			} ) }
 		/>
+		<ButtonGroup
+			className="wp-block-search__components-button-group"
+			aria-label={ __( 'Percentage Width' ) }
+		>
+			{ [ 25, 50, 75, 100 ].map( ( value ) => {
+				return (
+					<Button
+						key={ value }
+						isSmall
+						variant={
+							`${ value }%` ===
+							`${ width }${ widthUnit }`
+								? 'primary'
+								: undefined
+						}
+						onClick={ () =>
+							setAttributes( {
+								width: value,
+								widthUnit: '%',
+							} )
+						}
+					>
+						{ value }%
+					</Button>
+				);
+			} ) }
+		</ButtonGroup>
+		</BaseControl>
 	);
 
 	// Creates the panel for the progress bar settings.  This should house
 	// the primary settings related to the output of the `<progress>` element.
 	const progressSettingsPanel = (
 		<PanelBody title={ __( 'Progress Bar Settings', 'x3p0-progress' ) }>
+			{ progressMaxControl }
 			{ progressValueControl }
-			<Grid columns={ 2 }>
+			<VStack spacing={ 6 }>
 				{ progressHeightControl }
 				{ progressWidthControl }
-			</Grid>
+			</VStack>
 		</PanelBody>
 	);
 
@@ -318,20 +347,20 @@ export default function Edit( {
 	} );
 
 	// Get the ID of the current instance for label and progress elements.
-	const blockInstanceId = useInstanceId( Edit );
+	//progressId = useInstanceId( Edit );
+	setAttributes( { progressId: useInstanceId( Edit ) } );
 
 	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
 	// this off/on via a toggle in the toolbar.
 	const progressLabelHtml = showLabel ? (
 		<RichText
 			tagName="label"
-			for={ `wp-block-x3p0-progress-${ blockInstanceId }` }
+			for={ `wp-block-x3p0-progress-${ progressId }` }
 			className="wp-block-x3p0-progress__label"
 			aria-label={ __( 'Label text', 'x3p0-progress' ) }
 			placeholder={ __( 'Add label…', 'x3p0-progress' ) }
 			value={ label }
 			multiline={ false }
-			isSelected={ true }
 			onChange={ ( html ) => setAttributes( { label: html } ) }
 			allowedFormats={ [
 				'core/bold',
@@ -344,8 +373,40 @@ export default function Edit( {
 		/>
 	) : '';
 
+	const progressValueBeforeHtml = showValue ? (
+		<RichText
+			tagName="span"
+			className="wp-block-x3p0-progress__value-before"
+			aria-label={ __( 'Text or symbol to show before value', 'x3p0-progress' ) }
+			placeholder={ __( '…', 'x3p0-progress' ) }
+			value={ progressValueBefore }
+			multiline={ false }
+			isSelected={ false }
+			onChange={ ( html ) => setAttributes( { progressValueBefore: html } ) }
+			allowedFormats={ [] }
+		/>
+	) : '';
+
+	const progressValueAfterHtml = showValue ? (
+		<RichText
+			tagName="span"
+			className="wp-block-x3p0-progress__value-after"
+			aria-label={ __( 'Text or symbol to show after value', 'x3p0-progress' ) }
+			placeholder={ __( '…', 'x3p0-progress' ) }
+			value={ progressValueAfter }
+			multiline={ false }
+			isSelected={ false }
+			onChange={ ( html ) => setAttributes( { progressValueAfter: html } ) }
+			allowedFormats={ [] }
+		/>
+	) : '';
+
 	const progressValueHtml = showValue ? (
-		<div className="wp-block-x3p0-progress__value">{ progressValue }%</div>
+		<div className="wp-block-x3p0-progress__value">
+			{ progressValueBeforeHtml }
+			{ new Intl.NumberFormat( locale ).format( progressValue ) }
+			{ progressValueAfterHtml }
+		</div>
 	) : '';
 
 	const progressCaptionHtml = progressLabelHtml || progressValueHtml ? (
@@ -357,17 +418,23 @@ export default function Edit( {
 
 	// Get the border props to use on the wrapping element.
 	const borderProps = useBorderProps( attributes );
+	const spacingProps = useSpacingProps( attributes );
+
+	const paddingStyle = (
+		( { paddingTop, paddingBottom, paddingRight, paddingLeft } ) =>
+		( { paddingTop, paddingBottom, paddingRight, paddingLeft } )
+	)( spacingProps.style );
 
 	// Creates the `<progress>` bar element. Note that we need to add custom
 	// CSS properties so that they can be used with `::-webkit-progress-bar`
 	// and `::-webkit-progress-value` in CSS.
-	const progressBar = (
+	const progressBarHtml = (
 		<progress
-			id={ `wp-block-x3p0-progress-${ blockInstanceId }` }
+			id={ `wp-block-x3p0-progress-${ progressId }` }
 			className="wp-block-x3p0-progress__bar"
 			value={ progressValue }
-			max="100"
-			style={ { 'height': height ? `${ height }${ heightUnit ?? 'px' }` : '' } }
+			max={ progressMax }
+			style={ { 'height': height ? `${ height }${ heightUnit ?? 'px' }` : null } }
 		>
 			{ progressValue }%
 		</progress>
@@ -377,18 +444,19 @@ export default function Edit( {
 	// more flexibility with the output.  Because browsers have wildly
 	// varying implementations of handling `<progress>`, it's just easier to
 	// have a wrapper that can be styled consistently.
-	const progressWrap = (
+	const progressContainerHtml = (
 		<div
 			className={ classnames(
 				'wp-block-x3p0-progress__container',
-				borderProps.style.borderWidth ? 'has-border' : ''
+				borderProps.className
 			) }
 			style={ {
 				...borderProps.style,
-				'width': width ? `${ width }${ widthUnit ?? '%' }` : ''
+				...paddingStyle,
+				'width': width ? `${ width }${ widthUnit ?? '%' }` : null
 			} }
 		>
-			{ progressBar }
+			{ progressBarHtml }
 		</div>
 	);
 
@@ -399,7 +467,7 @@ export default function Edit( {
 			{ inspectorControls }
 			<div { ...blockProps }>
 				{ progressCaptionHtml }
-				{ progressWrap }
+				{ progressContainerHtml }
 			</div>
 		</>
 	);

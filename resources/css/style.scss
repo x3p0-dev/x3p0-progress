@@ -1,4 +1,14 @@
+////
+/// Block stylesheet.
+///
+/// @author Justin Tadlock <justintadlock@gmail.com>
+/// @link   https://github.com/x3p0-dev/x3p0-progress
+////
+
+/// One ginormous container class to rule over everything. This is actually the
+/// outer wrapper for the block itself.
 .wp-block-x3p0-progress {
+
 	// Set up some default custom properties.  Theme authors can overrule
 	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json`
 	// files. Alternatively, use `settings.custom.x3p0-progress.{name}`.
@@ -8,10 +18,14 @@
 	// so feel free to use the sane versions if you need to target things
 	// via CSS.
 	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 1.5rem );
+
+	// The gap property here is between the `<label>` and `<progress>`
+	// elements. For vertical, the default is a bit smaller. For horizontal,
+	// we widen it out a bit.
 	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem 2rem );
 
 	// Note that these two properties are attached to the block's `style`
-	// attribute when a user customizes them.  We must do this because the
+	// attribute when a user customizes them.  We must do this because
 	// styling the `<progress>` element requires targeting pseudo-elements
 	// for various browsers.
 	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
@@ -23,23 +37,9 @@
 	--x3p0-progress--gradient: var( --x3p0-progress--color );
 	--x3p0-progress--background-gradient: var( --x3p0-progress--background );
 
-	// We need the extra call to `.editor-styles-wrapper` to overrule the
-	// default flex styles in the editor.
-	.editor-styles-wrapper &.is-layout-flex,
-	&.is-layout-flex {
-		gap: var( --x3p0-progress--gap );
-	}
-
-	// Reverse flex-direction when the user has chosen to reverse the layout.
-	&.is-reversed {
-		flex-direction: column-reverse !important;
-	}
-
-	&.is-horizontal.is-reversed {
-		flex-direction: row-reverse !important;
-	}
-
-	// Styles for the `<label>` element.
+	// Styles for the `<label>` element.  This element houses both the label
+	// text and "completion" number, both of which can be show together,
+	// individually, or not at all.
 	&__label {
 		display: flex;
 		flex-wrap: nowrap;
@@ -47,91 +47,58 @@
 		gap: 1ch;
 	}
 
-	&.is-horizontal {
-		// Overrule `nowrap` on small screens, allowing the label and
-		// progress element to span individual lines.
-		@media ( max-width: 480px ) {
-			flex-wrap: wrap !important;
-		}
-
-		.wp-block-x3p0-progress__label {
-			flex: none;
-		}
-	}
-
-	// Align label content to the right when entire block is aligned right.
-	&.is-horizontal.is-content-justification-right {
-		.wp-block-x3p0-progress__label {
-			justify-content: flex-end;
-		}
-	}
-
-	// For reversed, horizontal layouts, we need to set the horizontal
-	// margin (depending on the justification) for either the label or
-	// progress container.
-	&.is-horizontal.is-reversed.is-content-justification-right {
-		.wp-block-x3p0-progress__container {
-			margin-left: auto;
-		}
-	}
-
-	&.is-horizontal.is-reversed.is-content-justification-left {
-		.wp-block-x3p0-progress__label {
-			margin-right: auto;
-		}
-	}
-
-	// Wrapper <div> for the <progress> element.
+	// Wrapper `<div>` for the `<progress>` element. The extra wrapper
+	// gives us more flexibility for custom styles.  Also, the user-supplied
+	// border (or `theme.json`-supplied) is added to this element instead of
+	// the block wrapper.
 	&__container {
 		box-sizing: border-box;
 		width: 100%;
 		overflow: hidden;
 
+		// On small screens, we force this to be full width. For horizontal
+		// layouts in particular, we force a wrap, so we need to adjust
+		// the width. See later rules for `.is-horizontal`.
 		@media ( max-width: 480px ) {
 			width: 100% !important;
 		}
 	}
 
-	// Vertical layouts.
-	&.is-vertical {
-
-		// The progress container should always be full-width for
-		// vertical layouts.
-		.wp-block-x3p0-progress__container {
-			width: 100%;
-		}
-	}
-
-	// Handling for the <progress> element. It's probably best not to muck
-	// around with most of these values.  There is fire, smoke, and dragons
-	// ahead.  I've already walked through the fire and smoke to eventually
-	// slay the beast at the end.  But, hey, if there's a better cross-browser
-	// way of handling this, let me know.
+	// Handling for the `<progress>` element. It's probably best not to muck
+	// around with most of these values. Fire, smoke, and dragons lie ahead.
+	// I've already walked through the fire and smoke to eventually slay the
+	// beast at the end.  But, hey, if there's a better cross-browser way of
+	// handling this, let me know.
 	&__bar {
 		// Kill browsers' default handling for this.
 		-webkit-appearance: none;
-		-moz-appearance: none;
-		     appearance: none;
+		   -moz-appearance: none;
+		        appearance: none;
+
+		// Finally getting to the actual fun part of the CSS for our
+		// beloved `<progress>` element.  *Maybe.*
+		display: block;
+		overflow: hidden;
+		width: 100%;
+		height: var( --x3p0-progress--height );
+		background: var( --x3p0-progress--background-gradient );
+		border-radius: inherit;
 
 		// Remove border from Firefox that's left over, despite setting
 		// the above `appearance` property.
 		border: none;
 
-		// Finally getting to the actual fun part of the CSS for our
-		// beloved `<progress>` element.
-		display: block;
-		border-radius: inherit;
-		overflow: hidden;
-		width: 100%;
-		height: var( --x3p0-progress--height );
-		background: var( --x3p0-progress--background-gradient );
-
-		// Maybe works in IE for the foreground color. Not bothering to
-		// actually check this because I value my sanity too much to
+		// Possibly works in IE for the foreground color. Not bothering
+		// to actually check this because I value my sanity too much to
 		// ever install IE again.
 		color: var( --x3p0-progress--color );
 
 		// This is the background pseudo element for webkit browsers.
+		// We're actually going to kill this since Firefox doesn't have
+		// an equivalent pseudo-element. Instead, it lets the `<progress>`
+		// element itself take this role. The easiest solution is to
+		// treat all browsers the same in this regard (i.e., use the
+		// method employed by Firefox).
 		&::-webkit-progress-bar {
 			background: transparent;
 			border-radius: inherit;
@@ -152,7 +119,7 @@
 			// square/straight unless we give it a specific radius.
 			// We do control that a bit when the progress is 100%
 			// with `overflow: hidden` on the `<progress>` element.
-			// So, 🤷...
+			// So, maybe this will work in the future. 🤷...
 			border-radius: inherit;
 		}
 
@@ -168,17 +135,90 @@
 	}
 
 	// =====================================================================
-	// Custom block styles.
+	// Layout styles.
 	// =====================================================================
 
-	// Fall back to a default transparent background for specific styles.
-	// This is because we utilize the progress value (foreground) color as
-	// part of a gradient background design.  End-users can overrule the
-	// color as needed via the editor.
-	&.is-style-striped,
-	&.is-style-ruler {
-		--x3p0-progress--background: transparent;
+	// Sets the gap between the `<label>` and `<progress>` elements.  We
+	// need the extra call to `.editor-styles-wrapper` to overrule the
+	// default flex styles in the editor.
+	&.is-layout-flex,
+	.editor-styles-wrapper &.is-layout-flex {
+		gap: var( --x3p0-progress--gap );
 	}
+
+	// Vertical layout.
+	&.is-vertical {
+
+		// The progress container should always default to full-width
+		// for vertical layouts. Users can overrule this via the width
+		// control in the block inspector.
+		.wp-block-x3p0-progress__container {
+			width: 100%;
+		}
+	}
+
+	// Horizontal layout.
+	&.is-horizontal {
+
+		// Overrule `nowrap` on small screens, allowing the label and
+		// progress element to span individual lines.
+		@media ( max-width: 480px ) {
+			flex-wrap: wrap !important;
+		}
+
+		// Remove the flex from the `<label>` element on horizontal
+		// layouts. I did this for a very good reason.  I just can't
+		// seem to remember what that reason was while I leave this
+		// comment in the code. But, I am 100% positive that removing
+		// this will cause the world to end.  Well, at least horizontal
+		// layouts to go horribly wrong.
+		.wp-block-x3p0-progress__label {
+			flex: none;
+		}
+
+		// Align label content to the right when entire block is aligned
+		// right.  Yeah, this should definitely happen.
+		&.is-content-justification-right .wp-block-x3p0-progress__label {
+			justify-content: flex-end;
+		}
+	}
+
+	// Reversed layout. So, we're kind of piggybacking a bit on top of
+	// WordPress' built-in flex layout type. No need to reinvent the wheel,
+	// right?  Of course, WordPress doesn't support `column-reverse` or
+	// `row-reverse` in its current layout system.  The block allows users
+	// to toggle this on and off.  All this does is flip the order of the
+	// `<label>` and `<progress>` element, at least visually. In reality,
+	// the markup stays the same.  Basically, we need to overwrite some core
+	// defaults for any "reversed" layout so that they, you know, actually
+	// look like they've switched order.
+	&.is-reversed {
+		// Use some `!important` magic to overrule whatever it is that
+		// WordPress thinks should happen.
+		flex-direction: column-reverse !important;
+	}
+
+	// Reversed + horizontal layout.
+	&.is-reversed.is-horizontal {
+		// More `!important` magic. Gotta make sure our styles win this
+		// crazy slugfest for superiority.
+		flex-direction: row-reverse !important;
+
+		// For reversed, horizontal layouts, we need to set the horizontal
+		// margin (depending on the justification) for either the label or
+		// progress container.
+		&.is-content-justification-right .wp-block-x3p0-progress__container {
+			margin-left: auto;
+		}
+
+		&.is-content-justification-left  .wp-block-x3p0-progress__label {
+			margin-right: auto;
+		}
+	}
+
+	// =====================================================================
+	// Custom block styles.
+	// =====================================================================
 
 	// Hand-drawn style.
 	&.is-style-hand-drawn {
@@ -188,77 +228,14 @@
 			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 		}
 
-		progress::-webkit-progress-value {
-			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+		.wp-block-x3p0-progress__bar {
+			&::-webkit-progress-value {
+				border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+			}
+
+			&::-moz-progress-bar {
+				border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+			}
 		}
-
-		progress::-moz-progress-bar {
-			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
-		}
-	}
-
-	// Striped style.
-	&.is-style-striped progress {
-		background-image: repeating-linear-gradient(
-			135deg,
-			var( --x3p0-progress--color ),
-			var( --x3p0-progress--color ) 0.5rem,
-			transparent 0.5rem,
-			transparent 1rem
-		);
-	}
-
-	// Ruler style. The background gradients are kind of nutso, but they seem
-	// to be working.  I don't want to lose anymore sleep thinking about a
-	// better way to do them that doesn't create weird partial lines midway
-	// down the progress bar, throwing things off by half a pixel or so
-	// because of some weird results from `calc()`.  I will leave that for
-	// you, you crazy developer who is reading this far down into the bowels
-	// of this plugin's code.
-	&.is-style-ruler progress {
-		background-repeat: repeat-x;
-		background-position: 0 bottom;
-		background-image:
-			linear-gradient(
-				to right,
-				var( --x3p0-progress--color ) 1px,
-				transparent 1px,
-				transparent
-			),
-			linear-gradient(
-				to right,
-				transparent calc( 100% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 100%,
-				transparent
-			),
-			linear-gradient(
-				to right,
-				transparent calc( 50% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 50%,
-				transparent
-			),
-			linear-gradient(
-				to right,
-				transparent calc( 20% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 20%,
-				transparent calc( 40% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 40%,
-				transparent calc( 60% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 60%,
-				transparent calc( 80% - 1px ),
-				var( --x3p0-progress--color ) 1px,
-				transparent 80%,
-				transparent
-			);
-		background-size:
-			100% 100%,
-			10% 100%,
-			10% 66.67%,
-			5% 33.3%;
 	}
 }

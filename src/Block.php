@@ -61,23 +61,11 @@ class Block
 
 		// Let theme authors short-circuit if they don't want to support
 		// the block's custom styles.
-		if ( false === apply_filters( 'x3p0/progress/block/styles', true ) ) {
-			return;
+		if ( apply_filters( 'x3p0/progress/block/styles', true ) ) {
+			register_block_style( 'x3p0/progress', [
+				'name' => 'hand-drawn',
+				'label' => __( 'Hand-Drawn', 'x3p0-progress' )
+			] );
 		}
-
-		register_block_style( 'x3p0/progress', [
-			'name' => 'hand-drawn',
-			'label' => __( 'Hand-Drawn', 'x3p0-progress' )
-		] );
-
-		register_block_style( 'x3p0/progress', [
-			'name' => 'ruler',
-			'label' => __( 'Ruler', 'x3p0-progress' )
-		] );
-
-		register_block_style( 'x3p0/progress', [
-			'name' => 'striped',
-			'label' => __( 'Striped', 'x3p0-progress' )
-		] );
         }
 }

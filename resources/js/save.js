@@ -11,6 +11,11 @@ import classnames from 'classnames';
 import { __ }     from '@wordpress/i18n';
 
 import {
+	getColorStyle,
+	getGradientStyle
+} from './functions-helpers';
+
+import {
 	RichText,
 	useBlockProps,
 	__experimentalGetBorderClassesAndStyles as getBorderClassesAndStyles,
@@ -34,7 +39,9 @@ export default function Save( { attributes, className, style } )
 		width,
 		widthUnit,
 		progressBackgroundColor,
+		progressBackgroundGradient,
 		progressColor,
+		progressGradient,
 		progressId,
 		progressMax,
 		progressValue,
@@ -108,8 +115,10 @@ export default function Save( { attributes, className, style } )
 		} ),
 		style: {
 			...style,
-			'--x3p0-progress--color': progressColor,
-			'--x3p0-progress--background': progressBackgroundColor
+			'--x3p0-progress--color': getColorStyle( progressColor ),
+			'--x3p0-progress--gradient': getGradientStyle( progressGradient ),
+			'--x3p0-progress--background': getColorStyle( progressBackgroundColor ),
+			'--x3p0-progress--background-gradient': getGradientStyle( progressBackgroundGradient )
 		}
 	} );
 

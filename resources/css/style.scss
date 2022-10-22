@@ -17,6 +17,12 @@
 	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
 	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
 
+	// Gradient backgrounds default to their color counterparts because we
+	// set the `background` property by default instead of `background-color`.
+	// There's probably a better way to handle this. Leaving for now.
+	--x3p0-progress--gradient: var( --x3p0-progress--color );
+	--x3p0-progress--background-gradient: var( --x3p0-progress--background );
+
 	// We need the extra call to `.editor-styles-wrapper` to overrule the
 	// default flex styles in the editor.
 	.editor-styles-wrapper &.is-layout-flex,
@@ -118,7 +124,7 @@
 		overflow: hidden;
 		width: 100%;
 		height: var( --x3p0-progress--height );
-		background-color: var( --x3p0-progress--background );
+		background: var( --x3p0-progress--background-gradient );
 
 		// Maybe works in IE for the foreground color. Not bothering to
 		// actually check this because I value my sanity too much to
@@ -128,6 +134,7 @@
 		// This is the background pseudo element for webkit browsers.
 		&::-webkit-progress-bar {
 			background: transparent;
+			border-radius: inherit;
 		}
 
 		// This is the foreground pseudo element for webkit browsers.
@@ -137,14 +144,26 @@
 		&::-webkit-progress-value {
 			height: 100%;
 			display: block;
-			background-color: var( --x3p0-progress--color );
+			background: var( --x3p0-progress--gradient );
+
+			// Webkit browsers do not seem to properly inherit the
+			// border radius.  Mostly, this is an issue with the
+			// rightmost edge of the value bar, which will always be
+			// square/straight unless we give it a specific radius.
+			// We do control that a bit when the progress is 100%
+			// with `overflow: hidden` on the `<progress>` element.
+			// So, 🤷...
+			border-radius: inherit;
 		}
 
 		// Foreground pseudo element for Firefox.
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;
-			background-color: var( --x3p0-progress--color );
+			background: var( --x3p0-progress--gradient );
+
+			// Firefox does inherit the border radius. 🥳
+			border-radius: inherit;
 		}
 	}
 
@@ -162,10 +181,20 @@
 	}
 
 	// Hand-drawn style.
-	&.is-style-hand-drawn .wp-block-x3p0-progress__container {
-		border: 2px solid var( --x3p0-progress--color );
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+	&.is-style-hand-drawn {
+		.wp-block-x3p0-progress__container {
+			border: 2px solid var( --x3p0-progress--color );
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+		}
+
+		progress::-webkit-progress-value {
+			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+		}
+
+		progress::-moz-progress-bar {
+			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
+		}
 	}
 
 	// Striped style.

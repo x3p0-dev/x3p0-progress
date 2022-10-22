@@ -45,13 +45,16 @@
 		"progressColor": {
 			"type": "string"
 		},
+		"progressGradient": {
+			"type": "string"
+		},
 		"progressBackgroundColor": {
 			"type": "string"
 		},
 		"backgroundColor": {
 			"type": "string"
 		},
-		"gradient": {
+		"progressBackgroundGradient": {
 			"type": "string"
 		},
 		"reversed": {

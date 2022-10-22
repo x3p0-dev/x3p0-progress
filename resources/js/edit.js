@@ -9,7 +9,17 @@
 
 import classnames        from 'classnames';
 import { useInstanceId } from '@wordpress/compose';
+import { useEffect, useMemo }     from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
+
+import {
+	formatColorValue,
+	formatGradientValue,
+	getColorStyle,
+	getGradientStyle,
+	getColorSettingValue,
+	getGradientSettingValue
+} from './functions-helpers';
 
 import {
 	toggleIcon,
@@ -24,6 +34,8 @@ import {
 	PanelColorSettings,
 	RichText,
 	useBlockProps,
+	useSetting,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 	__experimentalUnitControl as UnitControl,
 	__experimentalUseBorderProps as useBorderProps,
 	__experimentalGetSpacingClassesAndStyles as useSpacingProps
@@ -72,7 +84,9 @@ export default function Edit( {
 		width,
 		widthUnit,
 		progressColor,
+		progressGradient,
 		progressBackgroundColor,
+		progressBackgroundGradient,
 		progressId,
 		progressValue,
 		progressMax,
@@ -82,6 +96,11 @@ export default function Edit( {
 		showLabel,
 		showValue
 	} = attributes;
+
+	// Get the ID of the current instance for label and progress elements.
+	const instanceId = useInstanceId( Edit );
+
+	useEffect( () => setAttributes( { progressId: instanceId } ), [ instanceId ] );
 
 	// =====================================================================
 	// Build the block toolbar controls.
@@ -156,7 +175,13 @@ export default function Edit( {
 				onChange={ ( value ) => {
 					const newValue = value !== '' ? parseInt( value, 10 ) : 1;
 
-					setAttributes( { progressMax: newValue } );
+					let newAttr = { progressMax: newValue };
+
+					if ( progressValue > newValue ) {
+						newAttr.progressValue = Math.round( newValue / 2 );
+					}
+
+					setAttributes( newAttr );
 				} }
 			/>
 		</BaseControl>
@@ -174,8 +199,9 @@ export default function Edit( {
 			label={ __( 'Value', 'x3p0-progress' ) }
 			min="0"
 			max={ progressMax }
+			withInputField={ true }
 			allowReset={ true }
-			resetFallbackValue={ progressMax / 2 }
+			resetFallbackValue={ Math.round( progressMax / 2 ) }
 			value={ progressValue }
 			onChange={ ( value ) =>
 				setAttributes( { progressValue: value } )
@@ -225,11 +251,9 @@ export default function Edit( {
 
 	// Creates a width control for the `<progress>` element.
 	const progressWidthControl = (
-		<BaseControl
-			label={ __( 'Width', 'x3p0-progress' ) }
-			id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
-		>
+		<VStack spacing="2">
 			<UnitControl
+				label={ __( 'Width', 'x3p0-progress' ) }
 				id={ `wp-block-x3p0-progress__width-${ unitControlInstanceId }` }
 				min={ `${ MIN_WIDTH }${ MIN_WIDTH_UNIT }` }
 				value={ `${ width }${ widthUnit }` }
@@ -248,7 +272,7 @@ export default function Edit( {
 				} ) }
 			/>
 			<ButtonGroup
-				className="wp-block-x3p0-progress__components-button-group"
+				className="components-button-group"
 				aria-label={ __( 'Percentage Width', 'x3p0-progress' ) }
 			>
 				{ [ 25, 50, 75, 100 ].map( ( value ) => {
@@ -272,7 +296,7 @@ export default function Edit( {
 					);
 				} ) }
 			</ButtonGroup>
-		</BaseControl>
+		</VStack>
 	);
 
 	// Creates the panel for the progress bar settings.  This should house
@@ -288,21 +312,59 @@ export default function Edit( {
 		</PanelBody>
 	);
 
+	// Get the base color and gradient options to pass into individual color
+	// settings for our Color panel.
+	const colorGradientOptions = useMultipleOriginColorsAndGradients();
+
+	// Get all color palettes.
+	const userColorPalette = useSetting( 'color.palette.custom' );
+	const themeColorPalette = useSetting( 'color.palette.theme' );
+	const defaultColorPalette = useSetting ( 'color.palette.default' );
+
+	// Get all gradient palettes.
+	const userGradientPalette = useSetting( 'color.gradients.custom' );
+	const themeGradientPalette = useSetting( 'color.gradients.theme' );
+	const defaultGradientPalette = useSetting( 'color.gradients.default' );
+
+	// Flattened array with all color palettes.
+	const colorsFlat = useMemo( () => [
+		...( defaultColorPalette || [] ),
+		...( themeColorPalette || [] ),
+		...( userColorPalette || [] )
+	], [ userColorPalette, themeColorPalette, defaultColorPalette ] );
+
+	// Flattened array with all gradient palettes.
+	const gradientsFlat = useMemo( () => [
+		...( defaultGradientPalette || [] ),
+		...( themeGradientPalette || [] ),
+		...( userGradientPalette || [] )
+	], [ userGradientPalette, themeGradientPalette, defaultGradientPalette ] );
+
 	// Houses an array of the block's color settings.
 	const colorSettings = [
 		{
 			label: __( 'Progress Value', 'x3p0-progress' ),
-			value: progressColor,
-			onChange: ( value ) => {
-				setAttributes( { progressColor: value } );
-			}
+			value: getColorSettingValue( progressColor, colorsFlat ),
+			gradientValue: getGradientSettingValue( progressGradient, gradientsFlat ),
+			onChange: ( value ) => { setAttributes( {
+				progressColor: formatColorValue( value, colorsFlat )
+			} ) },
+			onGradientChange: ( value ) => { setAttributes( {
+				progressGradient: formatGradientValue( value, gradientsFlat )
+			} ) },
+			...colorGradientOptions
 		},
 		{
 			label: __( 'Progress Background', 'x3p0-progress' ),
-			value: progressBackgroundColor,
-			onChange: ( value ) => {
-				setAttributes( { progressBackgroundColor: value } );
-			}
+			value: getColorSettingValue( progressBackgroundColor, colorsFlat ),
+			gradientValue: getGradientSettingValue( progressBackgroundGradient, gradientsFlat ),
+			onChange: ( value ) => { setAttributes( {
+				progressBackgroundColor: formatColorValue( value, colorsFlat )
+			} ) },
+			onGradientChange: ( value ) => { setAttributes( {
+				progressBackgroundGradient: formatGradientValue( value, gradientsFlat )
+			} ) },
+			...colorGradientOptions
 		}
 	];
 
@@ -349,13 +411,12 @@ export default function Edit( {
 		} ),
 		style: {
 			...style,
-			'--x3p0-progress--color': progressColor,
-			'--x3p0-progress--background': progressBackgroundColor
+			'--x3p0-progress--color': getColorStyle( progressColor ),
+			'--x3p0-progress--gradient': getGradientStyle( progressGradient ),
+			'--x3p0-progress--background': getColorStyle( progressBackgroundColor ),
+			'--x3p0-progress--background-gradient': getGradientStyle( progressBackgroundGradient )
 		}
 	} );
-
-	// Get the ID of the current instance for label and progress elements.
-	setAttributes( { progressId: useInstanceId( Edit ) } );
 
 	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
 	// this off/on via a toggle in the toolbar.

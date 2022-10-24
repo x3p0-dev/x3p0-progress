@@ -1,5 +1,5 @@
 /**
- * Entry point.
+ * Registers the block type.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2022, Justin Tadlock
@@ -9,17 +9,14 @@
 
 // Import stylesheets.
 import './css/style.scss';
+import './css/index.scss';
 
 // Import dependencies.
 import { registerBlockType } from '@wordpress/blocks';
-import { blockIcon }         from './js/icons';
-import blockEdit             from './js/edit';
-import blockSave             from './js/save';
-import blockData             from './block.json';
+import metadata              from './block.json';
+import icon                  from './js/block-icon';
+import edit                  from './js/block-edit';
+import save                  from './js/block-save';
 
 // Register block type.
-registerBlockType( blockData, {
-	icon: blockIcon,
-	edit: blockEdit,
-	save: blockSave
-} );
+registerBlockType( metadata, { icon, edit, save } );

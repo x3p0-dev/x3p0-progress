@@ -31,6 +31,14 @@
 	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
 	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
 
+	// Custom box shadow.  Themes can register a custom shadow using our
+	// `custom.x3p0Progress.shadow`, but we'll also allow `custom.shadow`
+	// because the Pixl theme has already set a precedent with this method.
+	--x3p0-progress--shadow: var(
+		--wp--custom--x-3-p-0-progress--shadow,
+		var( --wp--custom--shadow, none )
+	);
+
 	// Gradient backgrounds default to their color counterparts because we
 	// set the `background` property by default instead of `background-color`.
 	// There's probably a better way to handle this. Leaving for now.
@@ -55,6 +63,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		overflow: hidden;
+		box-shadow: var( --x3p0-progress--shadow );
 
 		// On small screens, we force this to be full width. For horizontal
 		// layouts in particular, we force a wrap, so we need to adjust
@@ -222,9 +231,20 @@
 
 	// Hand-drawn style.
 	&.is-style-hand-drawn {
+		// We don't want to overwrite the full shadow for this style.
+		// We just want to overwrite the default while still allowing
+		// theme styles to rule.
+		--x3p0-progress--shadow: var(
+			--wp--custom--x-3-p-0-progress--color,
+			var(
+				--wp--custom--shadow,
+				0 1px 3px 0 rgba( 0, 0, 0, 0.1 ),
+		                        0 1px 2px 0 rgba( 0, 0, 0, 0.06 )
+			)
+		);
+
 		.wp-block-x3p0-progress__container {
 			border: 2px solid var( --x3p0-progress--color );
-			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 		}
 

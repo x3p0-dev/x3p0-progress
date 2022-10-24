@@ -10,10 +10,9 @@
 import classnames from 'classnames';
 import { __ }     from '@wordpress/i18n';
 
-import {
-	getColorStyle,
-	getGradientStyle
-} from './functions-helpers';
+import { getColorStyle  }   from './common/functions-color';
+import { getGradientStyle } from './common/functions-gradient';
+import { getShadowStyle }   from './shadow/functions-shadow';
 
 import {
 	RichText,
@@ -25,13 +24,7 @@ import {
 // Localized script with plugin data.
 const { locale } = x3p0Progress;
 
-/**
- * Exports the block edit function.
- *
- * @since 1.0.0
- */
-export default function Save( { attributes, className, style } )
-{
+export default function Save( { attributes, className, style } ) {
 	const {
 		label,
 		height,
@@ -48,6 +41,7 @@ export default function Save( { attributes, className, style } )
 		progressValueAfter,
 		progressValueBefore,
 		reversed,
+		shadow,
 		showLabel,
 		showValue
 	} = attributes;
@@ -141,7 +135,7 @@ export default function Save( { attributes, className, style } )
 			max={ progressMax }
 			style={ { 'height': height ? `${ height }${ heightUnit ?? 'px' }` : null } }
 		>
-			{ progressValue }%
+			{ `${ progressValue }/${ progressMax }` }
 		</progress>
 	);
 
@@ -158,6 +152,7 @@ export default function Save( { attributes, className, style } )
 			style={ {
 				...borderProps.style,
 				...paddingStyle,
+				boxShadow: getShadowStyle( shadow ),
 				'width': width ? `${ width }${ widthUnit ?? '%' }` : null
 			} }
 		>

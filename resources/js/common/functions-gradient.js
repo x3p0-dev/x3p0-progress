@@ -1,38 +1,21 @@
+/**
+ * Gradient functions.
+ *
+ * @author    Justin Tadlock <justintadlock@gmail.com>
+ * @copyright Copyright (c) 2022, Justin Tadlock
+ * @link      https://github.com/x3p0-dev/x3p0-progress
+ * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
+
 import {
-	getColorObjectByAttributeValues,
-	getColorObjectByColorValue,
 	getGradientSlugByValue,
 	getGradientValueBySlug
 } from '@wordpress/block-editor';
 
-export function formatColorValue( value, colors )
-{
-	const colorObject = getColorObjectByColorValue( colors, value );
-
-	return undefined == colorObject ? value : `var:preset|color|${ colorObject.slug }`;
-};
-
-export function getColorSlug( color )
-{
-	return color && color.startsWith( 'var:preset|color|' )
-	       ? color.replace( 'var:preset|color|', '' )
-	       : null;
-};
-
-export function getColorSettingValue( color, colors )
-{
-	const slug = getColorSlug( color );
-
-	return slug ? getColorObjectByAttributeValues( colors, slug, color ).color : color;
-};
-
-export function getColorStyle( color )
-{
-	const slug = getColorSlug( color );
-
-	return slug ? `var(--wp--preset--color--${ slug })`: color;
-};
-
+/**
+ * Formats a gradient value as a preset string if the preset exists. Otherwise,
+ * returns the original gradient value.
+ */
 export function formatGradientValue( value, gradients )
 {
 	const slug = getGradientSlugByValue( gradients, value );
@@ -40,6 +23,9 @@ export function formatGradientValue( value, gradients )
 	return slug ? `var:preset|gradient|${ slug }` : value;
 };
 
+/**
+ * Returns a gradient preset slug if a preset string is given. Otherwise, null.
+ */
 export function getGradientSlug( gradient )
 {
 	return gradient && gradient.startsWith( 'var:preset|gradient|' )
@@ -47,6 +33,9 @@ export function getGradientSlug( gradient )
 	       : null;
 };
 
+/**
+ * Returns a gradient CSS value. First checks to see if a preset slug is given.
+ */
 export function getGradientSettingValue( gradient, gradients )
 {
 	const slug = getGradientSlug( gradient );
@@ -60,6 +49,9 @@ export function getGradientSettingValue( gradient, gradients )
 	return gradient;
 };
 
+/**
+ * Returns a gradient CSS value. Uses a CSS variable if the gradient is a preset.
+ */
 export function getGradientStyle( gradient )
 {
 	const slug = getGradientSlug( gradient );

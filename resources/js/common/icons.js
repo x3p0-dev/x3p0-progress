@@ -1,5 +1,5 @@
 /**
- * Block icons.
+ * Icons.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2022, Justin Tadlock
@@ -7,31 +7,6 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-
- import { SVG, Rect } from '@wordpress/components';
-
-// Block icon.
-//
-// @link    https://icons.getbootstrap.com/icons/bar-chart-fill/
-// @license https://github.com/twbs/icons/blob/main/LICENSE.md
-export const blockIcon = (
-	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
-		<path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z"/>
-	</svg>
-);
-
-// Refresh icon.
-//
-// @link    https://icons.getbootstrap.com/icons/percent/
-// @license https://github.com/twbs/icons/blob/main/LICENSE.md
-export const percentIcon = (
-	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
-		<path d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-	</svg>
-);
-
-// Rotate icon.
-//
 // @link    https://icons.getbootstrap.com/icons/arrow-repeat/
 // @license https://github.com/twbs/icons/blob/main/LICENSE.md
 export const rotateIcon = (
@@ -41,7 +16,8 @@ export const rotateIcon = (
 	</svg>
 );
 
-// https://icons.getbootstrap.com/icons/toggle2-on/
+// @link    https://icons.getbootstrap.com/icons/toggle2-on/
+// @license https://github.com/twbs/icons/blob/main/LICENSE.md
 export const toggleOnIcon = (
 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggle2-on" viewBox="0 0 16 16">
 		<path d="M7 5H3a3 3 0 0 0 0 6h4a4.995 4.995 0 0 1-.584-1H3a2 2 0 1 1 0-4h3.416c.156-.357.352-.692.584-1z"/>
@@ -49,7 +25,8 @@ export const toggleOnIcon = (
 	</svg>
 );
 
-// https://icons.getbootstrap.com/icons/toggle2-off/
+// @link    https://icons.getbootstrap.com/icons/toggle2-off/
+// @license https://github.com/twbs/icons/blob/main/LICENSE.md
 export const toggleOffIcon = (
 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggle2-off" viewBox="0 0 16 16">
 		<path d="M9 11c.628-.836 1-1.874 1-3a4.978 4.978 0 0 0-1-3h4a3 3 0 1 1 0 6H9z"/>
@@ -59,17 +36,8 @@ export const toggleOffIcon = (
 
 // @link https://github.com/WordPress/gutenberg/blob/df38b3d43a172773070a166fbaabcb184646cd11/packages/block-library/src/search/icons.js
 export const toggleIcon = (
-	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-		<Rect
-			x="4.75"
-			y="17.25"
-			width="5.5"
-			height="14.5"
-			transform="rotate(-90 4.75 17.25)"
-			stroke="currentColor"
-			fill="none"
-			strokeWidth="1.5"
-		/>
-		<Rect x="4" y="7" width="10" height="2" fill="currentColor" />
-	</SVG>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<rect x="4.75" y="17.25" width="5.5" height="14.5" transform="rotate(-90 4.75 17.25)" stroke="currentColor" fill="none" strokeWidth="1.5" />
+		<rect x="4" y="7" width="10" height="2" fill="currentColor" />
+	</svg>
 );

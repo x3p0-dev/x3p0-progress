@@ -9,14 +9,36 @@
 
 import { getColorStyle } from '../common/functions-color';
 
-export const updateShadow = ( shadow, key, value ) => {
-	value ? shadow[ key ] = value : delete shadow[ key ];
-	return shadow;
+/**
+ * Sets the shadow value by key. If there is not yet a shadow, create a new
+ * object. If there is no value provided, the key is deleted. If there is no
+ * object keys at all, return `undefined`. This function is meant to be used in
+ * conjunction when setting the shadow attribute:
+ * `setAttributes( { shadow: setShadow() } )`.
+ */
+export const setShadow = ( shadow, key, value ) => {
+	if ( ! shadow || undefined === shadow ) {
+		shadow = {};
+	}
+
+	if ( key ) {
+		value ? shadow[ key ] = value : delete shadow[ key ];
+	}
+
+	return Object.keys( shadow ).length ? { ...shadow } : undefined;
 };
 
+/**
+ * Using to unset the shadow attribute: `setAttribute( { shadow: unsetShadow() } )`.
+ */
+export const unsetShadow = () => undefined;
+
+/**
+ * Returns a formatted box-shadow CSS style value based on the shadow object.
+ */
 export function getShadowStyle( shadow ) {
 
-	if ( ! Object.keys( shadow ).length ) {
+	if ( ! shadow || ! Object.keys( shadow ).length ) {
 		return null;
 	};
 

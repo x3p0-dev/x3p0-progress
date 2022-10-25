@@ -20,6 +20,7 @@ import FlexDirectionToolbarButton from './toolbar/button-flex-direction';
 import ShowLabelToolbarButton     from './toolbar/button-show-label';
 import ShowValueToolbarButton     from './toolbar/button-show-value';
 
+import { numberFormat }     from './common/functions-helpers';
 import { getColorStyle  }   from './common/functions-color';
 import { getGradientStyle } from './common/functions-gradient';
 import { getShadowStyle }   from './shadow/functions-shadow';
@@ -33,14 +34,6 @@ import {
 	__experimentalGetSpacingClassesAndStyles as useSpacingProps
 } from '@wordpress/block-editor';
 
-// Localized script with plugin data.
-const { locale } = x3p0Progress;
-
-/**
- * Exports the block edit function.
- *
- * @since 1.0.0
- */
 export default function Edit( {
 	className,
 	attributes,
@@ -212,7 +205,7 @@ export default function Edit( {
 			tagName="span"
 			className="wp-block-x3p0-progress__value-after"
 			aria-label={ __( 'Text or symbol to show after value', 'x3p0-progress' ) }
-			placeholder={ __( '…', 'x3p0-progress' ) }
+			placeholder={ __( '%…', 'x3p0-progress' ) }
 			value={ progressValueAfter }
 			multiline={ false }
 			isSelected={ false }
@@ -221,16 +214,12 @@ export default function Edit( {
 		/>
 	) : '';
 
-	// Builds the progress value HTML for the label.  WordPress doesn't
-	// currently have a JS equivalent of `number_format_i18n` via
-	// `@wordpress/i18n`, so we're passing in the locale from WordPress and
-	// using `Intl.NumberFormat()`.
-	// @link https://github.com/WordPress/gutenberg/issues/22628
+	// Builds the progress value HTML for the label.
 	const progressValueHtml = showValue ? (
 		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
 			<span className="wp-block-x3p0-progress__value-num">
-				{ new Intl.NumberFormat( locale ).format( progressValue ) }
+				{ numberFormat( progressValue ) }
 			</span>
 			{ progressValueAfterHtml }
 		</span>

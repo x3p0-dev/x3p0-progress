@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-import { updateShadow } from './functions-shadow';
+import { setShadow, unsetShadow } from './functions-shadow';
 
 import ShadowColorControl from './control-color';
 import ShadowInsetControl from './control-inset';
@@ -26,43 +26,36 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 
 	const panelId = useInstanceId( ShadowPanel );
 
-	const [ shadowInset,  setShadowInset  ] = useState();
-	const [ shadowX,      setShadowX      ] = useState();
-	const [ shadowY,      setShadowY      ] = useState();
-	const [ shadowBlur,   setShadowBlur   ] = useState();
-	const [ shadowSpread, setShadowSpread ] = useState();
+	const [ insetItem,   setInsetItem   ] = useState();
+	const [ offsetXItem, setOffsetXItem ] = useState();
+	const [ offsetYItem, setOffsetYItem ] = useState();
+	const [ blurItem,    setBlurItem    ] = useState();
+	const [ spreadItem,  setSpreadItem  ] = useState();
 
-	const resetShadowColor  = () => setAttributes( { shadow: { ...updateShadow( shadow, 'color'   ) } } );
-	const resetShadowX      = () => setAttributes( { shadow: { ...updateShadow( shadow, 'offsetX' ) } } );
-	const resetShadowY      = () => setAttributes( { shadow: { ...updateShadow( shadow, 'offsetY' ) } } );
-	const resetShadowBlur   = () => setAttributes( { shadow: { ...updateShadow( shadow, 'blur'    ) } } );
-	const resetShadowSpread = () => setAttributes( { shadow: { ...updateShadow( shadow, 'spread'  ) } } );
-	const resetShadowInset  = () => setAttributes( { shadow: { ...updateShadow( shadow, 'inset'   ) } } );
+	const resetShadowX      = () => setAttributes( { shadow: setShadow( shadow, 'offsetX' ) } );
+	const resetShadowY      = () => setAttributes( { shadow: setShadow( shadow, 'offsetY' ) } );
+	const resetShadowBlur   = () => setAttributes( { shadow: setShadow( shadow, 'blur'    ) } );
+	const resetShadowSpread = () => setAttributes( { shadow: setShadow( shadow, 'spread'  ) } );
+	const resetShadowInset  = () => setAttributes( { shadow: setShadow( shadow, 'inset'   ) } );
 
 	const resetShadow = () => {
-		resetShadowColor();
-		resetShadowX();
-		resetShadowY();
-		resetShadowBlur();
-		resetShadowSpread();
-		resetShadowInset();
-
-		setShadowX( undefined );
-		setShadowY( undefined );
-		setShadowBlur( undefined );
-		setShadowSpread( undefined );
-		setShadowInset( undefined );
+		setAttributes( { shadow: unsetShadow() } );
+		setOffsetXItem( undefined );
+		setOffsetYItem( undefined );
+		setBlurItem( undefined );
+		setSpreadItem( undefined );
+		setInsetItem( undefined );
 	};
 
 	const shadowOffsetXControl = (
 		<ShadowUnitControl
 			label={ __( 'Horizontal Offset', 'x3p0-progress' ) }
-			value={ `${ shadow?.offsetX }${ shadow?.offsetXUnit }` }
+			value={ shadow?.offsetX }
 			onChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'offsetX', parseInt( value, 10 ) ) }
+				shadow: { ...setShadow( shadow, 'offsetX', parseInt( value, 10 ) ) }
 			} ) }
 			onUnitChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'offsetXUnit', value ) }
+				shadow: { ...setShadow( shadow, 'offsetXUnit', value ) }
 			} ) }
 		/>
 	);
@@ -70,12 +63,12 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 	const shadowOffsetYControl = (
 		<ShadowUnitControl
 			label={ __( 'Vertical Offset', 'x3p0-progress' ) }
-			value={ `${ shadow?.offsetY }${ shadow?.offsetYUnit }` }
+			value={ `${ shadow?.offsetY }` }
 			onChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'offsetY', parseInt( value, 10 ) ) }
+				shadow: setShadow( shadow, 'offsetY', parseInt( value, 10 ) )
 			} ) }
 			onUnitChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'offsetYUnit', value ) }
+				shadow: setShadow( shadow, 'offsetYUnit', value )
 			} ) }
 		/>
 	);
@@ -83,12 +76,13 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 	const shadowBlurControl = (
 		<ShadowUnitControl
 			label={ __( 'Blur Radius', 'x3p0-progress' ) }
+			min="0"
 			value={ `${ shadow?.blur }${ shadow?.blurUnit }` }
 			onChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'blur', parseInt( value, 10 ) ) }
+				shadow: setShadow( shadow, 'blur', parseInt( value, 10 ) )
 			} ) }
 			onUnitChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'blurUnit', value ) }
+				shadow: setShadow( shadow, 'blurUnit', value )
 			} ) }
 		/>
 	);
@@ -96,12 +90,13 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 	const shadowSpreadControl = (
 		<ShadowUnitControl
 			label={ __( 'Spread Radius', 'x3p0-progress' ) }
+			min="-16"
 			value={ `${ shadow?.spread }${ shadow?.spreadUnit }` }
 			onChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'spread', parseInt( value, 10 ) ) }
+				shadow: setShadow( shadow, 'spread', parseInt( value, 10 ) )
 			} ) }
 			onUnitChange={ ( value ) => setAttributes( {
-				shadow: { ...updateShadow( shadow, 'spreadUnit', value ) }
+				shadow: setShadow( shadow, 'spreadUnit', value )
 			} ) }
 		/>
 	);
@@ -121,43 +116,43 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 			/>
 			<ToolsPanelItem
 				label={ __( 'Horizontal Offset', 'x3p0-progress' ) }
-				hasValue={ () => !! shadowX || !! shadow?.offsetX }
+				hasValue={ () => !! shadow?.offsetX }
 				onDeselect={ () => resetShadowX() }
 				panelId={ panelId }
-				style={ { gridColumn: "span 1" } }
+				style={ { gridColumn: "span 2" } }
 			>
 				{ shadowOffsetXControl }
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __( 'Vertical Offset', 'x3p0-progress' ) }
-				hasValue={ () => !! shadowY || !! shadow?.offsetY }
+				hasValue={ () => !! shadow?.offsetY }
 				onDeselect={ () => resetShadowY() }
 				panelId={ panelId }
-				style={ { gridColumn: "span 1" } }
+				style={ { gridColumn: "span 2" } }
 			>
 				{ shadowOffsetYControl }
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __( 'Blur Radius', 'x3p0-progress' ) }
-				hasValue={ () => !! shadowBlur || !! shadow?.blur }
+				hasValue={ () => !! shadow?.blur }
 				onDeselect={ () => resetShadowBlur() }
 				panelId={ panelId }
-				style={ { gridColumn: "span 1" } }
+				style={ { gridColumn: "span 2" } }
 			>
 				{ shadowBlurControl }
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __( 'Spread Radius', 'x3p0-progress' ) }
-				hasValue={ () => !! shadowSpread || !! shadow?.spread }
+				hasValue={ () => !! shadow?.spread }
 				onDeselect={ () => resetShadowSpread() }
 				panelId={ panelId }
-				style={ { gridColumn: "span 1" } }
+				style={ { gridColumn: "span 2" } }
 			>
 				{ shadowSpreadControl }
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __( 'Position', 'x3p0-progress' ) }
-				hasValue={ () => !! shadowInset || !! shadow?.inset }
+				hasValue={ () => !! shadow?.inset }
 				onDeselect={ () => resetShadowInset() }
 				panelId={ panelId }
 				style={ { gridColumn: "span 2" } }

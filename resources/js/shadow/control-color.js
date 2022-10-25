@@ -9,7 +9,7 @@
 import { useMemo } from '@wordpress/element';
 import { __ }      from '@wordpress/i18n';
 
-import { updateShadow } from './functions-shadow';
+import { setShadow } from './functions-shadow';
 
 import {
 	formatColorValue,
@@ -39,24 +39,26 @@ const ShadowColorControl = ( {
 	// Flattened array with all color palettes.
 	const colorsFlat = useMemo( () => [
 		...( defaultColorPalette || [] ),
-		...( themeColorPalette || [] ),
-		...( userColorPalette || [] )
+		...( themeColorPalette   || [] ),
+		...( userColorPalette    || [] )
 	], [ userColorPalette, themeColorPalette, defaultColorPalette ] );
 
 	const colorSetting = {
 		label: __( 'Color', 'x3p0-progress' ),
 		colorValue: getColorSettingValue( shadow?.color, colorsFlat ),
 		onColorChange: ( value ) => {
-			const color = formatColorValue( value, colorsFlat );
-
 			setAttributes( {
-				shadow: { ...updateShadow( shadow, 'color', color ) }
+				shadow: setShadow(
+					shadow,
+					'color',
+					formatColorValue( value, colorsFlat )
+				)
 			} );
 		},
 		isShownByDefault: false,
 		hasValue: () => !! shadow?.color,
 		onDeselect: () => setAttributes( {
-			shadow: { ...updateShadow( shadow, 'color' ) }
+			shadow: setShadow( shadow, 'color' )
 		} )
 	};
 

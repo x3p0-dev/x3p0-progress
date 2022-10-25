@@ -28,8 +28,15 @@
 	// attribute when a user customizes them.  We must do this because
 	// styling the `<progress>` element requires targeting pseudo-elements
 	// for various browsers.
-	--x3p0-progress--color: var( --wp--custom--x-3-p-0-progress--color, #0284c7 );
-	--x3p0-progress--background: var( --wp--custom--x-3-p-0-progress--background, #f0f9ff );
+	--x3p0-progress--color: var(
+		--wp--custom--x-3-p-0-progress--color,
+		var( --wp--preset--color--primary, #0284c7 )
+	);
+
+	--x3p0-progress--background: var(
+		--wp--custom--x-3-p-0-progress--background,
+		var( --wp--preset--color--secondary, #f0f9ff )
+	);
 
 	// Custom box shadow.  Themes can register a custom shadow using our
 	// `custom.x3p0Progress.shadow`, but we'll also allow `custom.shadow`
@@ -64,6 +71,17 @@
 		width: 100%;
 		overflow: hidden;
 		box-shadow: var( --x3p0-progress--shadow );
+
+		// Sets a color for the container, which actually doesn't have
+		// any text.  However, when there is no color set for the box-
+		// shadow, it falls back to currentColor.  We're just controlling
+		// that default by setting it here.
+		color: var( --x3p0-progress--color );
+
+		// Match the default border color to the progress value color.
+		// This at least gives us something that looks halfway decent in
+		// most scenarios where a specific color isn't set.
+		border-color: var( --x3p0-progress--color );
 
 		// On small screens, we force this to be full width. For horizontal
 		// layouts in particular, we force a wrap, so we need to adjust

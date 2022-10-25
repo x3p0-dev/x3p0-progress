@@ -10,6 +10,7 @@
 import classnames from 'classnames';
 import { __ }     from '@wordpress/i18n';
 
+import { numberFormat }     from './common/functions-helpers';
 import { getColorStyle  }   from './common/functions-color';
 import { getGradientStyle } from './common/functions-gradient';
 import { getShadowStyle }   from './shadow/functions-shadow';
@@ -20,9 +21,6 @@ import {
 	__experimentalGetBorderClassesAndStyles as getBorderClassesAndStyles,
 	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles
 } from '@wordpress/block-editor';
-
-// Localized script with plugin data.
-const { locale } = x3p0Progress;
 
 export default function Save( { attributes, className, style } ) {
 	const {
@@ -47,7 +45,7 @@ export default function Save( { attributes, className, style } ) {
 	} = attributes;
 
 	// Create the progress label text HTML.
-	const progressLabelTextHtml = showLabel ? (
+	const progressLabelTextHtml = showLabel && label ? (
 		<RichText.Content
 			tagName="span"
 			className="wp-block-x3p0-progress__label-text"
@@ -73,16 +71,12 @@ export default function Save( { attributes, className, style } ) {
 		/>
 	) : '';
 
-	// Builds the progress value HTML for the label.  WordPress doesn't
-	// currently have a JS equivalent of `number_format_i18n` via
-	// `@wordpress/i18n`, so we're passing in the locale from WordPress and
-	// using `Intl.NumberFormat()`.
-	// @link https://github.com/WordPress/gutenberg/issues/22628
+	// Builds the progress value HTML for the label.
 	const progressValueHtml = showValue ? (
 		<span className="wp-block-x3p0-progress__value">
 			{ progressValueBeforeHtml }
 			<span className="wp-block-x3p0-progress__value-num">
-				{ new Intl.NumberFormat( locale ).format( progressValue ) }
+				{ numberFormat( progressValue ) }
 			</span>
 			{ progressValueAfterHtml }
 		</span>

@@ -64,7 +64,7 @@ class Block
 		if ( apply_filters( 'x3p0/progress/block/styles', true ) ) {
 			register_block_style( 'x3p0/progress', [
 				'name' => 'hand-drawn',
-				'label' => __( 'Hand-Drawn', 'x3p0-progress' )
+				'label' => __( 'Hand Drawn', 'x3p0-progress' )
 			] );
 		}
         }

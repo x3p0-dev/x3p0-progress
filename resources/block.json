@@ -69,8 +69,7 @@
 			"default": true
 		},
 		"shadow": {
-			"type": "object",
-			"default": {}
+			"type": "object"
 		}
 	},
 	"supports": {

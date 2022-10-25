@@ -10,3 +10,9 @@
 		border-top: 1px solid #0000001a;
 	}
 }
+
+.wp-block-x3p0-progress__label-text,
+.wp-block-x3p0-progress__value-before,
+.wp-block-x3p0-progress__value-after {
+	cursor: text;
+}

@@ -1,6 +1,6 @@
 # X3P0 Progress
 
-![Progress bars shown in the WordPress content canvas.](/assets/progress-life-goals.webp)
+![Progress bars shown in the WordPress content canvas.](/assets/progress-life-goals.png)
 
 WordPress block for outputting awesome progress bars.
 

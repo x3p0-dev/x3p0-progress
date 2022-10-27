@@ -8,13 +8,13 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { rotateIcon } from '../common/icons';
+import { rotateIcon } from '../common/utils-icon';
 import { ToolbarButton } from '@wordpress/components';
 
 export default ( props ) => {
 	return (
 		<ToolbarButton
-			title={ __( 'Toggle the order of inner block elements', 'x3p0-progress' ) }
+			title={ __( 'Toggle the order of block elements', 'x3p0-progress' ) }
 			icon={ rotateIcon }
 			{ ...props }
 		/>

@@ -18,7 +18,7 @@ Aside from the normal block-related settings and styles that theme authors can a
 {
 	"settings": {
 		"x3p0Progress": {
-			"color": "var( --wp--preset--color--primary )",
+			"foreground": "var( --wp--preset--color--primary )",
 			"background": "var( --wp--preset--color--secondary )",
 			"height": "1.5rem",
 			"gap": "0.25rem 2rem",
@@ -34,7 +34,7 @@ WordPress has no standard on naming colors.  However, the _de facto_ standard cr
 
 ### Custom Block Styles
 
-The plugin currently registers a single custom block style titled "Hand Drawn," which provides a little magic with borders to give a slight hand-drawn look to the progress bar.  There's a lot of neat things you can do with when mixing and matching with other design options.
+The plugin currently registers a single custom block style titled "Hand Drawn," which provides a little magic with borders to give a slight hand-drawn look to the progress bar.  There's a lot of neat things you can do when mixing and matching with other design options.
 
 However, I realize this style doesn't fit in with every theme's aesthetic.  Nor does it always need to be handed over to a client.  So, feel free to pop this one-liner into `functions.php` to unregister this single style.
 

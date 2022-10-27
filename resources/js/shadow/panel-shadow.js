@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-import { setShadow, unsetShadow } from './functions-shadow';
+import { setShadow, unsetShadow } from './utils-shadow';
 
 import ShadowColorControl from './control-color';
 import ShadowInsetControl from './control-inset';
@@ -23,7 +23,6 @@ import {
 } from '@wordpress/components';
 
 const ShadowPanel = ( { shadow, setAttributes } ) => {
-
 	const panelId = useInstanceId( ShadowPanel );
 
 	const [ insetItem,   setInsetItem   ] = useState();

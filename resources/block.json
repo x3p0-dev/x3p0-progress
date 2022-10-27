@@ -7,7 +7,10 @@
 	"category": "widgets",
 	"keywords": [ "progress", "bar" ],
 	"description": "Displays a progress bar.",
-	"example": {},
+	"textdomain": "x3p0-progress",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
 	"attributes": {
 		"height": {
 			"type": "number"
@@ -38,19 +41,13 @@
 			"type": "integer",
 			"default": 50
 		},
-		"progressValueAfter": {
+		"progressForeground": {
 			"type": "string"
 		},
-		"progressValueBefore": {
+		"progressForegroundGradient": {
 			"type": "string"
 		},
-		"progressColor": {
-			"type": "string"
-		},
-		"progressGradient": {
-			"type": "string"
-		},
-		"progressBackgroundColor": {
+		"progressBackground": {
 			"type": "string"
 		},
 		"progressBackgroundGradient": {
@@ -70,10 +67,13 @@
 		},
 		"shadow": {
 			"type": "object"
+		},
+		"valueFormat": {
+			"type": "object"
 		}
 	},
 	"supports": {
-		"anchor": false,
+		"anchor": true,
 		"align": true,
 		"html": false,
 		"__experimentalBorder": {
@@ -102,7 +102,6 @@
 			"padding": true,
 			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"blockGap": true,
 				"padding": true
 			}
 		},
@@ -115,8 +114,46 @@
 			"__experimentalTextTransform": true
 		}
 	},
-	"textdomain": "x3p0-progress",
-	"editorScript": "file:./index.js",
-	"style": "file:./style-index.css",
-	"editorStyle": "file:./index.css"
+	"example": {
+		"attributes": {
+			"label":"\u003cstrong\u003eJourney to My First $100K:\u003c/strong\u003e",
+			"progressId":999,
+			"progressMax":365,
+			"progressValue":291,
+			"progressForeground":"var:preset|color|vivid-green-cyan",
+			"progressBackground":"#ffffff00",
+			"shadow":{
+				"offsetX":6,
+				"offsetY":6
+			},
+			"valueFormat":{
+				"style":"currency",
+				"currency":"USD",
+				"currencyDisplay": "symbol"
+			},
+			"style":{
+				"spacing":{
+					"padding":{
+						"top":"4px",
+						"right":"4px",
+						"bottom":"4px",
+						"left":"4px"
+					}
+				},
+				"typography":{
+					"textTransform":"uppercase"
+				}
+			},
+			"borderColor":"black",
+			"className":"is-style-hand-drawn",
+			"layout": {
+				"type":"flex",
+				"orientation":"vertical",
+				"flexWrap":"nowrap",
+				"justifyContent":"left"
+			},
+			"fontSize":"15px",
+			"fontFamily":"monospace"
+		}
+	}
 }

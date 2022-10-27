@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-import { toggleOffIcon, toggleOnIcon } from '../common/icons';
+import { toggleOffIcon, toggleOnIcon } from '../common/utils-icon';
 
 import { ToolbarButton } from '@wordpress/components';
 import { __ }            from '@wordpress/i18n';
@@ -15,7 +15,7 @@ import { __ }            from '@wordpress/i18n';
 export default ( props ) => {
 	return (
 		<ToolbarButton
-			title={ __( 'Toggle progress value in label', 'x3p0-progress' ) }
+			title={ __( 'Toggle value in label', 'x3p0-progress' ) }
 			icon={ props?.isPressed ? toggleOnIcon : toggleOffIcon }
 			{ ...props }
 			isPressed={ false }

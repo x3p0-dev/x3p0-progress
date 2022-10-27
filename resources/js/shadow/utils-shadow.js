@@ -1,5 +1,5 @@
 /**
- * Shadow helper functions.
+ * Shadow utilities.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2022, Justin Tadlock
@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-import { getColorStyle } from '../common/functions-color';
+import { getColorStyle } from '../common/utils-color';
 
 /**
  * Sets the shadow value by key. If there is not yet a shadow, create a new

@@ -13,12 +13,12 @@ import { __ }      from '@wordpress/i18n';
 import {
 	formatColorValue,
 	getColorSettingValue
-} from '../common/functions-color';
+} from '../common/utils-color';
 
 import {
 	formatGradientValue,
 	getGradientSettingValue
-} from '../common/functions-gradient';
+} from '../common/utils-gradient';
 
 import {
 	PanelColorSettings,
@@ -27,9 +27,9 @@ import {
 } from '@wordpress/block-editor';
 
 const ColorPanel = ( {
-	progressColor,
-	progressGradient,
-	progressBackgroundColor,
+	progressForeground,
+	progressForegroundGradient,
+	progressBackground,
 	progressBackgroundGradient,
 	setAttributes
 } ) => {
@@ -64,23 +64,23 @@ const ColorPanel = ( {
 	// Houses an array of the block's color settings.
 	const colorSettings = [
 		{
-			label: __( 'Progress Value', 'x3p0-progress' ),
-			value: getColorSettingValue( progressColor, colorsFlat ),
-			gradientValue: getGradientSettingValue( progressGradient, gradientsFlat ),
+			label: __( 'Progress Foreground', 'x3p0-progress' ),
+			value: getColorSettingValue( progressForeground, colorsFlat ),
+			gradientValue: getGradientSettingValue( progressForegroundGradient, gradientsFlat ),
 			onChange: ( value ) => { setAttributes( {
-				progressColor: formatColorValue( value, colorsFlat )
+				progressForeground: formatColorValue( value, colorsFlat )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
-				progressGradient: formatGradientValue( value, gradientsFlat )
+				progressForegroundGradient: formatGradientValue( value, gradientsFlat )
 			} ) },
 			...colorGradientOptions
 		},
 		{
 			label: __( 'Progress Background', 'x3p0-progress' ),
-			value: getColorSettingValue( progressBackgroundColor, colorsFlat ),
+			value: getColorSettingValue( progressBackground, colorsFlat ),
 			gradientValue: getGradientSettingValue( progressBackgroundGradient, gradientsFlat ),
 			onChange: ( value ) => { setAttributes( {
-				progressBackgroundColor: formatColorValue( value, colorsFlat )
+				progressBackground: formatColorValue( value, colorsFlat )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
 				progressBackgroundGradient: formatGradientValue( value, gradientsFlat )

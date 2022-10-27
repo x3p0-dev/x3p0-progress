@@ -11,12 +11,14 @@ import { useInstanceId } from '@wordpress/compose';
 import { useState }      from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
 
-import HeightControl from './control-height';
-import MaxControl    from './control-max';
-import ValueControl  from './control-value';
-import WidthControl  from './control-width';
+import HeightControl      from './control-height';
+import MaxControl         from './control-max';
+import ValueControl       from './control-value';
+import ValueFormatControl from './control-value-format';
+import WidthControl       from './control-width';
 
 import {
+	__experimentalVStack as VStack,
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
@@ -26,6 +28,9 @@ const ProgressPanel = ( {
 	progressMax,
 	height,
 	heightUnit,
+	showLabel,
+	showValue,
+	valueFormat,
 	width,
 	widthUnit,
 	setAttributes
@@ -34,22 +39,26 @@ const ProgressPanel = ( {
 
 	const [ maxItem,    setMaxItem    ] = useState();
 	const [ valueItem,  setValueItem  ] = useState( progressValue );
+	const [ formatItem, setFormatItem ] = useState();
 	const [ heightItem, setHeightItem ] = useState();
 	const [ widthItem,  setWidthItem  ] = useState();
 
 	const resetMaxItem    = () => setAttributes( { progressMax: 100  } );
 	const resetValueItem  = () => setAttributes( { progressValue: 50 } );
+	const resetFormatItem = () => setAttributes( { valueFormat: undefined } );
 	const resetHeightItem = () => setAttributes( { height: undefined, heightUnit: undefined } );
 	const resetWidthItem  = () => setAttributes( { width: undefined,  widthUnit: undefined } );
 
 	const resetPanel = () => {
 		resetMaxItem();
 		resetValueItem();
+		resetFormatItem();
 		resetHeightItem();
 		resetWidthItem();
 
 		setMaxItem( undefined );
 		setValueItem( undefined );
+		setFormatItem( undefined );
 		setHeightItem( undefined );
 		setWidthItem( undefined );
 	};
@@ -63,7 +72,7 @@ const ProgressPanel = ( {
 		>
 			<ToolsPanelItem
 				label={ __( 'Max Value', 'x3p0-progress' ) }
-				hasValue={ () => !! progressMax }
+				hasValue={ () => 100 !== progressMax }
 				onDeselect={ resetMaxItem }
 				panelId={ panelId }
 			>
@@ -86,6 +95,21 @@ const ProgressPanel = ( {
 					setAttributes={ setAttributes }
 				/>
 			</ToolsPanelItem>
+			{ ( showLabel && showValue ) && (
+				<ToolsPanelItem
+					label={ __( 'Value Format', 'x3p0-progress' ) }
+					hasValue={ () => !! valueFormat }
+					onDeselect={ resetFormatItem }
+					panelId={ panelId }
+				>
+					<VStack spacing="4">
+						<ValueFormatControl
+							valueFormat={ valueFormat }
+							setAttributes={ setAttributes }
+						/>
+					</VStack>
+				</ToolsPanelItem>
+			) }
 			<ToolsPanelItem
 				label={ __( 'Height', 'x3p0-progress' ) }
 				hasValue={ () => !! height }

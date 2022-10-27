@@ -9,12 +9,12 @@
 import { useMemo } from '@wordpress/element';
 import { __ }      from '@wordpress/i18n';
 
-import { setShadow } from './functions-shadow';
+import { setShadow } from './utils-shadow';
 
 import {
 	formatColorValue,
 	getColorSettingValue
-} from '../common/functions-color';
+} from '../common/utils-color';
 
 import {
 	useSetting,
@@ -22,18 +22,15 @@ import {
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown
 } from '@wordpress/block-editor';
 
-const ShadowColorControl = ( {
-	panelId,
-	shadow,
-	setAttributes
-} ) => {
+export default ( { panelId, shadow, setAttributes } ) => {
+
 	// Get the base color and gradient options to pass into individual color
 	// settings for our Color panel.
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
 
 	// Get all color palettes.
-	const userColorPalette = useSetting( 'color.palette.custom' );
-	const themeColorPalette = useSetting( 'color.palette.theme' );
+	const userColorPalette    = useSetting( 'color.palette.custom' );
+	const themeColorPalette   = useSetting( 'color.palette.theme' );
 	const defaultColorPalette = useSetting ( 'color.palette.default' );
 
 	// Flattened array with all color palettes.
@@ -46,15 +43,13 @@ const ShadowColorControl = ( {
 	const colorSetting = {
 		label: __( 'Color', 'x3p0-progress' ),
 		colorValue: getColorSettingValue( shadow?.color, colorsFlat ),
-		onColorChange: ( value ) => {
-			setAttributes( {
-				shadow: setShadow(
-					shadow,
-					'color',
-					formatColorValue( value, colorsFlat )
-				)
-			} );
-		},
+		onColorChange: ( value ) => setAttributes( {
+			shadow: setShadow(
+				shadow,
+				'color',
+				formatColorValue( value, colorsFlat )
+			)
+		} ),
 		isShownByDefault: false,
 		hasValue: () => !! shadow?.color,
 		onDeselect: () => setAttributes( {
@@ -73,5 +68,3 @@ const ShadowColorControl = ( {
 		/>
 	);
 };
-
-export default ShadowColorControl;

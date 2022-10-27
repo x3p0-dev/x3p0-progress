@@ -28,8 +28,8 @@
 	// attribute when a user customizes them.  We must do this because
 	// styling the `<progress>` element requires targeting pseudo-elements
 	// for various browsers.
-	--x3p0-progress--color: var(
-		--wp--custom--x-3-p-0-progress--color,
+	--x3p0-progress--foreground: var(
+		--wp--custom--x-3-p-0-progress--foreground,
 		var( --wp--preset--color--primary, #0284c7 )
 	);
 
@@ -49,7 +49,7 @@
 	// Gradient backgrounds default to their color counterparts because we
 	// set the `background` property by default instead of `background-color`.
 	// There's probably a better way to handle this. Leaving for now.
-	--x3p0-progress--gradient: var( --x3p0-progress--color );
+	--x3p0-progress--foreground-gradient: var( --x3p0-progress--foreground );
 	--x3p0-progress--background-gradient: var( --x3p0-progress--background );
 
 	// Styles for the `<label>` element.  This element houses both the label
@@ -76,12 +76,12 @@
 		// any text.  However, when there is no color set for the box-
 		// shadow, it falls back to currentColor.  We're just controlling
 		// that default by setting it here.
-		color: var( --x3p0-progress--color );
+		color: var( --x3p0-progress--foreground );
 
 		// Match the default border color to the progress value color.
 		// This at least gives us something that looks halfway decent in
 		// most scenarios where a specific color isn't set.
-		border-color: var( --x3p0-progress--color );
+		border-color: var( --x3p0-progress--foreground );
 
 		// On small screens, we force this to be full width. For horizontal
 		// layouts in particular, we force a wrap, so we need to adjust
@@ -118,7 +118,7 @@
 		// Possibly works in IE for the foreground color. Not bothering
 		// to actually check this because I value my sanity too much to
 		// ever install IE again.
-		color: var( --x3p0-progress--color );
+		color: var( --x3p0-progress--foreground );
 
 		// This is the background pseudo element for webkit browsers.
 		// We're actually going to kill this since Firefox doesn't have
@@ -138,7 +138,7 @@
 		&::-webkit-progress-value {
 			height: 100%;
 			display: block;
-			background: var( --x3p0-progress--gradient );
+			background: var( --x3p0-progress--foreground-gradient );
 
 			// Webkit browsers do not seem to properly inherit the
 			// border radius.  Mostly, this is an issue with the
@@ -154,7 +154,7 @@
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;
-			background: var( --x3p0-progress--gradient );
+			background: var( --x3p0-progress--foreground-gradient );
 
 			// Firefox does inherit the border radius. 🥳
 			border-radius: inherit;
@@ -253,7 +253,7 @@
 		// We just want to overwrite the default while still allowing
 		// theme styles to rule.
 		--x3p0-progress--shadow: var(
-			--wp--custom--x-3-p-0-progress--color,
+			--wp--custom--x-3-p-0-progress--foreground,
 			var(
 				--wp--custom--shadow,
 				0 1px 3px 0 rgba( 0, 0, 0, 0.1 ),
@@ -262,7 +262,7 @@
 		);
 
 		.wp-block-x3p0-progress__container {
-			border: 2px solid var( --x3p0-progress--color );
+			border: 2px solid var( --x3p0-progress--foreground );
 			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
 		}
 

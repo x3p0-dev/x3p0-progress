@@ -10,7 +10,7 @@
 import { ToggleControl } from '@wordpress/components';
 import { __ }            from '@wordpress/i18n';
 
-import { setShadow } from './functions-shadow';
+import { setShadow } from './utils-shadow';
 
 export default ( { shadow, setAttributes } ) => {
 	let hasInset = shadow?.inset ?? false;

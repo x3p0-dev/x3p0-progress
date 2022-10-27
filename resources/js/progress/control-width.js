@@ -26,8 +26,7 @@ const STEPS          = { '%': 0.001 };
 
 const WidthControl = ( { width, widthUnit, setAttributes } ) => {
 
-	const controlId = useInstanceId( WidthControl );
-
+	const controlId    = useInstanceId( WidthControl );
 	const currentWidth = `${ width }${ widthUnit }`;
 
 	const buttons = [ 25, 50, 75, 100 ].map( ( value ) => {

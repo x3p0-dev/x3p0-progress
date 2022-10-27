@@ -13,13 +13,12 @@ import { __ }            from '@wordpress/i18n';
 import { __experimentalUnitControl as UnitControl }       from '@wordpress/block-editor';
 import { __experimentalUseCustomUnits as useCustomUnits } from '@wordpress/components';
 
-const HEIGHT_DEFAULTS = { rem: 1.5,   px: 24  };
-const HEIGHT_MINS     = { rem: 0.25,  px: 4   };
-const HEIGHT_MAXES    = { rem: 8,     px: 128 };
-const STEPS           = { rem: 0.001, px: 1   };
+const HEIGHT_DEFAULTS = { em: 1.5,   rem: 1.5,   px: 24  };
+const HEIGHT_MINS     = { em: 0.25,  rem: 0.25,  px: 4   };
+const HEIGHT_MAXES    = { em: 8,     rem: 8,     px: 128 };
+const STEPS           = { em: 0.005, rem: 0.005, px: 1   };
 
 const HeightControl = ( { height, heightUnit, setAttributes } ) => {
-
 	const controlId = useInstanceId( HeightControl );
 
 	return (

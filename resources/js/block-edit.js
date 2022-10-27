@@ -12,27 +12,23 @@ import { useInstanceId } from '@wordpress/compose';
 import { useEffect }     from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
 
+import {
+	InspectorControls,
+	useBlockProps
+} from '@wordpress/block-editor';
+
+import BlockToolbarGroup from './toolbar/group-block';
+import OtherToolbarGroup from './toolbar/group-other';
+
 import ProgressPanel from './progress/panel-progress';
 import ColorPanel    from './color/panel-color';
 import ShadowPanel   from './shadow/panel-shadow';
 
-import FlexDirectionToolbarButton from './toolbar/button-flex-direction';
-import ShowLabelToolbarButton     from './toolbar/button-show-label';
-import ShowValueToolbarButton     from './toolbar/button-show-value';
+import LabelElementEdit from './progress/element-label-edit';
+import ProgressElement  from './progress/element-progress';
 
-import { numberFormat }     from './common/functions-helpers';
-import { getColorStyle  }   from './common/functions-color';
-import { getGradientStyle } from './common/functions-gradient';
-import { getShadowStyle }   from './shadow/functions-shadow';
-
-import {
-	BlockControls,
-	InspectorControls,
-	RichText,
-	useBlockProps,
-	__experimentalUseBorderProps as useBorderProps,
-	__experimentalGetSpacingClassesAndStyles as useSpacingProps
-} from '@wordpress/block-editor';
+import { getColorStyle  }   from './common/utils-color';
+import { getGradientStyle } from './common/utils-gradient';
 
 export default function Edit( {
 	className,
@@ -41,24 +37,21 @@ export default function Edit( {
 	style
 } ) {
 	const {
-		label,
 		height,
 		heightUnit,
 		width,
 		widthUnit,
-		progressColor,
-		progressGradient,
-		progressBackgroundColor,
+		progressForeground,
+		progressForegroundGradient,
+		progressBackground,
 		progressBackgroundGradient,
-		progressId,
 		progressValue,
 		progressMax,
-		progressValueAfter,
-		progressValueBefore,
 		reversed,
 		shadow,
 		showLabel,
-		showValue
+		showValue,
+		valueFormat
 	} = attributes;
 
 	// Get the ID of the current instance for label and progress elements.
@@ -66,48 +59,20 @@ export default function Edit( {
 
 	useEffect( () => setAttributes( { progressId: instanceId } ), [ instanceId ] );
 
-	useEffect( () => {
-		if ( ! width && !! widthUnit ) {
-			setAttributes( { widthUnit: "%" } );
-		}
-	}, [ width ] );
-
 	// =====================================================================
 	// Build the block toolbar controls.
 	// =====================================================================
 
-	// Creates the "block" group toolbar controls.
-	const blockToolbarControls = showLabel || showValue ? (
-		<BlockControls group="block">
-			<FlexDirectionToolbarButton
-				onClick={ () => setAttributes( { reversed: ! reversed } ) }
-				isPressed={ reversed }
-			/>
-		</BlockControls>
-	) : '';
-
-	// Creates the "other" group toolbar controls.  This includes two toggle
-	// buttons for enabling/displaying the label text and progress value from
-	// showing in the `<label>` element.  I'm not 100% happy with the icons,
-	// but it's the best we have right now.
-	const otherToolbarControls = (
-		<BlockControls group="other">
-			<ShowLabelToolbarButton
-				onClick={ () => setAttributes( { showLabel: ! showLabel } ) }
-				isPressed={ showLabel }
-			/>
-			<ShowValueToolbarButton
-				onClick={ () => setAttributes( { showValue: ! showValue } ) }
-				isPressed={ showValue }
-			/>
-		</BlockControls>
-	);
-
-	// Creates the block toolbar controls.
 	const toolbarControls = (
 		<>
-			{ blockToolbarControls }
-			{ otherToolbarControls }
+			<BlockToolbarGroup
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
+			<OtherToolbarGroup
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 		</>
 	);
 
@@ -115,7 +80,6 @@ export default function Edit( {
 	// Build the block inspector sidebar controls.
 	// =====================================================================
 
-	// Creates the block inspector controls, housing our custom panels.
 	const inspectorControls = (
 		<InspectorControls>
 			<ProgressPanel
@@ -123,14 +87,17 @@ export default function Edit( {
 				progressMax={ progressMax }
 				height={ height }
 				heightUnit={ heightUnit }
+				showLabel={ showLabel }
+				showValue={ showValue }
+				valueFormat={ valueFormat }
 				width={ width }
 				widthUnit={ widthUnit }
 				setAttributes={ setAttributes }
 			/>
 			<ColorPanel
-				progressColor={ progressColor }
-				progressGradient={ progressGradient }
-				progressBackgroundColor={ progressBackgroundColor }
+				progressForeground={ progressForeground }
+				progressForegroundGradient={ progressForegroundGradient }
+				progressBackground={ progressBackground }
 				progressBackgroundGradient={ progressBackgroundGradient }
 				setAttributes={ setAttributes }
 			/>
@@ -155,130 +122,12 @@ export default function Edit( {
 		} ),
 		style: {
 			...style,
-			'--x3p0-progress--color': getColorStyle( progressColor ),
-			'--x3p0-progress--gradient': getGradientStyle( progressGradient ),
-			'--x3p0-progress--background': getColorStyle( progressBackgroundColor ),
+			'--x3p0-progress--foreground': getColorStyle( progressForeground ),
+			'--x3p0-progress--background': getColorStyle( progressBackground ),
+			'--x3p0-progress--foreground-gradient': getGradientStyle( progressForegroundGradient ),
 			'--x3p0-progress--background-gradient': getGradientStyle( progressBackgroundGradient )
 		}
 	} );
-
-	// Creates a `<label>` element for the `<progress>` bar.  Users can flip
-	// this off/on via a toggle in the toolbar.
-	const progressLabelTextHtml = showLabel ? (
-		<RichText
-			tagName="span"
-			className="wp-block-x3p0-progress__label-text"
-			aria-label={ __( 'Label text', 'x3p0-progress' ) }
-			placeholder={ __( 'Add label…', 'x3p0-progress' ) }
-			value={ label }
-			multiline={ false }
-			onChange={ ( html ) => setAttributes( { label: html } ) }
-			allowedFormats={ [
-				'core/bold',
-				'core/italic',
-				'core/strikethrough',
-				'core/highlight',
-				'core/superscript',
-				'core/subscript'
-			] }
-		/>
-	) : '';
-
-	// Creates the HTML for the value text prefix.
-	const progressValueBeforeHtml = showValue ? (
-		<RichText
-			tagName="span"
-			className="wp-block-x3p0-progress__value-before"
-			aria-label={ __( 'Text or symbol to show before value', 'x3p0-progress' ) }
-			placeholder={ __( '…', 'x3p0-progress' ) }
-			value={ progressValueBefore }
-			multiline={ false }
-			isSelected={ false }
-			onChange={ ( html ) => setAttributes( { progressValueBefore: html } ) }
-			allowedFormats={ [] }
-		/>
-	) : '';
-
-	// Creates the HTML for the value text suffix.
-	const progressValueAfterHtml = showValue ? (
-		<RichText
-			tagName="span"
-			className="wp-block-x3p0-progress__value-after"
-			aria-label={ __( 'Text or symbol to show after value', 'x3p0-progress' ) }
-			placeholder={ __( '%…', 'x3p0-progress' ) }
-			value={ progressValueAfter }
-			multiline={ false }
-			isSelected={ false }
-			onChange={ ( html ) => setAttributes( { progressValueAfter: html } ) }
-			allowedFormats={ [] }
-		/>
-	) : '';
-
-	// Builds the progress value HTML for the label.
-	const progressValueHtml = showValue ? (
-		<span className="wp-block-x3p0-progress__value">
-			{ progressValueBeforeHtml }
-			<span className="wp-block-x3p0-progress__value-num">
-				{ numberFormat( progressValue ) }
-			</span>
-			{ progressValueAfterHtml }
-		</span>
-	) : '';
-
-	// Combine the inner label HTML into a `<label>` element.
-	const progressLabelHtml = progressLabelTextHtml || progressValueHtml ? (
-		<label
-			className="wp-block-x3p0-progress__label"
-			for={ `wp-block-x3p0-progress-${ progressId }` }
-		>
-			{ progressLabelTextHtml }
-			{ progressValueHtml }
-		</label>
-	) : '';
-
-	// Get the border and spacing props. We're skipping serialization and
-	// using the border and padding props on the progress element container.
-	const borderProps = useBorderProps( attributes );
-	const spacingProps = useSpacingProps( attributes );
-
-	const paddingStyle = (
-		( { paddingTop, paddingBottom, paddingRight, paddingLeft } ) =>
-		( { paddingTop, paddingBottom, paddingRight, paddingLeft } )
-	)( spacingProps.style );
-
-	// Creates the `<progress>` bar element.
-	const progressBarHtml = (
-		<progress
-			id={ `wp-block-x3p0-progress-${ progressId }` }
-			className="wp-block-x3p0-progress__bar"
-			value={ progressValue }
-			max={ progressMax }
-			style={ { 'height': height ? `${ height }${ heightUnit ?? 'px' }` : null } }
-		>
-			{ progressValue }/{ progressMax }
-		</progress>
-	);
-
-	// Creates a wrapper `<div>` around the `<progress>` element to give us
-	// more flexibility with the output.  Because browsers have wildly
-	// varying implementations of handling `<progress>`, it's just easier to
-	// have a wrapper that can be styled consistently.
-	const progressContainerHtml = (
-		<div
-			className={ classnames(
-				'wp-block-x3p0-progress__container',
-				borderProps.className
-			) }
-			style={ {
-				...borderProps.style,
-				...paddingStyle,
-				boxShadow: getShadowStyle( shadow ),
-				'width': width ? `${ width }${ widthUnit ?? '%' }` : null
-			} }
-		>
-			{ progressBarHtml }
-		</div>
-	);
 
 	// Return the final block edit component.
 	return (
@@ -286,8 +135,11 @@ export default function Edit( {
 			{ toolbarControls }
 			{ inspectorControls }
 			<div { ...blockProps }>
-				{ progressLabelHtml }
-				{ progressContainerHtml }
+				<LabelElementEdit
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+				<ProgressElement attributes={ attributes }/>
 			</div>
 		</>
 	);

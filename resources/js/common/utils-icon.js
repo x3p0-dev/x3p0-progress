@@ -1,5 +1,5 @@
 /**
- * Icons.
+ * Icon utilities.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2022, Justin Tadlock

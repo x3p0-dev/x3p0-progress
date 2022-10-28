@@ -45,11 +45,9 @@ export default function Save( { attributes, className, style } ) {
 		}
 	} );
 
-	const { label, ...blockAttr } = blockProps;
-
 	// Return the final block HTML.
 	return (
-		<div { ...blockAttr }>
+		<div { ...blockProps }>
 			<LabelElement attributes={ attributes }/>
 			<ProgressElement attributes={ attributes }/>
 		</div>

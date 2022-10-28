@@ -144,14 +144,12 @@ export default function Edit( {
 		}
 	} );
 
-	const { label, ...blockAttr } = blockProps;
-
 	// Return the final block edit component.
 	return (
 		<>
 			{ toolbarControls }
 			{ inspectorControls }
-			<div { ...blockAttr }>
+			<div { ...blockProps }>
 				<LabelElement
 					attributes={ attributes }
 					setAttributes={ setAttributes }

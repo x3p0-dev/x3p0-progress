@@ -22,8 +22,6 @@ export default ( { attributes } ) => {
 	const {
 		height,
 		heightUnit,
-		width,
-		widthUnit,
 		progressId,
 		progressValue,
 		progressMax,
@@ -66,8 +64,7 @@ export default ( { attributes } ) => {
 			style={ {
 				...borderProps.style,
 				...paddingStyle,
-				boxShadow: getShadowStyle( shadow ),
-				'width': width ? `${ width }${ widthUnit ?? '%' }` : null
+				boxShadow: getShadowStyle( shadow )
 			} }
 		>
 			{ progressHtml }

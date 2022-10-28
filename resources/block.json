@@ -26,8 +26,17 @@
 			"type": "string",
 			"default": "%"
 		},
+		"justifyLabel": {
+			"type": "string",
+			"default": "left"
+		},
 		"label": {
-			"type": "string"
+			"type": "string",
+			"source": "html",
+			"selector": ".wp-block-x3p0-progress__label-text"
+		},
+		"numberFormat": {
+			"type": "object"
 		},
 		"progressId": {
 			"type": "integer",
@@ -61,14 +70,15 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showMax": {
+			"type": "boolean",
+			"default": false
+		},
 		"showValue": {
 			"type": "boolean",
 			"default": true
 		},
 		"shadow": {
-			"type": "object"
-		},
-		"valueFormat": {
 			"type": "object"
 		}
 	},
@@ -87,14 +97,6 @@
 				"color": true,
 				"width": true,
 				"style": true
-			}
-		},
-		"__experimentalLayout": {
-			"allowSwitching": false,
-			"allowInheriting": false,
-			"default": {
-				"type": "flex",
-				"orientation": "vertical"
 			}
 		},
 		"spacing": {

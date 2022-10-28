@@ -17,7 +17,7 @@ import { __experimentalNumberControl as NumberControl } from '@wordpress/compone
 export default ( { progressMax, progressValue, setAttributes } ) => {
 	return (
 		<NumberControl
-			label={ __( 'Max Value', 'x3p0-progress' ) }
+			label={ __( 'Goal', 'x3p0-progress' ) }
 			min="1"
 			value={ progressMax }
 			onChange={ ( value ) => {

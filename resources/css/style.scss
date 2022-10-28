@@ -19,10 +19,8 @@
 	// via CSS.
 	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 1.5rem );
 
-	// The gap property here is between the `<label>` and `<progress>`
-	// elements. For vertical, the default is a bit smaller. For horizontal,
-	// we widen it out a bit.
-	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem 2rem );
+	// The gap between the `<label>` and `<progress>` elements.
+	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem );
 
 	// Note that these two properties are attached to the block's `style`
 	// attribute when a user customizes them.  We must do this because
@@ -52,14 +50,38 @@
 	--x3p0-progress--foreground-gradient: var( --x3p0-progress--foreground );
 	--x3p0-progress--background-gradient: var( --x3p0-progress--background );
 
+	// Flex layout.
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	// Sets the gap between the `<label>` and `<progress>` elements.
+	gap: var( --x3p0-progress--gap );
+
+	// Need a 100% width to make sure it fills the width in flex layouts.
+	width: 100%;
+
 	// Styles for the `<label>` element.  This element houses both the label
 	// text and "completion" number, both of which can be show together,
 	// individually, or not at all.
 	&__label {
 		display: flex;
-		flex-wrap: nowrap;
+		flex-wrap: wrap;
+		align-items: flex-end;
 		// Add a gap of a single character to replicate a natural space.
 		gap: 1ch;
+		width: 100%;
+
+		&.justify-left    { justify-content: left;          }
+		&.justify-center  { justify-content: center;        }
+		&.justify-right   { justify-content: right;         }
+		&.justify-between { justify-content: space-between; }
+
+		&-num {
+			display: flex;
+			flex-wrap: nowrap;
+			gap: 1ch;
+		}
 	}
 
 	// Wrapper `<div>` for the `<progress>` element. The extra wrapper
@@ -165,81 +187,16 @@
 	// Layout styles.
 	// =====================================================================
 
-	// Sets the gap between the `<label>` and `<progress>` elements.  We
-	// need the extra call to `.editor-styles-wrapper` to overrule the
-	// default flex styles in the editor.
-	&.is-layout-flex,
-	.editor-styles-wrapper &.is-layout-flex {
-		gap: var( --x3p0-progress--gap );
-	}
-
-	// Vertical layout.
-	&.is-vertical {
-
-		// The progress container should always default to full-width
-		// for vertical layouts. Users can overrule this via the width
-		// control in the block inspector.
-		.wp-block-x3p0-progress__container {
-			width: 100%;
-		}
-	}
-
-	// Horizontal layout.
-	&.is-horizontal {
-
-		// Overrule `nowrap` on small screens, allowing the label and
-		// progress element to span individual lines.
-		@media ( max-width: 480px ) {
-			flex-wrap: wrap !important;
-		}
-
-		// Remove the flex from the `<label>` element on horizontal
-		// layouts. I did this for a very good reason.  I just can't
-		// seem to remember what that reason was while I leave this
-		// comment in the code. But, I am 100% positive that removing
-		// this will cause the world to end.  Well, at least horizontal
-		// layouts to go horribly wrong.
-		.wp-block-x3p0-progress__label {
-			flex: none;
-		}
-
-		// Align label content to the right when entire block is aligned
-		// right.  Yeah, this should definitely happen.
-		&.is-content-justification-right .wp-block-x3p0-progress__label {
-			justify-content: flex-end;
-		}
-	}
-
-	// Reversed layout. So, we're kind of piggybacking a bit on top of
-	// WordPress' built-in flex layout type. No need to reinvent the wheel,
-	// right?  Of course, WordPress doesn't support `column-reverse` or
-	// `row-reverse` in its current layout system.  The block allows users
-	// to toggle this on and off.  All this does is flip the order of the
+	// Reversed flex layout. All this does is flip the order of the
 	// `<label>` and `<progress>` element, at least visually. In reality,
-	// the markup stays the same.  Basically, we need to overwrite some core
-	// defaults for any "reversed" layout so that they, you know, actually
-	// look like they've switched order.
+	// the markup stays the same.
 	&.is-reversed {
 		// Use some `!important` magic to overrule whatever it is that
 		// WordPress thinks should happen.
-		flex-direction: column-reverse !important;
-	}
+		flex-direction: column-reverse;
 
-	// Reversed + horizontal layout.
-	&.is-reversed.is-horizontal {
-		// More `!important` magic. Gotta make sure our styles win this
-		// crazy slugfest for superiority.
-		flex-direction: row-reverse !important;
-
-		// For reversed, horizontal layouts, we need to set the horizontal
-		// margin (depending on the justification) for either the label or
-		// progress container.
-		&.is-content-justification-right .wp-block-x3p0-progress__container {
-			margin-left: auto;
-		}
-
-		&.is-content-justification-left  .wp-block-x3p0-progress__label {
-			margin-right: auto;
+		.wp-block-x3p0-progress__label {
+			align-items: flex-start;
 		}
 	}
 

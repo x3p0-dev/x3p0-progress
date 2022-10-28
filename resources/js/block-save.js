@@ -13,8 +13,9 @@ import { __ }            from '@wordpress/i18n';
 
 import { getColorStyle  }   from './common/utils-color';
 import { getGradientStyle } from './common/utils-gradient';
+import { getGapStyle }      from './common/utils-spacing';
 
-import LabelElement    from './progress/element-label';
+import LabelElement    from './label/element-label';
 import ProgressElement from './progress/element-progress';
 
 export default function Save( { attributes, className, style } ) {
@@ -36,6 +37,7 @@ export default function Save( { attributes, className, style } ) {
 		} ),
 		style: {
 			...style,
+			gap: getGapStyle( attributes ),
 			'--x3p0-progress--foreground': getColorStyle( progressForeground ),
 			'--x3p0-progress--background': getColorStyle( progressBackground ),
 			'--x3p0-progress--foreground-gradient': getGradientStyle( progressForegroundGradient ),
@@ -43,9 +45,11 @@ export default function Save( { attributes, className, style } ) {
 		}
 	} );
 
+	const { label, ...blockAttr } = blockProps;
+
 	// Return the final block HTML.
 	return (
-		<div { ...blockProps }>
+		<div { ...blockAttr }>
 			<LabelElement attributes={ attributes }/>
 			<ProgressElement attributes={ attributes }/>
 		</div>

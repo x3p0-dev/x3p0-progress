@@ -16,7 +16,7 @@ import { __ }           from '@wordpress/i18n';
 export default ( { progressMax, progressValue, setAttributes } ) => {
 	return (
 		<RangeControl
-			label={ __( 'Value', 'x3p0-progress' ) }
+			label={ __( 'Progress', 'x3p0-progress' ) }
 			min="0"
 			max={ progressMax }
 			withInputField={ true }

@@ -17,18 +17,24 @@ import {
 	useBlockProps
 } from '@wordpress/block-editor';
 
+import {
+	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles
+} from '@wordpress/block-editor';
+
 import BlockToolbarGroup from './toolbar/group-block';
 import OtherToolbarGroup from './toolbar/group-other';
 
 import ProgressPanel from './progress/panel-progress';
+import LabelPanel    from './label/panel-label';
 import ColorPanel    from './color/panel-color';
 import ShadowPanel   from './shadow/panel-shadow';
 
-import LabelElementEdit from './progress/element-label-edit';
+import LabelElement     from './label/element-label-edit';
 import ProgressElement  from './progress/element-progress';
 
 import { getColorStyle  }   from './common/utils-color';
 import { getGradientStyle } from './common/utils-gradient';
+import { getGapStyle }      from './common/utils-spacing';
 
 export default function Edit( {
 	className,
@@ -39,8 +45,7 @@ export default function Edit( {
 	const {
 		height,
 		heightUnit,
-		width,
-		widthUnit,
+		justifyLabel,
 		progressForeground,
 		progressForegroundGradient,
 		progressBackground,
@@ -50,8 +55,9 @@ export default function Edit( {
 		reversed,
 		shadow,
 		showLabel,
+		showMax,
 		showValue,
-		valueFormat
+		numberFormat
 	} = attributes;
 
 	// Get the ID of the current instance for label and progress elements.
@@ -89,9 +95,17 @@ export default function Edit( {
 				heightUnit={ heightUnit }
 				showLabel={ showLabel }
 				showValue={ showValue }
-				valueFormat={ valueFormat }
-				width={ width }
-				widthUnit={ widthUnit }
+				numberFormat={ numberFormat }
+				setAttributes={ setAttributes }
+			/>
+			<LabelPanel
+				progressValue={ progressValue }
+				progressMax={ progressMax }
+				justifyLabel={ justifyLabel }
+				showLabel={ showLabel }
+				showMax={ showMax }
+				showValue={ showValue }
+				numberFormat={ numberFormat }
 				setAttributes={ setAttributes }
 			/>
 			<ColorPanel
@@ -122,6 +136,7 @@ export default function Edit( {
 		} ),
 		style: {
 			...style,
+			gap: getGapStyle( attributes ),
 			'--x3p0-progress--foreground': getColorStyle( progressForeground ),
 			'--x3p0-progress--background': getColorStyle( progressBackground ),
 			'--x3p0-progress--foreground-gradient': getGradientStyle( progressForegroundGradient ),
@@ -129,13 +144,15 @@ export default function Edit( {
 		}
 	} );
 
+	const { label, ...blockAttr } = blockProps;
+
 	// Return the final block edit component.
 	return (
 		<>
 			{ toolbarControls }
 			{ inspectorControls }
-			<div { ...blockProps }>
-				<LabelElementEdit
+			<div { ...blockAttr }>
+				<LabelElement
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 				/>

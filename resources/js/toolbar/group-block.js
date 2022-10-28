@@ -7,12 +7,11 @@ import FlexDirectionToolbarButton from './button-flex-direction';
 export default ( {
 	attributes: {
 		reversed,
-		showLabel,
-		showValue
+		showLabel
 	},
 	setAttributes
 } ) => {
-	return ( showLabel || showValue ) && (
+	return showLabel && (
 		<BlockControls group="block">
 			<FlexDirectionToolbarButton
 				onClick={ () => setAttributes( { reversed: ! reversed } ) }

@@ -11,41 +11,42 @@ import { useInstanceId } from '@wordpress/compose';
 import { useState }      from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
 
-import HeightControl from './control-height';
-import MaxControl    from './control-max';
-import ValueControl  from './control-value';
+import GoalControl     from './control-goal';
+import HeightControl   from './control-height';
+import ProgressControl from './control-progress';
 
 import {
-	__experimentalVStack as VStack,
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
 
 const ProgressPanel = ( {
-	progressValue,
-	progressMax,
-	height,
-	heightUnit,
+	attributes: {
+		goal,
+		height,
+		heightUnit,
+		progress
+	},
 	setAttributes
 } ) => {
 	const panelId = useInstanceId( ProgressPanel );
 
-	const [ maxItem,    setMaxItem    ] = useState();
-	const [ valueItem,  setValueItem  ] = useState( progressValue );
-	const [ formatItem, setFormatItem ] = useState();
-	const [ heightItem, setHeightItem ] = useState();
+	const [ goalItem,     setGoalItem     ] = useState();
+	const [ progressItem, setProgressItem ] = useState( progress );
+	const [ formatItem,   setFormatItem   ] = useState();
+	const [ heightItem,   setHeightItem   ] = useState();
 
-	const resetMaxItem    = () => setAttributes( { progressMax: 100  } );
-	const resetValueItem  = () => setAttributes( { progressValue: 50 } );
-	const resetHeightItem = () => setAttributes( { height: undefined, heightUnit: undefined } );
+	const resetGoalItem     = () => setAttributes( { goal: 100    } );
+	const resetProgressItem = () => setAttributes( { progress: 50 } );
+	const resetHeightItem   = () => setAttributes( { height: undefined, heightUnit: undefined } );
 
 	const resetPanel = () => {
-		resetMaxItem();
-		resetValueItem();
+		resetGoalItem();
+		resetProgressItem();
 		resetHeightItem();
 
-		setMaxItem( undefined );
-		setValueItem( undefined );
+		setGoalItem( undefined );
+		setProgressItem( undefined );
 		setFormatItem( undefined );
 		setHeightItem( undefined );
 	};
@@ -53,32 +54,32 @@ const ProgressPanel = ( {
 	return (
 		<ToolsPanel
 			label={ __( 'Progress', 'x3p0-progress' ) }
-			resetAll={ resetPanel }
 			panelId={ panelId }
 			className="wp-block-x3p0-progress-panel__progress"
+			resetAll={ resetPanel }
 		>
 			<ToolsPanelItem
 				label={ __( 'Goal', 'x3p0-progress' ) }
-				hasValue={ () => 100 !== progressMax }
-				onDeselect={ resetMaxItem }
+				hasValue={ () => 100 !== goal }
+				onDeselect={ resetGoalItem }
 				panelId={ panelId }
 			>
-				<MaxControl
-					progressValue={ progressValue }
-					progressMax={ progressMax }
+				<GoalControl
+					progress={ progress }
+					goal={ goal }
 					setAttributes={ setAttributes }
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __( 'Progress', 'x3p0-progress' ) }
 				isShownByDefault
-				hasValue={ () => 50 !== progressValue }
-				onDeselect={ resetValueItem }
+				hasValue={ () => 50 !== progress }
+				onDeselect={ resetProgressItem }
 				panelId={ panelId }
 			>
-				<ValueControl
-					progressValue={ progressValue }
-					progressMax={ progressMax }
+				<ProgressControl
+					progress={ progress }
+					goal={ goal }
 					setAttributes={ setAttributes }
 				/>
 			</ToolsPanelItem>

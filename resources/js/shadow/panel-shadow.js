@@ -22,7 +22,12 @@ import {
 	__experimentalToolsPanelItem as ToolsPanelItem
 } from '@wordpress/components';
 
-const ShadowPanel = ( { shadow, setAttributes } ) => {
+const ShadowPanel = ( {
+	attributes: {
+		shadow
+	},
+	setAttributes
+} ) => {
 	const panelId = useInstanceId( ShadowPanel );
 
 	const [ insetItem,   setInsetItem   ] = useState();
@@ -103,9 +108,9 @@ const ShadowPanel = ( { shadow, setAttributes } ) => {
 	return (
 		<ToolsPanel
 			label={ __( 'Shadow', 'x3p0-progress' ) }
-			resetAll={ resetShadow }
 			panelId={ panelId }
 			className="wp-block-x3p0-progress-panel__shadow"
+			resetAll={ resetShadow }
 		>
 			<ShadowColorControl
 				panelId={ panelId }

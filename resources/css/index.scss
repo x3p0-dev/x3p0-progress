@@ -19,3 +19,17 @@
 .wp-block-x3p0-progress__label-text {
 	cursor: text;
 }
+
+// Justification buttons group for the label.
+.x3p0-progress-editor-justify-control {
+	&__buttons {
+		display: flex;
+		padding: 4px 0;
+	}
+	.components-button.has-icon {
+		height: 32px;
+		margin-right: 4px;
+		min-width: 32px;
+		padding: 0;
+	}
+}

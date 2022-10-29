@@ -18,16 +18,38 @@ export default ( {
 		justifyLabel,
 		label,
 		progressId,
-		progressMax,
-		progressValue,
+		goal,
+		progress,
 		showLabel,
-		showMax,
-		showValue,
+		showGoal,
+		showProgress,
 		numberFormat
-	}
+	},
+	isBlockEdit = false,
+	setAttributes
 } ) => {
-	// Create the progress label text HTML.
-	const labelTextHtml = ( showLabel && label ) && (
+	// Creates the label progress html. Note that for the edit and save
+	// contexts are different. Editing uses `RichText`, but saving needs
+	// `RichText.Content`.
+	const labelTextHtml = isBlockEdit ? showLabel && (
+		<RichText
+			tagName="span"
+			className="wp-block-x3p0-progress__label-text"
+			aria-label={  __( 'Label text', 'x3p0-progress' ) }
+			placeholder={ __( 'Add label…', 'x3p0-progress' ) }
+			value={ label }
+			multiline={ false }
+			onChange={ ( html ) => setAttributes( { label: html } ) }
+			allowedFormats={ [
+				'core/bold',
+				'core/italic',
+				'core/strikethrough',
+				'core/highlight',
+				'core/superscript',
+				'core/subscript'
+			] }
+		/>
+	) : ( showLabel && label ) && (
 		<RichText.Content
 			tagName="span"
 			className="wp-block-x3p0-progress__label-text"
@@ -35,41 +57,44 @@ export default ( {
 		/>
 	);
 
-	// Builds the progress value HTML for the label.
-	const labelValueHtml = ( showLabel && showValue ) && (
-		<span className="wp-block-x3p0-progress__label-value">
-			{ getFormattedNumber( progressValue, numberFormat ) }
+	// Creates the label progress html.
+	const labelProgressHtml = ( showLabel && showProgress ) && (
+		<span className="wp-block-x3p0-progress__label-progress">
+			{ getFormattedNumber( progress, numberFormat ) }
 		</span>
 	);
 
-	const labelSepHtml = ( showLabel && showValue && showMax ) && (
+	// Creates the label separator html.
+	const labelSepHtml = ( showLabel && showProgress && showGoal ) && (
 		<span className="wp-block-x3p0-progress__label-sep">
 			{ __( '/', 'x3p0-progress' ) }
 		</span>
 	);
 
-	const labelMaxHtml = ( showLabel && showValue && showMax ) && (
-		<span className="wp-block-x3p0-progress__label-max">
-			{ getFormattedNumber( progressMax, numberFormat ) }
+	// Creates the label goal html.
+	const labelGoalHtml = ( showLabel && showProgress && showGoal ) && (
+		<span className="wp-block-x3p0-progress__label-goal">
+			{ getFormattedNumber( goal, numberFormat ) }
 		</span>
 	);
 
-	const labelNumHtml = ( labelValueHtml || labelSepHtml || labelMaxHtml ) && (
+	// Creates the label wrapper for the progress and goal numbers.
+	const labelNumHtml = ( labelProgressHtml || labelSepHtml || labelGoalHtml ) && (
 		<span className="wp-block-x3p0-progress__label-num">
-			{ labelValueHtml }
-			{ labelSepHtml   }
-			{ labelMaxHtml   }
+			{ labelProgressHtml }
+			{ labelSepHtml      }
+			{ labelGoalHtml     }
 		</span>
 	);
 
-	const justifyClass = justifyLabel ? { [`justify-${ justifyLabel }`]: true } : {};
+	const justify = justifyLabel ? { [`justify-${ justifyLabel }`]: true } : {};
 
 	// Combine the inner label HTML into a `<label>` element.
-	return ( labelTextHtml || labelValueHtml ) && (
+	return ( labelTextHtml || labelProgressHtml ) && (
 		<label
 			className={ classnames( {
 				"wp-block-x3p0-progress__label": true,
-				...justifyClass
+				...justify
 			} ) }
 			for={ `wp-block-x3p0-progress-${ progressId }` }
 		>

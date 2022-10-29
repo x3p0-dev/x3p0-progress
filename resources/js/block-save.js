@@ -11,19 +11,19 @@ import classnames        from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ }            from '@wordpress/i18n';
 
-import { getColorStyle  }   from './common/utils-color';
-import { getGradientStyle } from './common/utils-gradient';
-import { getGapStyle }      from './common/utils-spacing';
+import { colorStyle  }   from './common/utils-color';
+import { gradientStyle } from './common/utils-gradient';
+import { gapStyle }      from './common/utils-spacing';
 
 import LabelElement    from './label/element-label';
 import ProgressElement from './progress/element-progress';
 
 export default function Save( { attributes, className, style } ) {
 	const {
-		progressBackground,
-		progressBackgroundGradient,
-		progressForeground,
-		progressForegroundGradient,
+		backgroundColor,
+		backgroundGradient,
+		foregroundColor,
+		foregroundGradient,
 		reversed
 	} = attributes;
 
@@ -37,11 +37,11 @@ export default function Save( { attributes, className, style } ) {
 		} ),
 		style: {
 			...style,
-			gap: getGapStyle( attributes ),
-			'--x3p0-progress--foreground': getColorStyle( progressForeground ),
-			'--x3p0-progress--background': getColorStyle( progressBackground ),
-			'--x3p0-progress--foreground-gradient': getGradientStyle( progressForegroundGradient ),
-			'--x3p0-progress--background-gradient': getGradientStyle( progressBackgroundGradient )
+			gap: gapStyle( attributes ),
+			'--x3p0-progress--foreground-color':    colorStyle( foregroundColor ),
+			'--x3p0-progress--background-color':    colorStyle( backgroundColor ),
+			'--x3p0-progress--foreground-gradient': gradientStyle( foregroundGradient ),
+			'--x3p0-progress--background-gradient': gradientStyle( backgroundGradient )
 		}
 	} );
 

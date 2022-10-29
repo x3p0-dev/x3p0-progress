@@ -14,19 +14,19 @@
 import { __ } from '@wordpress/i18n';
 import { __experimentalNumberControl as NumberControl } from '@wordpress/components';
 
-export default ( { progressMax, progressValue, setAttributes } ) => {
+export default ( { goal, progress, setAttributes } ) => {
 	return (
 		<NumberControl
 			label={ __( 'Goal', 'x3p0-progress' ) }
 			min="1"
-			value={ progressMax }
+			value={ goal }
 			onChange={ ( value ) => {
 				const newValue = value !== '' ? parseInt( value, 10 ) : 1;
 
-				let newAttr = { progressMax: newValue };
+				let newAttr = { goal: newValue };
 
-				if ( progressValue > newValue ) {
-					newAttr.progressValue = Math.round( newValue / 2 );
+				if ( progress > newValue ) {
+					newAttr.progress = Math.round( newValue / 2 );
 				}
 
 				setAttributes( newAttr );

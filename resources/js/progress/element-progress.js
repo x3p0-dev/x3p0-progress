@@ -11,7 +11,7 @@
 import classnames from 'classnames';
 import { __ }     from '@wordpress/i18n';
 
-import { getShadowStyle }   from '../shadow/utils-shadow';
+import { shadowStyle } from '../shadow/utils-shadow';
 
 import {
 	__experimentalGetBorderClassesAndStyles as getBorderClassesAndStyles,
@@ -20,11 +20,11 @@ import {
 
 export default ( { attributes } ) => {
 	const {
+		goal,
 		height,
 		heightUnit,
+		progress,
 		progressId,
-		progressValue,
-		progressMax,
 		shadow
 	} = attributes;
 
@@ -43,11 +43,11 @@ export default ( { attributes } ) => {
 		<progress
 			id={ `wp-block-x3p0-progress-${ progressId }` }
 			className="wp-block-x3p0-progress__bar"
-			value={ progressValue }
-			max={ progressMax }
+			value={ progress }
+			max={ goal }
 			style={ { 'height': height ? `${ height }${ heightUnit ?? 'px' }` : null } }
 		>
-			{ `${ progressValue }/${ progressMax }` }
+			{ `${ progress }/${ goal }` }
 		</progress>
 	);
 
@@ -64,7 +64,7 @@ export default ( { attributes } ) => {
 			style={ {
 				...borderProps.style,
 				...paddingStyle,
-				boxShadow: getShadowStyle( shadow )
+				boxShadow: shadowStyle( shadow )
 			} }
 		>
 			{ progressHtml }

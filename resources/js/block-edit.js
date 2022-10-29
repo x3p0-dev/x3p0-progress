@@ -17,10 +17,6 @@ import {
 	useBlockProps
 } from '@wordpress/block-editor';
 
-import {
-	__experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles
-} from '@wordpress/block-editor';
-
 import BlockToolbarGroup from './toolbar/group-block';
 import OtherToolbarGroup from './toolbar/group-other';
 
@@ -29,12 +25,12 @@ import LabelPanel    from './label/panel-label';
 import ColorPanel    from './color/panel-color';
 import ShadowPanel   from './shadow/panel-shadow';
 
-import LabelElement     from './label/element-label-edit';
+import LabelElement     from './label/element-label';
 import ProgressElement  from './progress/element-progress';
 
-import { getColorStyle  }   from './common/utils-color';
-import { getGradientStyle } from './common/utils-gradient';
-import { getGapStyle }      from './common/utils-spacing';
+import { colorStyle  }   from './common/utils-color';
+import { gradientStyle } from './common/utils-gradient';
+import { gapStyle }      from './common/utils-spacing';
 
 export default function Edit( {
 	className,
@@ -43,21 +39,11 @@ export default function Edit( {
 	style
 } ) {
 	const {
-		height,
-		heightUnit,
-		justifyLabel,
-		progressForeground,
-		progressForegroundGradient,
-		progressBackground,
-		progressBackgroundGradient,
-		progressValue,
-		progressMax,
-		reversed,
-		shadow,
-		showLabel,
-		showMax,
-		showValue,
-		numberFormat
+		foregroundColor,
+		foregroundGradient,
+		backgroundColor,
+		backgroundGradient,
+		reversed
 	} = attributes;
 
 	// Get the ID of the current instance for label and progress elements.
@@ -89,34 +75,19 @@ export default function Edit( {
 	const inspectorControls = (
 		<InspectorControls>
 			<ProgressPanel
-				progressValue={ progressValue }
-				progressMax={ progressMax }
-				height={ height }
-				heightUnit={ heightUnit }
-				showLabel={ showLabel }
-				showValue={ showValue }
-				numberFormat={ numberFormat }
+				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>
 			<LabelPanel
-				progressValue={ progressValue }
-				progressMax={ progressMax }
-				justifyLabel={ justifyLabel }
-				showLabel={ showLabel }
-				showMax={ showMax }
-				showValue={ showValue }
-				numberFormat={ numberFormat }
+				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>
 			<ColorPanel
-				progressForeground={ progressForeground }
-				progressForegroundGradient={ progressForegroundGradient }
-				progressBackground={ progressBackground }
-				progressBackgroundGradient={ progressBackgroundGradient }
+				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>
 			<ShadowPanel
-				shadow={ shadow }
+				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>
 		</InspectorControls>
@@ -127,8 +98,7 @@ export default function Edit( {
 	// =====================================================================
 
 	// Get the block props for the wrapping element.  We need to add custom
-	// CSS properties so that they can be used with `::-webkit-progress-bar`
-	// and `::-webkit-progress-value` in CSS.
+	// CSS properties so that they can be used with pseudo-elements.
 	const blockProps = useBlockProps( {
 		className: classnames( {
 			className,
@@ -136,11 +106,11 @@ export default function Edit( {
 		} ),
 		style: {
 			...style,
-			gap: getGapStyle( attributes ),
-			'--x3p0-progress--foreground': getColorStyle( progressForeground ),
-			'--x3p0-progress--background': getColorStyle( progressBackground ),
-			'--x3p0-progress--foreground-gradient': getGradientStyle( progressForegroundGradient ),
-			'--x3p0-progress--background-gradient': getGradientStyle( progressBackgroundGradient )
+			gap: gapStyle( attributes ),
+			'--x3p0-progress--foreground-color':    colorStyle( foregroundColor ),
+			'--x3p0-progress--background-color':    colorStyle( backgroundColor ),
+			'--x3p0-progress--foreground-gradient': gradientStyle( foregroundGradient ),
+			'--x3p0-progress--background-gradient': gradientStyle( backgroundGradient )
 		}
 	} );
 
@@ -153,6 +123,7 @@ export default function Edit( {
 				<LabelElement
 					attributes={ attributes }
 					setAttributes={ setAttributes }
+					isBlockEdit={ true }
 				/>
 				<ProgressElement attributes={ attributes }/>
 			</div>

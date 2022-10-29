@@ -16,18 +16,16 @@ import {
  * Formats a color value as a preset string if the preset exists. Otherwise,
  * returns the original color value.
  */
-export function formatColorValue( value, colors )
-{
+export const colorAttribute = ( value, colors ) => {
 	const colorObject = getColorObjectByColorValue( colors, value );
 
-	return undefined == colorObject ? value : `var:preset|color|${ colorObject.slug }`;
+	return undefined === colorObject ? value : `var:preset|color|${ colorObject.slug }`;
 };
 
 /**
  * Returns a color preset slug if a preset string is given. Otherwise, null.
  */
-export function getColorSlug( color )
-{
+export const colorSlug = ( color ) => {
 	return color && color.startsWith( 'var:preset|color|' )
 	       ? color.replace( 'var:preset|color|', '' )
 	       : null;
@@ -36,9 +34,8 @@ export function getColorSlug( color )
 /**
  * Returns a color CSS value. First checks to see if a preset slug is given.
  */
-export function getColorSettingValue( color, colors )
-{
-	const slug = getColorSlug( color );
+export const colorSetting = ( color, colors ) => {
+	const slug = colorSlug( color );
 
 	return slug ? getColorObjectByAttributeValues( colors, slug, color ).color : color;
 };
@@ -46,9 +43,8 @@ export function getColorSettingValue( color, colors )
 /**
  * Returns a color CSS value. Uses a CSS variable if the color is a preset.
  */
-export function getColorStyle( color )
-{
-	const slug = getColorSlug( color );
+export const colorStyle = ( color ) => {
+	const slug = colorSlug( color );
 
 	return slug ? `var(--wp--preset--color--${ slug })`: color;
 };

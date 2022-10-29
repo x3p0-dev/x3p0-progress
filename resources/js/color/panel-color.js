@@ -11,13 +11,13 @@ import { useMemo } from '@wordpress/element';
 import { __ }      from '@wordpress/i18n';
 
 import {
-	formatColorValue,
-	getColorSettingValue
+	colorAttribute,
+	colorSetting
 } from '../common/utils-color';
 
 import {
-	formatGradientValue,
-	getGradientSettingValue
+	gradientAttribute,
+	gradientSetting
 } from '../common/utils-gradient';
 
 import {
@@ -27,10 +27,12 @@ import {
 } from '@wordpress/block-editor';
 
 const ColorPanel = ( {
-	progressForeground,
-	progressForegroundGradient,
-	progressBackground,
-	progressBackgroundGradient,
+	attributes: {
+		foregroundColor,
+		foregroundGradient,
+		backgroundColor,
+		backgroundGradient
+	},
 	setAttributes
 } ) => {
 	// Get the base color and gradient options to pass into individual color
@@ -38,52 +40,51 @@ const ColorPanel = ( {
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
 
 	// Get all color palettes.
-	const userColorPalette    = useSetting( 'color.palette.custom'   );
-	const themeColorPalette   = useSetting( 'color.palette.theme'    );
-	const defaultColorPalette = useSetting ( 'color.palette.default' );
+	const userColors    = useSetting( 'color.palette.custom'   );
+	const themeColors   = useSetting( 'color.palette.theme'    );
+	const defaultColors = useSetting ( 'color.palette.default' );
 
 	// Get all gradient palettes.
-	const userGradientPalette    = useSetting( 'color.gradients.custom'  );
-	const themeGradientPalette   = useSetting( 'color.gradients.theme'   );
-	const defaultGradientPalette = useSetting( 'color.gradients.default' );
+	const userGradients    = useSetting( 'color.gradients.custom'  );
+	const themeGradients   = useSetting( 'color.gradients.theme'   );
+	const defaultGradients = useSetting( 'color.gradients.default' );
 
 	// Flattened array with all color palettes.
-	const colorsFlat = useMemo( () => [
-		...( defaultColorPalette || [] ),
-		...( themeColorPalette   || [] ),
-		...( userColorPalette    || [] )
-	], [ userColorPalette, themeColorPalette, defaultColorPalette ] );
+	const colors = useMemo( () => [
+		...( defaultColors || [] ),
+		...( themeColors   || [] ),
+		...( userColors    || [] )
+	] );
 
 	// Flattened array with all gradient palettes.
-	const gradientsFlat = useMemo( () => [
-		...( defaultGradientPalette || [] ),
-		...( themeGradientPalette   || [] ),
-		...( userGradientPalette    || [] )
-	], [ userGradientPalette, themeGradientPalette, defaultGradientPalette ] );
+	const gradients = useMemo( () => [
+		...( defaultGradients || [] ),
+		...( themeGradients   || [] ),
+		...( userGradients    || [] )
+	] );
 
-	// Houses an array of the block's color settings.
 	const colorSettings = [
 		{
-			label: __( 'Progress Foreground', 'x3p0-progress' ),
-			value: getColorSettingValue( progressForeground, colorsFlat ),
-			gradientValue: getGradientSettingValue( progressForegroundGradient, gradientsFlat ),
+			label: __( 'Progress (Foreground)', 'x3p0-progress' ),
+			value: colorSetting( foregroundColor, colors ),
+			gradientValue: gradientSetting( foregroundGradient, gradients ),
 			onChange: ( value ) => { setAttributes( {
-				progressForeground: formatColorValue( value, colorsFlat )
+				foregroundColor: colorAttribute( value, colors )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
-				progressForegroundGradient: formatGradientValue( value, gradientsFlat )
+				foregroundGradient: gradientAttribute( value, gradients )
 			} ) },
 			...colorGradientOptions
 		},
 		{
-			label: __( 'Progress Background', 'x3p0-progress' ),
-			value: getColorSettingValue( progressBackground, colorsFlat ),
-			gradientValue: getGradientSettingValue( progressBackgroundGradient, gradientsFlat ),
+			label: __( 'Goal (Background)', 'x3p0-progress' ),
+			value: colorSetting( backgroundColor, colors ),
+			gradientValue: gradientSetting( backgroundGradient, gradients ),
 			onChange: ( value ) => { setAttributes( {
-				progressBackground: formatColorValue( value, colorsFlat )
+				backgroundColor: colorAttribute( value, colors )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
-				progressBackgroundGradient: formatGradientValue( value, gradientsFlat )
+				backgroundGradient: gradientAttribute( value, gradients )
 			} ) },
 			...colorGradientOptions
 		}

@@ -12,19 +12,28 @@
 	"style": "file:./style-index.css",
 	"editorStyle": "file:./index.css",
 	"attributes": {
+		"backgroundColor": {
+			"type": "string"
+		},
+		"backgroundGradient": {
+			"type": "string"
+		},
+		"foregroundColor": {
+			"type": "string"
+		},
+		"foregroundGradient": {
+			"type": "string"
+		},
+		"goal": {
+			"type": "integer",
+			"default": 100
+		},
 		"height": {
 			"type": "number"
 		},
 		"heightUnit": {
 			"type": "string",
 			"default": "px"
-		},
-		"width": {
-			"type": "number"
-		},
-		"widthUnit": {
-			"type": "string",
-			"default": "%"
 		},
 		"justifyLabel": {
 			"type": "string",
@@ -38,29 +47,13 @@
 		"numberFormat": {
 			"type": "object"
 		},
-		"progressId": {
-			"type": "integer",
-			"default": 0
-		},
-		"progressMax": {
-			"type": "integer",
-			"default": 100
-		},
-		"progressValue": {
+		"progress": {
 			"type": "integer",
 			"default": 50
 		},
-		"progressForeground": {
-			"type": "string"
-		},
-		"progressForegroundGradient": {
-			"type": "string"
-		},
-		"progressBackground": {
-			"type": "string"
-		},
-		"progressBackgroundGradient": {
-			"type": "string"
+		"progressId": {
+			"type": "integer",
+			"default": 0
 		},
 		"reversed": {
 			"type": "boolean",
@@ -70,21 +63,31 @@
 			"type": "boolean",
 			"default": true
 		},
-		"showMax": {
+		"showGoal": {
 			"type": "boolean",
 			"default": false
 		},
-		"showValue": {
+		"showProgress": {
 			"type": "boolean",
 			"default": true
 		},
 		"shadow": {
 			"type": "object"
+		},
+		"width": {
+			"type": "number"
+		},
+		"widthUnit": {
+			"type": "string",
+			"default": "%"
 		}
 	},
 	"supports": {
 		"anchor": true,
-		"align": true,
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"__experimentalBorder": {
 			"__experimentalSkipSerialization": true,
@@ -118,44 +121,29 @@
 	},
 	"example": {
 		"attributes": {
-			"label":"\u003cstrong\u003eJourney to My First $100K:\u003c/strong\u003e",
-			"progressId":999,
-			"progressMax":365,
-			"progressValue":291,
-			"progressForeground":"var:preset|color|vivid-green-cyan",
-			"progressBackground":"#ffffff00",
-			"shadow":{
-				"offsetX":6,
-				"offsetY":6
-			},
-			"valueFormat":{
-				"style":"currency",
-				"currency":"USD",
+			"label": "Journey to My First $100K:",
+			"progressId": 999,
+			"goal": 100000,
+			"progress": 78000,
+			"foregroundColor": "var:preset|color|vivid-green-cyan",
+			"backgroundColor": "transparent",
+			"numberFormat": {
+				"style": "currency",
+				"currency": "USD",
 				"currencyDisplay": "symbol"
 			},
-			"style":{
-				"spacing":{
-					"padding":{
-						"top":"4px",
-						"right":"4px",
-						"bottom":"4px",
-						"left":"4px"
+			"style": {
+				"spacing": {
+					"padding": {
+						"top": "4px",
+						"right": "4px",
+						"bottom": "4px",
+						"left": "4px"
 					}
-				},
-				"typography":{
-					"textTransform":"uppercase"
 				}
 			},
-			"borderColor":"black",
-			"className":"is-style-hand-drawn",
-			"layout": {
-				"type":"flex",
-				"orientation":"vertical",
-				"flexWrap":"nowrap",
-				"justifyContent":"left"
-			},
-			"fontSize":"15px",
-			"fontFamily":"monospace"
+			"borderColor": "black",
+			"className": "is-style-hand-drawn"
 		}
 	}
 }

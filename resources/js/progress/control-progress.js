@@ -13,18 +13,18 @@
 import { RangeControl } from '@wordpress/components';
 import { __ }           from '@wordpress/i18n';
 
-export default ( { progressMax, progressValue, setAttributes } ) => {
+export default ( { goal, progress, setAttributes } ) => {
 	return (
 		<RangeControl
 			label={ __( 'Progress', 'x3p0-progress' ) }
 			min="0"
-			max={ progressMax }
+			max={ goal }
 			withInputField={ true }
 			allowReset={ true }
-			resetFallbackValue={ Math.round( progressMax / 2 ) }
-			value={ progressValue }
+			resetFallbackValue={ Math.round( goal / 2 ) }
+			value={ progress }
 			onChange={ ( value ) =>
-				setAttributes( { progressValue: value } )
+				setAttributes( { progress: value } )
 			}
 		/>
 	);

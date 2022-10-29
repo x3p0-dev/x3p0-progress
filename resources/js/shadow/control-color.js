@@ -12,8 +12,8 @@ import { __ }      from '@wordpress/i18n';
 import { setShadow } from './utils-shadow';
 
 import {
-	formatColorValue,
-	getColorSettingValue
+	colorAttribute,
+	colorSetting
 } from '../common/utils-color';
 
 import {
@@ -29,25 +29,25 @@ export default ( { panelId, shadow, setAttributes } ) => {
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
 
 	// Get all color palettes.
-	const userColorPalette    = useSetting( 'color.palette.custom' );
-	const themeColorPalette   = useSetting( 'color.palette.theme' );
-	const defaultColorPalette = useSetting ( 'color.palette.default' );
+	const userColors    = useSetting( 'color.palette.custom' );
+	const themeColors   = useSetting( 'color.palette.theme' );
+	const defaultColors = useSetting ( 'color.palette.default' );
 
 	// Flattened array with all color palettes.
-	const colorsFlat = useMemo( () => [
-		...( defaultColorPalette || [] ),
-		...( themeColorPalette   || [] ),
-		...( userColorPalette    || [] )
-	], [ userColorPalette, themeColorPalette, defaultColorPalette ] );
+	const colors = useMemo( () => [
+		...( defaultColors || [] ),
+		...( themeColors   || [] ),
+		...( userColors    || [] )
+	] );
 
-	const colorSetting = {
+	const colorSettings = [ {
 		label: __( 'Color', 'x3p0-progress' ),
-		colorValue: getColorSettingValue( shadow?.color, colorsFlat ),
+		colorValue: colorSetting( shadow?.color, colors ),
 		onColorChange: ( value ) => setAttributes( {
 			shadow: setShadow(
 				shadow,
 				'color',
-				formatColorValue( value, colorsFlat )
+				colorAttribute( value, colors )
 			)
 		} ),
 		isShownByDefault: false,
@@ -55,11 +55,11 @@ export default ( { panelId, shadow, setAttributes } ) => {
 		onDeselect: () => setAttributes( {
 			shadow: setShadow( shadow, 'color' )
 		} )
-	};
+	} ];
 
 	return (
 		<ColorGradientSettingsDropdown
-			settings={ [ colorSetting ] }
+			settings={ colorSettings }
 			panelId={ panelId }
 			enableAlpha={ true }
 			__experimentalHasMultipleOrigins

@@ -18,8 +18,8 @@ Aside from the normal block-related settings and styles that theme authors can a
 {
 	"settings": {
 		"x3p0Progress": {
-			"foreground": "var( --wp--preset--color--primary )",
-			"background": "var( --wp--preset--color--secondary )",
+			"foregroundColor": "var( --wp--preset--color--primary )",
+			"backgroundColor": "var( --wp--preset--color--secondary )",
 			"height": "1.5rem",
 			"gap": "0.25rem 2rem",
 			"shadow": "var( --wp--custom--shadow )"

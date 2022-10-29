@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-import { getColorStyle } from '../common/utils-color';
+import { colorStyle } from '../common/utils-color';
 
 /**
  * Sets the shadow value by key. If there is not yet a shadow, create a new
@@ -36,7 +36,7 @@ export const unsetShadow = () => undefined;
 /**
  * Returns a formatted box-shadow CSS style value based on the shadow object.
  */
-export function getShadowStyle( shadow ) {
+export function shadowStyle( shadow ) {
 
 	if ( ! shadow || ! Object.keys( shadow ).length ) {
 		return null;
@@ -64,7 +64,7 @@ export function getShadowStyle( shadow ) {
 	}
 
 	if ( shadow?.color ) {
-		pieces.push( getColorStyle( shadow.color ) );
+		pieces.push( colorStyle( shadow.color ) );
 	}
 
 	return pieces.join( ' ' );

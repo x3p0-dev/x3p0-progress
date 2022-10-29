@@ -1,5 +1,5 @@
 /**
- * Toggle control for showing the label.
+ * Toggle control for showing the progress in the label.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2022, Justin Tadlock
@@ -10,13 +10,13 @@
 import { ToggleControl } from '@wordpress/components';
 import { __ }            from '@wordpress/i18n';
 
-export default ( { showLabel, setAttributes } ) => {
+export default ( { showProgress, setAttributes } ) => {
 	return (
 		<ToggleControl
-			label={ __( 'Show label', 'x3p0-progress' ) }
-			checked={ showLabel }
+			label={ __( 'Show progress in label', 'x3p0-progress' ) }
+			checked={ showProgress }
 			onChange={ () => setAttributes( {
-				showLabel: true === showLabel ? false : true
+				showProgress: true === showProgress ? false : true
 			} ) }
 		/>
 	);

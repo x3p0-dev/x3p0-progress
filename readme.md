@@ -4,15 +4,13 @@
 
 WordPress block for outputting awesome progress bars.
 
-Unlike most similar plugins, this block uses a proper `<progress>` element with an accessible `<label>`.  This means that, even without the plugin installed in the future, your web browser will always know that it's still a progress bar and will display it.
-
 ## Theme Support
 
 I am a theme author at heart, so I love seeing plugins and themes working together to do awesome stuff.  This also means that I want to make this plugin as extendable as possible so that I can do cool stuff with my own themes.
 
 ### Settings and Styles (`theme.json`)
 
-Aside from the normal block-related settings and styles that theme authors can attach to blocks, X3P0 Progress has a few additional custom settings.  Theme authors can adjust these via the `settings.x3p0Progress` key.  The following is an example usage of each:
+Aside from the normal block-related settings and styles that theme authors can attach to blocks, X3P0 Progress has a few additional custom settings.  Theme authors can adjust some custom block variables via the `settings.x3p0Progress` key.  The following is an example usage of each:
 
 ```json
 {
@@ -20,8 +18,6 @@ Aside from the normal block-related settings and styles that theme authors can a
 		"x3p0Progress": {
 			"foregroundColor": "var( --wp--preset--color--primary )",
 			"backgroundColor": "var( --wp--preset--color--secondary )",
-			"foregroundGradient": "var( --wp--preset--gradient--blush-bordeaux )",
-			"backgroundGradient": "var( --wp--preset--gradient--luminous-dusk )",
 			"height": "1.5rem",
 			"gap": "0.25rem",
 			"justifyLabel": "space-between",
@@ -34,6 +30,35 @@ Aside from the normal block-related settings and styles that theme authors can a
 By default, the block will try to fall back to the active theme's default color scheme when possible.  If a theme has a `primary` or `secondary` color set in its palette, the plugin will use those for the progress bar foreground and background, respectively.  It's better to simply define those colors yourself using the above method.
 
 WordPress has no standard on naming colors.  However, the _de facto_ standard created by the community's usage is to have a `primary` and `secondary` color slug.  Of the dozens upon dozens of themes I've tested, the vast majority of them also had a well-defined contrast between those colors.
+
+### Custom Block Stylesheet
+
+An alternative to the `theme.json` method (or in addition to), you can load a block-specific stylesheet and work with plain ol' CSS.  Here's an example of loading a `themeslug/public/css/blocks/x3p0-progress.css` stylesheet:
+
+```php
+add_action( 'init', function() {
+	wp_enqueue_block_style( 'x3p0/progress', [
+		'handle' => 'themeslug-block-x3p0-progress',
+		'src'    => get_theme_file_uri(  'public/css/blocks/x3p0-progress.css' ),
+		'path'   => get_theme_file_path( 'public/css/blocks/x3p0-progress.css' )
+	] );
+} );
+```
+
+And some CSS to overwrite the default custom CSS properties:
+
+```css
+.wp-block-x3p0-progress {
+	--x3p0-progress--height: 1.5rem;
+	--x3p0-progress--gap: 0.5rem;
+	--x3p0-progress--justify-label: left;
+	--x3p0-progress--foreground-color: #000000;
+	--x3p0-progress--background-color: #ffffff;
+	--x3p0-progress--shadow: 0 1px 3px 0 rgba( 0, 0, 0, 0.3 );
+}
+```
+
+Of course, you have full access to the plugin's style rules, so feel free to look at how the [default stylesheet](/resources/css/style.scss) is structured.  I'd warn against changing anything other than default cosmetics and breaking the user's expected use of the plugin.
 
 ### Custom Block Styles
 

@@ -188,6 +188,13 @@
 		// ever install IE again.
 		color: var( --x3p0-progress--foreground-color );
 
+		// Wrapper element for the bar and value pseudo elements in
+		// webkit browsers.  We need this so that border-radius
+		// inheritance trickles down the stack.
+		&::-webkit-progress-inner-element {
+			border-radius: inherit;
+		}
+
 		// This is the background pseudo element for webkit browsers.
 		// We're actually going to kill this since Firefox doesn't have
 		// an equivalent pseudo-element. Instead, it lets the `<progress>`
@@ -208,14 +215,6 @@
 			display: block;
 			background-color: var( --x3p0-progress--foreground-color );
 			background-image: var( --x3p0-progress--foreground-gradient );
-
-			// Webkit browsers do not seem to properly inherit the
-			// border radius.  Mostly, this is an issue with the
-			// rightmost edge of the value bar, which will always be
-			// square/straight unless we give it a specific radius.
-			// We do control that a bit when the progress is 100%
-			// with `overflow: hidden` on the `<progress>` element.
-			// So, maybe this will work in the future. 🤷...
 			border-radius: inherit;
 		}
 
@@ -225,8 +224,6 @@
 			display: block;
 			background-color: var( --x3p0-progress--foreground-color );
 			background-image: var( --x3p0-progress--foreground-gradient );
-
-			// Firefox does inherit the border radius. 🥳
 			border-radius: inherit;
 		}
 	}

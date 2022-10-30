@@ -6,54 +6,70 @@
 ////
 
 /// One ginormous container class to rule over everything. This is actually the
-/// outer wrapper for the block itself.
+/// outer wrapper for the block itself. All element classes are namespaced using
+/// the `.wp-block-x3p0-progress__` prefix, BEM style. Modifiers do not follow
+/// the same style.  Typically, utility classes, such as `.is-*` and `.has-*`
+/// are used instead.
 .wp-block-x3p0-progress {
 
 	// Set up some default custom properties.  Theme authors can overrule
 	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json`
-	// files. Alternatively, use `settings.custom.x3p0-progress.{name}`.
-	// Don't blame me for the crazy hyphens. That's all on WP for
+	// files.  Don't blame me for the crazy hyphens. That's all on WP for
 	// hyphenating numbers + letters instead of by letter case.  Regardless,
-	// I'm fixing it in the actual CSS here so that it's somewhat readable,
-	// so feel free to use the sane versions if you need to target things
-	// via CSS.
+	// I'm fixing it in the actual CSS here so that it's somewhat readable.
+
+	// Set progress bar height via `settings.x3p0Progress.height`.
 	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 1.5rem );
 
-	// The gap between the `<label>` and `<progress>` elements.
+	// Set label + progress gap via `settings.x3p0Progress.gap`.
 	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem );
 
-	// Note that these two properties are attached to the block's `style`
-	// attribute when a user customizes them.  We must do this because
-	// styling the `<progress>` element requires targeting pseudo-elements
-	// for various browsers.
+	// Set the label's `justify-content` via `settings.x3p0Progress.justifyLabel`.
+	--x3p0-progress--justify-label: var(
+		--wp--custom--x-3-p-0-progress--justify-label,
+		left
+	);
+
+	// Set a foreground color via `settings.x3p0Progress.foregroundColor`.
 	--x3p0-progress--foreground-color: var(
-		--wp--custom--x-3-p-0-progress--foreground,
+		--wp--custom--x-3-p-0-progress--foreground-color,
 		var( --wp--preset--color--primary, var( --wp--preset--color--vivid-cyan-blue ) )
 	);
 
+	// Set a background color via `settings.x3p0Progress.backgroundColor`.
 	--x3p0-progress--background-color: var(
-		--wp--custom--x-3-p-0-progress--background,
+		--wp--custom--x-3-p-0-progress--background-color,
 		var( --wp--preset--color--secondary, var( --wp--preset--color--pale-cyan-blue ) )
 	);
 
-	// Custom box shadow.  Themes can register a custom shadow using our
-	// `custom.x3p0Progress.shadow`, but we'll also allow `custom.shadow`
-	// because the Pixl theme has already set a precedent with this method.
+	// Set foreground gradient via `settings.x3p0Progress.foregroundGradient`.
+	--x3p0-progress--foreground-gradient: var(
+		--wp--custom--x-3-p-0-progress--foreground-gradient,
+		none
+	);
+
+	// Set foreground gradient via `settings.x3p0Progress.backgroundGradient`.
+	--x3p0-progress--background-gradient: var(
+		--wp--custom--x-3-p-0-progress--background-gradient,
+		none
+	);
+
+	// Se default box shadow via `settings.custom.x3p0Progress.shadow`.
+	// Alternatively, `settings.custom.shadow` will work. The Pixl theme has
+	// already set a precedent with this method.
 	--x3p0-progress--shadow: var(
 		--wp--custom--x-3-p-0-progress--shadow,
 		var( --wp--custom--shadow, none )
 	);
 
-	// Gradient backgrounds default to their color counterparts because we
-	// set the `background` property by default instead of `background-color`.
-	// There's probably a better way to handle this. Leaving for now.
-	--x3p0-progress--foreground-gradient: none;
-	--x3p0-progress--background-gradient: none;
-
 	// Flex layout.
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+
+	// Fall back for themes where there is no consistent gap/margin between
+	// elements. This is about the best we can do.
+	margin-top: var( --wp--style--block-gap, 2em );
 
 	// Sets the gap between the `<label>` and `<progress>` elements.
 	gap: var( --x3p0-progress--gap );
@@ -61,28 +77,52 @@
 	// Need a 100% width to make sure it fills the width in flex layouts.
 	width: 100%;
 
-	// Styles for the `<label>` element.  This element houses both the label
-	// text and "completion" number, both of which can be show together,
-	// individually, or not at all.
+	// =====================================================================
+	// Label styles.
+	// =====================================================================
+
+	// Styles for the `<label>` element. This element houses the label text,
+	// progress number, and goal number.
 	&__label {
 		display: flex;
+		width: 100%;
 		flex-wrap: wrap;
 		align-items: flex-end;
+
 		// Add a gap of a single character to replicate a natural space.
 		gap: 1ch;
-		width: 100%;
 
-		&.justify-left    { justify-content: left;          }
-		&.justify-center  { justify-content: center;        }
-		&.justify-right   { justify-content: right;         }
-		&.justify-between { justify-content: space-between; }
+		// Justify the label content.
+		justify-content: var( --x3p0-progress--justify-label );
 
+		&.justify-left    { --x3p0-progress--justify-label: left;          }
+		&.justify-center  { --x3p0-progress--justify-label: center;        }
+		&.justify-right   { --x3p0-progress--justify-label: right;         }
+		&.justify-between { --x3p0-progress--justify-label: space-between; }
+
+		// Inner wrapper for label text. Unstyled by default and listed
+		// here for reference.
+		// &-text {}
+
+		// Wrapper for the progress and goal numbers in the label. One,
+		// both, or neither of the inner elements may be shown, depending
+		// on the user's choice.
 		&-num {
 			display: flex;
 			flex-wrap: nowrap;
 			gap: 1ch;
 		}
+
+		// Progress, separator, and goal classes. Unstyled by default
+		// and listed here for reference.
+		// &-progress {}
+		// &-sep {}
+		// &-goal {}
 	}
+
+	// =====================================================================
+	// Progress bar (and its wrapping container) styles.
+	// =====================================================================
 
 	// Wrapper `<div>` for the `<progress>` element. The extra wrapper
 	// gives us more flexibility for custom styles.  Also, the user-supplied
@@ -104,6 +144,18 @@
 		// This at least gives us something that looks halfway decent in
 		// most scenarios where a specific color isn't set.
 		border-color: var( --x3p0-progress--foreground-color );
+
+		// Fall back to transparent background when there is a border
+		// color. !IMPORTANT! Don't remove the extra call to the same
+		// custom property. Otherwise, this will overwrite user
+		// customizations from the editor with its higher specificity.
+		&.has-border-color {
+			--x3p0-progress--background-color: var(
+				--x3p0-progress--background-color(
+				--wp--custom--x-3-p-0-progress--background,
+				var( --wp--preset--color--secondary, transparent )
+			) );
+		}
 	}
 
 	// Handling for the `<progress>` element. It's probably best not to muck
@@ -206,7 +258,7 @@
 		// We just want to overwrite the default while still allowing
 		// theme styles to rule.
 		--x3p0-progress--shadow: var(
-			--wp--custom--x-3-p-0-progress--foreground,
+			--wp--custom--x-3-p-0-progress--foreground-color,
 			var(
 				--wp--custom--shadow,
 				0 1px 3px 0 rgba( 0, 0, 0, 0.1 ),
@@ -214,6 +266,10 @@
 			)
 		);
 
+		// Most of the below handles the border radius for the container
+		// and pseudo elements.  We need the `!important` rule to make
+		// sure no other border-radius styles take over.  This is what
+		// creates the "hand drawn" design, so it's kind of important.
 		.wp-block-x3p0-progress__container {
 			border: 2px solid var( --x3p0-progress--foreground-color );
 			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;

@@ -44,6 +44,15 @@ export const getFormattedNumber = ( number, format ) => {
 };
 
 /**
+ * Determines whether a number's formatting options are set to a "long" display,
+ * such as "100 percent" vs. "100%".
+ */
+export const isLongNumberFormat = ( format ) => {
+	return ( 'currency' === format?.style && 'name' === format?.currencyDisplay )
+	    || ( 'unit'     === format?.style && 'long' === format?.unitDisplay     );
+};
+
+/**
  * Returns an empty object to unset the progress value format.
  */
 export const unsetNumberFormat = () => { return {} };

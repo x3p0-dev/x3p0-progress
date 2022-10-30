@@ -16,7 +16,7 @@ export default ( { showGoal, setAttributes } ) => {
 			label={ __( 'Show goal in label', 'x3p0-progress' ) }
 			checked={ showGoal }
 			onChange={ () => setAttributes( {
-				showGoal: true === showGoal ? false : true
+				showGoal: ! showGoal
 			} ) }
 		/>
 	);

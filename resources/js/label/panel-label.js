@@ -8,7 +8,6 @@
  */
 
 import { useInstanceId } from '@wordpress/compose';
-import { useState }      from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
 
 import JustifyLabelControl from './control-justify-label';
@@ -34,22 +33,18 @@ const LabelPanel = ( {
 } ) => {
 	const panelId = useInstanceId( LabelPanel );
 
-	const [ formatItem, setFormatItem ] = useState();
-
-	const resetFormatItem   = () => setAttributes( { numberFormat: undefined } );
-	const resetJustifyLabel = () => setAttributes( { justifyLabel: 'left'    } );
 	const resetShowLabel    = () => setAttributes( { showLabel:    false     } );
-	const resetShowGoal     = () => setAttributes( { showGoal:     false     } );
 	const resetShowProgress = () => setAttributes( { showProgress: false     } );
+	const resetShowGoal     = () => setAttributes( { showGoal:     false     } );
+	const resetJustifyLabel = () => setAttributes( { justifyLabel: undefined } );
+	const resetFormatItem   = () => setAttributes( { numberFormat: undefined } );
 
 	const resetPanel = () => {
-		resetFormatItem();
-		resetJustifyLabel();
 		resetShowLabel();
-		resetShowGoal();
 		resetShowProgress();
-
-		setFormatItem( undefined );
+		resetShowGoal();
+		resetJustifyLabel();
+		resetFormatItem();
 	};
 
 	return (
@@ -61,7 +56,8 @@ const LabelPanel = ( {
 		>
 			<ToolsPanelItem
 				label={ __( 'Show Label', 'x3p0-progress' ) }
-				hasValue={ () => !! showLabel }
+				isShownByDefault
+				hasValue={ () => showLabel }
 				onDeselect={ resetShowLabel }
 				onSelect={ () => setAttributes( {
 					showLabel: true
@@ -76,7 +72,8 @@ const LabelPanel = ( {
 			{ showLabel && (
 				<ToolsPanelItem
 					label={ __( 'Show Progress', 'x3p0-progress' ) }
-					hasValue={ () => !! showProgress }
+					isShownByDefault
+					hasValue={ () => showProgress }
 					onDeselect={ resetShowProgress }
 					onSelect={ () => setAttributes( {
 						showProgress: true
@@ -92,7 +89,7 @@ const LabelPanel = ( {
 			{ ( showLabel && showProgress ) && (
 				<ToolsPanelItem
 					label={ __( 'Show Goal', 'x3p0-progress' ) }
-					hasValue={ () => !! showGoal }
+					hasValue={ () => showGoal }
 					onDeselect={ resetShowGoal }
 					onSelect={ () => setAttributes( {
 						showGoal: true
@@ -108,7 +105,6 @@ const LabelPanel = ( {
 			{ ( showLabel && showProgress ) && (
 				<ToolsPanelItem
 					label={ __( 'Justification', 'x3p0-progress' ) }
-					isShownByDefault
 					hasValue={ () => !! justifyLabel }
 					onDeselect={ resetJustifyLabel }
 					panelId={ panelId }

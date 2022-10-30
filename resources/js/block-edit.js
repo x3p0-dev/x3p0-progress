@@ -39,10 +39,10 @@ export default function Edit( {
 	style
 } ) {
 	const {
-		foregroundColor,
-		foregroundGradient,
 		backgroundColor,
 		backgroundGradient,
+		foregroundColor,
+		foregroundGradient,
 		reversed
 	} = attributes;
 

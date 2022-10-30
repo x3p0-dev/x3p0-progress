@@ -23,24 +23,24 @@ import {
 
 const JUSTIFICATIONS = [
 	{
+		name:  'left',
 		label: __( 'Left', 'x3p0-progress' ),
-		value: 'left',
-		icon: justifyLeft
+		icon:  justifyLeft
 	},
 	{
+		name:  'center',
 		label: __( 'Center', 'x3p0-progress' ),
-		value: 'center',
-		icon: justifyCenter
+		icon:  justifyCenter
 	},
 	{
+		name:  'right',
 		label: __( 'Right', 'x3p0-progress' ),
-		value: 'right',
-		icon: justifyRight
+		icon:  justifyRight
 	},
 	{
+		name:  'between',
 		label: __( 'Space Between', 'x3p0-progress' ),
-		value: 'between',
-		icon: justifySpaceBetween
+		icon:  justifySpaceBetween
 	}
 ];
 
@@ -48,12 +48,14 @@ export default ( { justifyLabel, setAttributes } ) => {
 
 	const buttons = JUSTIFICATIONS.map( ( justification ) => { return (
 		<Button
-			key={ justification.value }
+			key={ justification.name }
 			icon={ justification.icon }
 			label={ justification.label }
-			isPressed={ justification.value === justifyLabel }
+			isPressed={ justification.name === justifyLabel }
 			onClick={ () => setAttributes( {
-				justifyLabel: justification.value
+				justifyLabel: justification.name === justifyLabel
+				              ? undefined
+					      : justification.name
 			} ) }
 		/>
 	) } );

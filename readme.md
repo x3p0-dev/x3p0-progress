@@ -20,8 +20,11 @@ Aside from the normal block-related settings and styles that theme authors can a
 		"x3p0Progress": {
 			"foregroundColor": "var( --wp--preset--color--primary )",
 			"backgroundColor": "var( --wp--preset--color--secondary )",
+			"foregroundGradient": "var( --wp--preset--gradient--blush-bordeaux )",
+			"backgroundGradient": "var( --wp--preset--gradient--luminous-dusk )",
 			"height": "1.5rem",
-			"gap": "0.25rem 2rem",
+			"gap": "0.25rem",
+			"justifyLabel": "space-between",
 			"shadow": "var( --wp--custom--shadow )"
 		}
 	}

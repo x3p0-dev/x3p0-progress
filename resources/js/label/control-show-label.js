@@ -16,7 +16,7 @@ export default ( { showLabel, setAttributes } ) => {
 			label={ __( 'Show label', 'x3p0-progress' ) }
 			checked={ showLabel }
 			onChange={ () => setAttributes( {
-				showLabel: true === showLabel ? false : true
+				showLabel: ! showLabel
 			} ) }
 		/>
 	);

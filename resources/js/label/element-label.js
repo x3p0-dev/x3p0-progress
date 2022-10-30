@@ -11,7 +11,10 @@ import classnames   from 'classnames';
 import { RichText } from '@wordpress/block-editor';
 import { __ }       from '@wordpress/i18n';
 
-import { getFormattedNumber } from './utils-label';
+import {
+	getFormattedNumber,
+	isLongNumberFormat
+} from './utils-label';
 
 export default ( {
 	attributes: {
@@ -28,7 +31,7 @@ export default ( {
 	isBlockEdit = false,
 	setAttributes
 } ) => {
-	// Creates the label progress html. Note that for the edit and save
+	// Creates the label progress html. Note that that the edit and save
 	// contexts are different. Editing uses `RichText`, but saving needs
 	// `RichText.Content`.
 	const labelTextHtml = isBlockEdit ? showLabel && (
@@ -60,7 +63,12 @@ export default ( {
 	// Creates the label progress html.
 	const labelProgressHtml = ( showLabel && showProgress ) && (
 		<span className="wp-block-x3p0-progress__label-progress">
-			{ getFormattedNumber( progress, numberFormat ) }
+			{ getFormattedNumber(
+				progress,
+				showGoal && isLongNumberFormat( numberFormat )
+					? { style: 'decimal' }
+					: numberFormat
+			) }
 		</span>
 	);
 
@@ -87,10 +95,11 @@ export default ( {
 		</span>
 	);
 
+	// Get the justification class.
 	const justify = justifyLabel ? { [`justify-${ justifyLabel }`]: true } : {};
 
 	// Combine the inner label HTML into a `<label>` element.
-	return ( labelTextHtml || labelProgressHtml ) && (
+	return ( labelTextHtml || labelNumHtml ) && (
 		<label
 			className={ classnames( {
 				"wp-block-x3p0-progress__label": true,

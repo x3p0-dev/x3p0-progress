@@ -8,7 +8,6 @@
  */
 
 import { useInstanceId } from '@wordpress/compose';
-import { useState }      from '@wordpress/element';
 import { __ }            from '@wordpress/i18n';
 
 import GoalControl     from './control-goal';
@@ -31,11 +30,6 @@ const ProgressPanel = ( {
 } ) => {
 	const panelId = useInstanceId( ProgressPanel );
 
-	const [ goalItem,     setGoalItem     ] = useState();
-	const [ progressItem, setProgressItem ] = useState( progress );
-	const [ formatItem,   setFormatItem   ] = useState();
-	const [ heightItem,   setHeightItem   ] = useState();
-
 	const resetGoalItem     = () => setAttributes( { goal: 100    } );
 	const resetProgressItem = () => setAttributes( { progress: 50 } );
 	const resetHeightItem   = () => setAttributes( { height: undefined, heightUnit: undefined } );
@@ -44,11 +38,6 @@ const ProgressPanel = ( {
 		resetGoalItem();
 		resetProgressItem();
 		resetHeightItem();
-
-		setGoalItem( undefined );
-		setProgressItem( undefined );
-		setFormatItem( undefined );
-		setHeightItem( undefined );
 	};
 
 	return (

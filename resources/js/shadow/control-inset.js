@@ -20,7 +20,7 @@ export default ( { shadow, setAttributes } ) => {
 			label={ __( 'Toggle shadow position', 'x3p0-progress' ) }
 			help={
 				hasInset
-				? __( 'Shadow is inside its container', 'x3p0-progress' )
+				? __( 'Shadow is inside its container',  'x3p0-progress' )
 				: __( 'Shadow is outside its container', 'x3p0-progress' )
 			}
 			checked={ hasInset }

@@ -30,12 +30,6 @@ const ShadowPanel = ( {
 } ) => {
 	const panelId = useInstanceId( ShadowPanel );
 
-	const [ insetItem,   setInsetItem   ] = useState();
-	const [ offsetXItem, setOffsetXItem ] = useState();
-	const [ offsetYItem, setOffsetYItem ] = useState();
-	const [ blurItem,    setBlurItem    ] = useState();
-	const [ spreadItem,  setSpreadItem  ] = useState();
-
 	const resetShadowX      = () => setAttributes( { shadow: setShadow( shadow, 'offsetX' ) } );
 	const resetShadowY      = () => setAttributes( { shadow: setShadow( shadow, 'offsetY' ) } );
 	const resetShadowBlur   = () => setAttributes( { shadow: setShadow( shadow, 'blur'    ) } );
@@ -44,11 +38,6 @@ const ShadowPanel = ( {
 
 	const resetShadow = () => {
 		setAttributes( { shadow: unsetShadow() } );
-		setOffsetXItem( undefined );
-		setOffsetYItem( undefined );
-		setBlurItem( undefined );
-		setSpreadItem( undefined );
-		setInsetItem( undefined );
 	};
 
 	const shadowOffsetXControl = (

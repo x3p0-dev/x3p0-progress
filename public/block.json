@@ -36,8 +36,7 @@
 			"default": "px"
 		},
 		"justifyLabel": {
-			"type": "string",
-			"default": "left"
+			"type": "string"
 		},
 		"label": {
 			"type": "string",

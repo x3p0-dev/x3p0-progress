@@ -38,10 +38,10 @@ export default ( { numberFormat, setAttributes } ) => {
 				numberFormat: setNumberFormat( numberFormat, 'style', value )
 			} ) }
 			options={ [
-				{ value: "",         label: __( 'Default: %', 'x3p0-progress' ) },
-				{ value: "decimal",  label: __( 'Decimal',    'x3p0-progress' ) },
-				{ value: "currency", label: __( 'Currency',   'x3p0-progress' ) },
-				{ value: "unit",     label: __( 'Unit',       'x3p0-progress' ) }
+				{ value: "",         label: __( 'Default (Percentage)', 'x3p0-progress' ) },
+				{ value: "decimal",  label: __( 'Decimal',              'x3p0-progress' ) },
+				{ value: "currency", label: __( 'Currency',             'x3p0-progress' ) },
+				{ value: "unit",     label: __( 'Unit',                 'x3p0-progress' ) }
 			] }
 		/>
 	);

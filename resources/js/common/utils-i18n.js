@@ -40,7 +40,7 @@ export const numberFormat = ( number, options ) => {
 export const locales = () => {
 	let locales;
 
-	try   { locales = Intl.getCanonicalLocales( locale  ); }
+	try   { locales = Intl.getCanonicalLocales( locale ); }
 	catch { locales = Intl.getCanonicalLocales( DEFAULT_LOCALE ); }
 
 	return [ locales ];

@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-progress
  * Description:       A block for outputting a progress bar.
  * Version:           1.0.0
- * Requires at least: 6.0
+ * Requires at least: 6.1
  * Requires PHP:      7.4
  * Author:            Justin Tadlock
  * Author URI:        https://justintadlock.com

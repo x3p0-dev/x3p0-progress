@@ -43,14 +43,7 @@ export default ( {
 			value={ label }
 			multiline={ false }
 			onChange={ ( html ) => setAttributes( { label: html } ) }
-			allowedFormats={ [
-				'core/bold',
-				'core/italic',
-				'core/strikethrough',
-				'core/highlight',
-				'core/superscript',
-				'core/subscript'
-			] }
+			withoutInteractiveFormatting={ true }
 		/>
 	) : ( showLabel && label ) && (
 		<RichText.Content

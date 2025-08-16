@@ -10,7 +10,6 @@
 import classnames        from 'classnames';
 import { useInstanceId } from '@wordpress/compose';
 import { useEffect }     from '@wordpress/element';
-import { __ }            from '@wordpress/i18n';
 
 import {
 	InspectorControls,
@@ -23,7 +22,6 @@ import OtherToolbarGroup from './toolbar/group-other';
 import ProgressPanel from './progress/panel-progress';
 import LabelPanel    from './label/panel-label';
 import ColorPanel    from './color/panel-color';
-import ShadowPanel   from './shadow/panel-shadow';
 
 import LabelElement     from './label/element-label';
 import ProgressElement  from './progress/element-progress';
@@ -88,10 +86,6 @@ export default function Edit( {
 	const stylesControls = (
 		<InspectorControls group="styles">
 			<ColorPanel
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-			<ShadowPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>

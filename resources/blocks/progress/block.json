@@ -69,16 +69,6 @@
 		"showProgress": {
 			"type": "boolean",
 			"default": true
-		},
-		"shadow": {
-			"type": "object"
-		},
-		"width": {
-			"type": "number"
-		},
-		"widthUnit": {
-			"type": "string",
-			"default": "%"
 		}
 	},
 	"supports": {

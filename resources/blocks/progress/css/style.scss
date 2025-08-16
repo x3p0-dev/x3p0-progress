@@ -54,14 +54,6 @@
 		none
 	);
 
-	// Se default box shadow via `settings.custom.x3p0Progress.shadow`.
-	// Alternatively, `settings.custom.shadow` will work. The Pixl theme has
-	// already set a precedent with this method.
-	--x3p0-progress--shadow: var(
-		--wp--custom--x-3-p-0-progress--shadow,
-		var( --wp--custom--shadow, none )
-	);
-
 	// Flex layout.
 	display: flex;
 	flex-direction: column;
@@ -132,7 +124,6 @@
 		box-sizing: border-box;
 		width: 100%;
 		overflow: hidden;
-		box-shadow: var( --x3p0-progress--shadow );
 
 		// Sets a color for the container, which actually doesn't have
 		// any text.  However, when there is no color set for the box-

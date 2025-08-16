@@ -9,9 +9,6 @@
  */
 
 import classnames from 'classnames';
-import { __ }     from '@wordpress/i18n';
-
-import { shadowStyle } from '../shadow/utils-shadow';
 
 import {
 	__experimentalGetBorderClassesAndStyles as getBorderClassesAndStyles,
@@ -24,8 +21,7 @@ export default ( { attributes } ) => {
 		height,
 		heightUnit,
 		progress,
-		progressId,
-		shadow
+		progressId
 	} = attributes;
 
 	// Get the border and spacing props. We're skipping serialization and
@@ -63,8 +59,7 @@ export default ( { attributes } ) => {
 			) }
 			style={ {
 				...borderProps.style,
-				...paddingStyle,
-				boxShadow: shadowStyle( shadow )
+				...paddingStyle
 			} }
 		>
 			{ progressHtml }

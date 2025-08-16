@@ -75,16 +75,6 @@ return array(
 			'showProgress' => array(
 				'type' => 'boolean',
 				'default' => true
-			),
-			'shadow' => array(
-				'type' => 'object'
-			),
-			'width' => array(
-				'type' => 'number'
-			),
-			'widthUnit' => array(
-				'type' => 'string',
-				'default' => '%'
 			)
 		),
 		'supports' => array(

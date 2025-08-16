@@ -9,7 +9,6 @@
 
 import classnames        from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import { __ }            from '@wordpress/i18n';
 
 import { colorStyle  }   from './common/utils-color';
 import { gradientStyle } from './common/utils-gradient';

@@ -94,6 +94,14 @@
         "style": true
       }
     },
+    "color": {
+      "link": true,
+      "gradients": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
     "spacing": {
       "__experimentalSkipSerialization": [
         "padding"

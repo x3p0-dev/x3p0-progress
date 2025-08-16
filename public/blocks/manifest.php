@@ -97,6 +97,14 @@ return array(
 					'style' => true
 				)
 			),
+			'color' => array(
+				'link' => true,
+				'gradients' => true,
+				'__experimentalDefaultControls' => array(
+					'background' => true,
+					'text' => true
+				)
+			),
 			'spacing' => array(
 				'__experimentalSkipSerialization' => array(
 					'padding'

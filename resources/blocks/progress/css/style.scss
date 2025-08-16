@@ -112,6 +112,11 @@
 		// &-goal {}
 	}
 
+	// Inherit text color if one is set.
+	&.has-text-color &__label {
+		color: inherit;
+	}
+
 	// =====================================================================
 	// Progress bar (and its wrapping container) styles.
 	// =====================================================================

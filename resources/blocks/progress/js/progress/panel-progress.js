@@ -30,13 +30,13 @@ const ProgressPanel = ( {
 } ) => {
 	const panelId = useInstanceId( ProgressPanel );
 
-	const resetGoalItem     = () => setAttributes( { goal: 100    } );
 	const resetProgressItem = () => setAttributes( { progress: 50 } );
+	const resetGoalItem     = () => setAttributes( { goal: 100    } );
 	const resetHeightItem   = () => setAttributes( { height: undefined, heightUnit: undefined } );
 
 	const resetPanel = () => {
-		resetGoalItem();
 		resetProgressItem();
+		resetGoalItem();
 		resetHeightItem();
 	};
 
@@ -48,18 +48,6 @@ const ProgressPanel = ( {
 			resetAll={ resetPanel }
 		>
 			<ToolsPanelItem
-				label={ __( 'Goal', 'x3p0-progress' ) }
-				hasValue={ () => 100 !== goal }
-				onDeselect={ resetGoalItem }
-				panelId={ panelId }
-			>
-				<GoalControl
-					progress={ progress }
-					goal={ goal }
-					setAttributes={ setAttributes }
-				/>
-			</ToolsPanelItem>
-			<ToolsPanelItem
 				label={ __( 'Progress', 'x3p0-progress' ) }
 				isShownByDefault
 				hasValue={ () => 50 !== progress }
@@ -67,6 +55,19 @@ const ProgressPanel = ( {
 				panelId={ panelId }
 			>
 				<ProgressControl
+					progress={ progress }
+					goal={ goal }
+					setAttributes={ setAttributes }
+				/>
+			</ToolsPanelItem>
+			<ToolsPanelItem
+				label={ __( 'Goal', 'x3p0-progress' ) }
+				isShownByDefault
+				hasValue={ () => 100 !== goal }
+				onDeselect={ resetGoalItem }
+				panelId={ panelId }
+			>
+				<GoalControl
 					progress={ progress }
 					goal={ goal }
 					setAttributes={ setAttributes }

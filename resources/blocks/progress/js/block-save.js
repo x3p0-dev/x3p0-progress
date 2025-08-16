@@ -19,10 +19,10 @@ import ProgressElement from './progress/element-progress';
 
 export default function Save( { attributes, className, style } ) {
 	const {
-		backgroundColor,
-		backgroundGradient,
-		foregroundColor,
-		foregroundGradient,
+		progressBackgroundColor,
+		progressBackgroundGradient,
+		progressForegroundColor,
+		progressForegroundGradient,
 		reversed
 	} = attributes;
 
@@ -37,10 +37,10 @@ export default function Save( { attributes, className, style } ) {
 		style: {
 			...style,
 			gap: gapStyle( attributes ),
-			'--x3p0-progress--foreground-color':    colorStyle( foregroundColor ),
-			'--x3p0-progress--background-color':    colorStyle( backgroundColor ),
-			'--x3p0-progress--foreground-gradient': gradientStyle( foregroundGradient ),
-			'--x3p0-progress--background-gradient': gradientStyle( backgroundGradient )
+			'--x3p0-progress--foreground-color':    colorStyle( progressForegroundColor ),
+			'--x3p0-progress--background-color':    colorStyle( progressBackgroundColor ),
+			'--x3p0-progress--foreground-gradient': gradientStyle( progressForegroundGradient ),
+			'--x3p0-progress--background-gradient': gradientStyle( progressBackgroundGradient )
 		}
 	} );
 

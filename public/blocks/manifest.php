@@ -18,16 +18,16 @@ return array(
 		'style' => 'file:./style-index.css',
 		'editorStyle' => 'file:./index.css',
 		'attributes' => array(
-			'backgroundColor' => array(
+			'progressBackgroundColor' => array(
 				'type' => 'string'
 			),
-			'backgroundGradient' => array(
+			'progressBackgroundGradient' => array(
 				'type' => 'string'
 			),
-			'foregroundColor' => array(
+			'pregressForegroundColor' => array(
 				'type' => 'string'
 			),
-			'foregroundGradient' => array(
+			'progressForegroundGradient' => array(
 				'type' => 'string'
 			),
 			'goal' => array(
@@ -98,7 +98,6 @@ return array(
 				)
 			),
 			'color' => array(
-				'link' => true,
 				'gradients' => true,
 				'__experimentalDefaultControls' => array(
 					'background' => true,

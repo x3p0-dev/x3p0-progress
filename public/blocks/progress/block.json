@@ -15,16 +15,16 @@
   "style": "file:./style-index.css",
   "editorStyle": "file:./index.css",
   "attributes": {
-    "backgroundColor": {
+    "progressBackgroundColor": {
       "type": "string"
     },
-    "backgroundGradient": {
+    "progressBackgroundGradient": {
       "type": "string"
     },
-    "foregroundColor": {
+    "pregressForegroundColor": {
       "type": "string"
     },
-    "foregroundGradient": {
+    "progressForegroundGradient": {
       "type": "string"
     },
     "goal": {
@@ -95,7 +95,6 @@
       }
     },
     "color": {
-      "link": true,
       "gradients": true,
       "__experimentalDefaultControls": {
         "background": true,

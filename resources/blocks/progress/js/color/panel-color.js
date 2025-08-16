@@ -28,10 +28,10 @@ import {
 
 const ColorPanel = ( {
 	attributes: {
-		foregroundColor,
-		foregroundGradient,
-		backgroundColor,
-		backgroundGradient
+		progressForegroundColor,
+		progressForegroundGradient,
+		progressBackgroundColor,
+		progressBackgroundGradient
 	},
 	setAttributes
 } ) => {
@@ -66,25 +66,25 @@ const ColorPanel = ( {
 	const colorSettings = [
 		{
 			label: __( 'Progress (Foreground)', 'x3p0-progress' ),
-			value: colorSetting( foregroundColor, colors ),
-			gradientValue: gradientSetting( foregroundGradient, gradients ),
+			value: colorSetting( progressForegroundColor, colors ),
+			gradientValue: gradientSetting( progressForegroundGradient, gradients ),
 			onChange: ( value ) => { setAttributes( {
-				foregroundColor: colorAttribute( value, colors )
+				progressForegroundColor: colorAttribute( value, colors )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
-				foregroundGradient: gradientAttribute( value, gradients )
+				progressForegroundGradient: gradientAttribute( value, gradients )
 			} ) },
 			...colorGradientOptions
 		},
 		{
 			label: __( 'Goal (Background)', 'x3p0-progress' ),
-			value: colorSetting( backgroundColor, colors ),
-			gradientValue: gradientSetting( backgroundGradient, gradients ),
+			value: colorSetting( progressBackgroundColor, colors ),
+			gradientValue: gradientSetting( progressBackgroundGradient, gradients ),
 			onChange: ( value ) => { setAttributes( {
-				backgroundColor: colorAttribute( value, colors )
+				progressBackgroundColor: colorAttribute( value, colors )
 			} ) },
 			onGradientChange: ( value ) => { setAttributes( {
-				backgroundGradient: gradientAttribute( value, gradients )
+				progressBackgroundGradient: gradientAttribute( value, gradients )
 			} ) },
 			...colorGradientOptions
 		}

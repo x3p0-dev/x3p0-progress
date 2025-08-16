@@ -25,9 +25,7 @@ function plugin( string $abstract = '' )
 
 	if ( [] === $bindings ) {
 		$bindings = [
-			'block' => new Block(
-                                untrailingslashit( __DIR__ . '/..' ),
-                        )
+			'block' => new Block(__DIR__ . '/../public/blocks')
 		];
 
 		foreach ( $bindings as $binding ) {

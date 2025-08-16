@@ -51,7 +51,15 @@ class Block
 	 */
         public function register(): void
         {
-                register_block_type( $this->path . '/public' );
+		// Bail if the manifest doesn't exist.
+		if (! file_exists("{$this->path}/manifest.php")) {
+			return;
+		}
+
+		wp_register_block_types_from_metadata_collection(
+			$this->path,
+			"{$this->path}/manifest.php"
+		);
 
 		wp_localize_script(
 			generate_block_asset_handle( 'x3p0/progress', 'editorScript' ),

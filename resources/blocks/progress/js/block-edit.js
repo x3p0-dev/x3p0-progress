@@ -72,8 +72,8 @@ export default function Edit( {
 	// Build the block inspector sidebar controls.
 	// =====================================================================
 
-	const inspectorControls = (
-		<InspectorControls>
+	const settingsControls = (
+		<InspectorControls group="settings">
 			<ProgressPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }
@@ -82,6 +82,11 @@ export default function Edit( {
 				attributes={ attributes }
 				setAttributes={ setAttributes }
 			/>
+		</InspectorControls>
+	);
+
+	const stylesControls = (
+		<InspectorControls group="styles">
 			<ColorPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }
@@ -118,7 +123,8 @@ export default function Edit( {
 	return (
 		<>
 			{ toolbarControls }
-			{ inspectorControls }
+			{ settingsControls }
+			{ stylesControls }
 			<div { ...blockProps }>
 				<LabelElement
 					attributes={ attributes }

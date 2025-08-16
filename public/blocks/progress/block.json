@@ -1,0 +1,153 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "x3p0/progress",
+  "version": "20250815",
+  "title": "X3P0: Progress Bar",
+  "category": "widgets",
+  "keywords": [
+    "progress",
+    "bar"
+  ],
+  "description": "Displays a progress bar.",
+  "textdomain": "x3p0-progress",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "editorStyle": "file:./index.css",
+  "attributes": {
+    "backgroundColor": {
+      "type": "string"
+    },
+    "backgroundGradient": {
+      "type": "string"
+    },
+    "foregroundColor": {
+      "type": "string"
+    },
+    "foregroundGradient": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "integer",
+      "default": 100
+    },
+    "height": {
+      "type": "number"
+    },
+    "heightUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "justifyLabel": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string",
+      "source": "html",
+      "selector": ".wp-block-x3p0-progress__label-text"
+    },
+    "numberFormat": {
+      "type": "object"
+    },
+    "progress": {
+      "type": "integer",
+      "default": 50
+    },
+    "progressId": {
+      "type": "integer",
+      "default": 0
+    },
+    "reversed": {
+      "type": "boolean",
+      "default": false
+    },
+    "showLabel": {
+      "type": "boolean",
+      "default": true
+    },
+    "showGoal": {
+      "type": "boolean",
+      "default": false
+    },
+    "showProgress": {
+      "type": "boolean",
+      "default": true
+    },
+    "shadow": {
+      "type": "object"
+    },
+    "width": {
+      "type": "number"
+    },
+    "widthUnit": {
+      "type": "string",
+      "default": "%"
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "__experimentalBorder": {
+      "__experimentalSkipSerialization": true,
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true,
+      "__experimentalDefaultControls": {
+        "radius": true,
+        "color": true,
+        "width": true,
+        "style": true
+      }
+    },
+    "spacing": {
+      "__experimentalSkipSerialization": [
+        "padding"
+      ],
+      "padding": true,
+      "blockGap": true,
+      "__experimentalDefaultControls": {
+        "padding": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalTextTransform": true
+    }
+  },
+  "example": {
+    "attributes": {
+      "label": "Journey to My First $100K:",
+      "progressId": 999,
+      "goal": 100000,
+      "progress": 78000,
+      "foregroundColor": "var:preset|color|vivid-green-cyan",
+      "backgroundColor": "transparent",
+      "numberFormat": {
+        "style": "currency",
+        "currency": "USD",
+        "currencyDisplay": "symbol"
+      },
+      "style": {
+        "spacing": {
+          "padding": {
+            "top": "4px",
+            "right": "4px",
+            "bottom": "4px",
+            "left": "4px"
+          }
+        }
+      },
+      "borderColor": "black",
+      "className": "is-style-hand-drawn"
+    }
+  }
+}

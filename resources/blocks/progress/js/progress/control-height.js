@@ -2,7 +2,7 @@
  * Progress height control.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2022, Justin Tadlock
+ * @copyright Copyright (c) 2022-2025, Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-progress
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -18,32 +18,32 @@ const HEIGHT_MINS     = { em: 0.25,  rem: 0.25,  px: 4   };
 const HEIGHT_MAXES    = { em: 8,     rem: 8,     px: 128 };
 const STEPS           = { em: 0.005, rem: 0.005, px: 1   };
 
-const HeightControl = ( { height, heightUnit, setAttributes } ) => {
-	const controlId = useInstanceId( HeightControl );
+const HeightControl = ({ height, heightUnit, setAttributes }) => {
+	const controlId = useInstanceId(HeightControl);
 
 	return (
 		<UnitControl
-			label={ __( 'Height', 'x3p0-progress' ) }
+			label={ __('Height', 'x3p0-progress') }
 			id={ `wp-block-x3p0-progress__height-${ controlId }` }
 			min={ HEIGHT_MINS[ heightUnit ] }
 			max={ HEIGHT_MAXES[ heightUnit ] }
 			step={ STEPS[ heightUnit ] }
 			value={ `${ height }${ heightUnit }` }
-			onChange={ ( value ) => {
-				value = parseFloat( value, 10 );
-				setAttributes( {
+			onChange={ (value) => {
+				value = parseFloat(value);
+				setAttributes({
 					height: !! value ? value : undefined,
 					heightUnit: !! value ? heightUnit : 'px'
-				} );
+				});
 			} }
-			onUnitChange={ ( value ) => setAttributes( {
+			onUnitChange={ (value) => setAttributes({
 				height: HEIGHT_DEFAULTS[ value ],
 				heightUnit: value
-			} ) }
-			units={ useCustomUnits( {
-				availableUnits: Object.keys( HEIGHT_DEFAULTS ),
+			}) }
+			units={ useCustomUnits({
+				availableUnits: Object.keys(HEIGHT_DEFAULTS),
 				defaultValues: HEIGHT_DEFAULTS
-			} ) }
+			}) }
 			style={ { maxWidth: 80 } }
 		/>
 	);

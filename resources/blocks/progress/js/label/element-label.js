@@ -2,7 +2,7 @@
  * Returns the `<label>` element for the front end.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2022, Justin Tadlock
+ * @copyright Copyright (c) 2022-2025, Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-progress
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -16,7 +16,7 @@ import {
 	isLongNumberFormat
 } from './utils-label';
 
-export default ( {
+export default ({
 	attributes: {
 		justifyLabel,
 		label,
@@ -30,22 +30,22 @@ export default ( {
 	},
 	isBlockEdit = false,
 	setAttributes
-} ) => {
-	// Creates the label progress html. Note that that the edit and save
-	// contexts are different. Editing uses `RichText`, but saving needs
+}) => {
+	// Creates the label progress html. Note that the edit and save contexts
+	// are different. Editing uses `RichText`, but saving needs
 	// `RichText.Content`.
 	const labelTextHtml = isBlockEdit ? showLabel && (
 		<RichText
 			tagName="span"
 			className="wp-block-x3p0-progress__label-text"
-			aria-label={  __( 'Label text', 'x3p0-progress' ) }
-			placeholder={ __( 'Add label…', 'x3p0-progress' ) }
+			aria-label={ __('Label text', 'x3p0-progress') }
+			placeholder={ __('Add label…', 'x3p0-progress') }
 			value={ label }
 			multiline={ false }
-			onChange={ ( html ) => setAttributes( { label: html } ) }
+			onChange={ (html) => setAttributes({ label: html }) }
 			withoutInteractiveFormatting={ true }
 		/>
-	) : ( showLabel && label ) && (
+	) : (showLabel && label) && (
 		<RichText.Content
 			tagName="span"
 			className="wp-block-x3p0-progress__label-text"
@@ -54,11 +54,11 @@ export default ( {
 	);
 
 	// Creates the label progress html.
-	const labelProgressHtml = ( showLabel && showProgress ) && (
+	const labelProgressHtml = (showLabel && showProgress) && (
 		<span className="wp-block-x3p0-progress__label-progress">
 			{ getFormattedNumber(
 				progress,
-				showGoal && isLongNumberFormat( numberFormat )
+				showGoal && isLongNumberFormat(numberFormat)
 					? { style: 'decimal' }
 					: numberFormat
 			) }
@@ -66,25 +66,25 @@ export default ( {
 	);
 
 	// Creates the label separator html.
-	const labelSepHtml = ( showLabel && showProgress && showGoal ) && (
+	const labelSepHtml = (showLabel && showProgress && showGoal) && (
 		<span className="wp-block-x3p0-progress__label-sep">
-			{ __( '/', 'x3p0-progress' ) }
+			{ __('/', 'x3p0-progress') }
 		</span>
 	);
 
 	// Creates the label goal html.
-	const labelGoalHtml = ( showLabel && showProgress && showGoal ) && (
+	const labelGoalHtml = (showLabel && showProgress && showGoal) && (
 		<span className="wp-block-x3p0-progress__label-goal">
-			{ getFormattedNumber( goal, numberFormat ) }
+			{ getFormattedNumber(goal, numberFormat) }
 		</span>
 	);
 
 	// Creates the label wrapper for the progress and goal numbers.
-	const labelNumHtml = ( labelProgressHtml || labelSepHtml || labelGoalHtml ) && (
+	const labelNumHtml = (labelProgressHtml || labelSepHtml || labelGoalHtml) && (
 		<span className="wp-block-x3p0-progress__label-num">
 			{ labelProgressHtml }
-			{ labelSepHtml      }
-			{ labelGoalHtml     }
+			{ labelSepHtml }
+			{ labelGoalHtml }
 		</span>
 	);
 
@@ -92,13 +92,13 @@ export default ( {
 	const justify = justifyLabel ? { [`justify-${ justifyLabel }`]: true } : {};
 
 	// Combine the inner label HTML into a `<label>` element.
-	return ( labelTextHtml || labelNumHtml ) && (
+	return (labelTextHtml || labelNumHtml) && (
 		<label
-			className={ classnames( {
+			className={ classnames({
 				"wp-block-x3p0-progress__label": true,
 				...justify
-			} ) }
-			for={ `wp-block-x3p0-progress-${ progressId }` }
+			}) }
+			htmlFor={ `wp-block-x3p0-progress-${ progressId }` }
 		>
 			{ labelTextHtml }
 			{ labelNumHtml  }

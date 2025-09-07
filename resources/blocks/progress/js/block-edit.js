@@ -2,7 +2,7 @@
  * Edit component for creating a block that displays a `<progress>` element.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2022, Justin Tadlock
+ * @copyright Copyright (c) 2022-2025-2025, Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-progress
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -13,7 +13,8 @@ import { useEffect }     from '@wordpress/element';
 
 import {
 	InspectorControls,
-	useBlockProps
+	useBlockProps,
+	useInnerBlocksProps
 } from '@wordpress/block-editor';
 
 import BlockToolbarGroup from './toolbar/group-block';
@@ -21,21 +22,22 @@ import OtherToolbarGroup from './toolbar/group-other';
 
 import ProgressPanel from './progress/panel-progress';
 import LabelPanel    from './label/panel-label';
-import ColorPanel    from './color/panel-color';
+
+import ColorControl from './color/control-color';
 
 import LabelElement     from './label/element-label';
 import ProgressElement  from './progress/element-progress';
 
 import { colorStyle  }   from './common/utils-color';
 import { gradientStyle } from './common/utils-gradient';
-import { gapStyle }      from './common/utils-spacing';
 
-export default function Edit( {
+export default function Edit({
 	className,
 	attributes,
 	setAttributes,
-	style
-} ) {
+	style,
+	clientId
+}) {
 	const {
 		progressBackgroundColor,
 		progressBackgroundGradient,
@@ -45,9 +47,9 @@ export default function Edit( {
 	} = attributes;
 
 	// Get the ID of the current instance for label and progress elements.
-	const instanceId = useInstanceId( Edit );
+	const instanceId = useInstanceId(Edit);
 
-	useEffect( () => setAttributes( { progressId: instanceId } ), [ instanceId ] );
+	useEffect(() => setAttributes({ progressId: instanceId }), [ instanceId ]);
 
 	// =====================================================================
 	// Build the block toolbar controls.
@@ -84,10 +86,11 @@ export default function Edit( {
 	);
 
 	const stylesControls = (
-		<InspectorControls group="styles">
-			<ColorPanel
+		<InspectorControls group="color">
+			<ColorControl
 				attributes={ attributes }
 				setAttributes={ setAttributes }
+				clientId={ clientId }
 			/>
 		</InspectorControls>
 	);
@@ -98,20 +101,22 @@ export default function Edit( {
 
 	// Get the block props for the wrapping element.  We need to add custom
 	// CSS properties so that they can be used with pseudo-elements.
-	const blockProps = useBlockProps( {
-		className: classnames( {
+	const blockProps = useBlockProps({
+		className: classnames({
 			className,
 			'is-reversed': reversed
-		} ),
+		}),
 		style: {
 			...style,
-			gap: gapStyle( attributes ),
-			'--x3p0-progress--foreground-color':    colorStyle( progressForegroundColor ),
-			'--x3p0-progress--background-color':    colorStyle( progressBackgroundColor ),
-			'--x3p0-progress--foreground-gradient': gradientStyle( progressForegroundGradient ),
-			'--x3p0-progress--background-gradient': gradientStyle( progressBackgroundGradient )
+			'--x3p0-progress--foreground-color':    colorStyle(progressForegroundColor),
+			'--x3p0-progress--background-color':    colorStyle(progressBackgroundColor),
+			'--x3p0-progress--foreground-gradient': gradientStyle(progressForegroundGradient),
+			'--x3p0-progress--background-gradient': gradientStyle(progressBackgroundGradient)
 		}
-	} );
+	});
+
+	// Need inner block props for layout styles to work properly in the admin.
+	const innerBlockProps = useInnerBlocksProps(blockProps);
 
 	// Return the final block edit component.
 	return (
@@ -119,7 +124,7 @@ export default function Edit( {
 			{ toolbarControls }
 			{ settingsControls }
 			{ stylesControls }
-			<div { ...blockProps }>
+			<div { ...innerBlockProps }>
 				<LabelElement
 					attributes={ attributes }
 					setAttributes={ setAttributes }

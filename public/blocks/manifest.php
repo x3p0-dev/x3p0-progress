@@ -6,7 +6,7 @@ return array(
 		'apiVersion' => 2,
 		'name' => 'x3p0/progress',
 		'version' => '20250815',
-		'title' => 'X3P0: Progress Bar',
+		'title' => 'Progress Bar',
 		'category' => 'widgets',
 		'keywords' => array(
 			'progress',
@@ -42,7 +42,8 @@ return array(
 				'default' => 'px'
 			),
 			'justifyLabel' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'default' => 'between'
 			),
 			'label' => array(
 				'type' => 'string',
@@ -85,7 +86,6 @@ return array(
 			),
 			'html' => false,
 			'__experimentalBorder' => array(
-				'__experimentalSkipSerialization' => true,
 				'radius' => true,
 				'color' => true,
 				'width' => true,
@@ -97,6 +97,11 @@ return array(
 					'style' => true
 				)
 			),
+			'__experimentalStyle' => array(
+				'spacing' => array(
+					'blockGap' => 'var(--wp--preset--spacing--20, 0.5rem)'
+				)
+			),
 			'color' => array(
 				'gradients' => true,
 				'__experimentalDefaultControls' => array(
@@ -104,14 +109,23 @@ return array(
 					'text' => true
 				)
 			),
+			'layout' => array(
+				'allowSwitching' => false,
+				'allowInheriting' => false,
+				'allowEditing' => false,
+				'default' => array(
+					'type' => 'flex',
+					'flexWrap' => 'nowrap',
+					'orientation' => 'vertical'
+				)
+			),
+			'shadow' => true,
 			'spacing' => array(
-				'__experimentalSkipSerialization' => array(
-					'padding'
-				),
+				'margin' => true,
 				'padding' => true,
 				'blockGap' => true,
 				'__experimentalDefaultControls' => array(
-					'padding' => true
+					'blockGap' => true
 				)
 			),
 			'typography' => array(
@@ -129,25 +143,11 @@ return array(
 				'progressId' => 999,
 				'goal' => 100000,
 				'progress' => 78000,
-				'foregroundColor' => 'var:preset|color|vivid-green-cyan',
-				'backgroundColor' => 'transparent',
 				'numberFormat' => array(
 					'style' => 'currency',
 					'currency' => 'USD',
 					'currencyDisplay' => 'symbol'
-				),
-				'style' => array(
-					'spacing' => array(
-						'padding' => array(
-							'top' => '4px',
-							'right' => '4px',
-							'bottom' => '4px',
-							'left' => '4px'
-						)
-					)
-				),
-				'borderColor' => 'black',
-				'className' => 'is-style-hand-drawn'
+				)
 			)
 		)
 	)

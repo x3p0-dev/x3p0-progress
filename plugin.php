@@ -16,7 +16,10 @@ namespace X3P0\Progress;
 
 # Load classes and files.
 require_once 'src/Block.php';
-require_once 'src/functions-helpers.php';
 
 # Bootstrap the plugin.
-plugin();
+add_action(
+	'plugins_loaded',
+	fn() => (new Block(__DIR__ . '/public/blocks'))->boot(),
+	PHP_INT_MIN
+);

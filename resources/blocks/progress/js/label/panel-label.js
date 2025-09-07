@@ -2,7 +2,7 @@
  * Progress settings block inspector panel.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2022, Justin Tadlock
+ * @copyright Copyright (c) 2022-2025, Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-progress
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -21,7 +21,7 @@ import {
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
 
-const LabelPanel = ( {
+const LabelPanel = ({
 	attributes: {
 		justifyLabel,
 		showGoal,
@@ -30,14 +30,14 @@ const LabelPanel = ( {
 		numberFormat
 	},
 	setAttributes
-} ) => {
-	const panelId = useInstanceId( LabelPanel );
+}) => {
+	const panelId = useInstanceId(LabelPanel);
 
-	const resetShowLabel    = () => setAttributes( { showLabel:    false     } );
-	const resetShowProgress = () => setAttributes( { showProgress: false     } );
-	const resetShowGoal     = () => setAttributes( { showGoal:     false     } );
-	const resetJustifyLabel = () => setAttributes( { justifyLabel: undefined } );
-	const resetFormatItem   = () => setAttributes( { numberFormat: undefined } );
+	const resetShowLabel    = () => setAttributes({ showLabel:    false     });
+	const resetShowProgress = () => setAttributes({ showProgress: false     });
+	const resetShowGoal     = () => setAttributes({ showGoal:     false     });
+	const resetJustifyLabel = () => setAttributes({ justifyLabel: undefined });
+	const resetFormatItem   = () => setAttributes({ numberFormat: undefined });
 
 	const resetPanel = () => {
 		resetShowLabel();
@@ -49,19 +49,19 @@ const LabelPanel = ( {
 
 	return (
 		<ToolsPanel
-			label={ __( 'Label', 'x3p0-progress' ) }
+			label={ __('Label', 'x3p0-progress') }
 			panelId={ panelId }
 			className="wp-block-x3p0-progress-panel__label"
 			resetAll={ resetPanel }
 		>
 			<ToolsPanelItem
-				label={ __( 'Show Label', 'x3p0-progress' ) }
+				label={ __('Show Label', 'x3p0-progress') }
 				isShownByDefault
 				hasValue={ () => showLabel }
 				onDeselect={ resetShowLabel }
-				onSelect={ () => setAttributes( {
+				onSelect={ () => setAttributes({
 					showLabel: true
-				} ) }
+				}) }
 				panelId={ panelId }
 			>
 				<ShowLabelControl
@@ -71,13 +71,13 @@ const LabelPanel = ( {
 			</ToolsPanelItem>
 			{ showLabel && (
 				<ToolsPanelItem
-					label={ __( 'Show Progress', 'x3p0-progress' ) }
+					label={ __('Show Progress', 'x3p0-progress') }
 					isShownByDefault
 					hasValue={ () => showProgress }
 					onDeselect={ resetShowProgress }
-					onSelect={ () => setAttributes( {
+					onSelect={ () => setAttributes({
 						showProgress: true
-					} ) }
+					}) }
 					panelId={ panelId }
 				>
 					<ShowProgressControl
@@ -86,14 +86,14 @@ const LabelPanel = ( {
 					/>
 				</ToolsPanelItem>
 			) }
-			{ ( showLabel && showProgress ) && (
+			{ (showLabel && showProgress) && (
 				<ToolsPanelItem
-					label={ __( 'Show Goal', 'x3p0-progress' ) }
+					label={ __('Show Goal', 'x3p0-progress') }
 					hasValue={ () => showGoal }
 					onDeselect={ resetShowGoal }
-					onSelect={ () => setAttributes( {
+					onSelect={ () => setAttributes({
 						showGoal: true
-					} ) }
+					}) }
 					panelId={ panelId }
 				>
 					<ShowGoalControl
@@ -102,9 +102,9 @@ const LabelPanel = ( {
 					/>
 				</ToolsPanelItem>
 			) }
-			{ ( showLabel && showProgress ) && (
+			{ (showLabel && showProgress) && (
 				<ToolsPanelItem
-					label={ __( 'Justification', 'x3p0-progress' ) }
+					label={ __('Justification', 'x3p0-progress') }
 					hasValue={ () => !! justifyLabel }
 					onDeselect={ resetJustifyLabel }
 					panelId={ panelId }
@@ -115,9 +115,9 @@ const LabelPanel = ( {
 					/>
 				</ToolsPanelItem>
 			) }
-			{ ( showLabel && showProgress ) && (
+			{ (showLabel && showProgress) && (
 				<ToolsPanelItem
-					label={ __( 'Number Format', 'x3p0-progress' ) }
+					label={ __('Number Format', 'x3p0-progress') }
 					hasValue={ () => !! numberFormat }
 					onDeselect={ resetFormatItem }
 					panelId={ panelId }

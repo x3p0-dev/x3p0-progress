@@ -2,7 +2,7 @@
  * Progress settings block inspector panel.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2022, Justin Tadlock
+ * @copyright Copyright (c) 2022-2025, Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-progress
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -19,7 +19,7 @@ import {
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
 
-const ProgressPanel = ( {
+const ProgressPanel = ({
 	attributes: {
 		goal,
 		height,
@@ -27,12 +27,12 @@ const ProgressPanel = ( {
 		progress
 	},
 	setAttributes
-} ) => {
-	const panelId = useInstanceId( ProgressPanel );
+}) => {
+	const panelId = useInstanceId(ProgressPanel);
 
-	const resetProgressItem = () => setAttributes( { progress: 50 } );
-	const resetGoalItem     = () => setAttributes( { goal: 100    } );
-	const resetHeightItem   = () => setAttributes( { height: undefined, heightUnit: undefined } );
+	const resetProgressItem = () => setAttributes({ progress: 50 });
+	const resetGoalItem     = () => setAttributes({ goal: 100    });
+	const resetHeightItem   = () => setAttributes({ height: undefined, heightUnit: undefined });
 
 	const resetPanel = () => {
 		resetProgressItem();
@@ -42,13 +42,13 @@ const ProgressPanel = ( {
 
 	return (
 		<ToolsPanel
-			label={ __( 'Progress', 'x3p0-progress' ) }
+			label={ __('Progress', 'x3p0-progress') }
 			panelId={ panelId }
 			className="wp-block-x3p0-progress-panel__progress"
 			resetAll={ resetPanel }
 		>
 			<ToolsPanelItem
-				label={ __( 'Progress', 'x3p0-progress' ) }
+				label={ __('Progress', 'x3p0-progress') }
 				isShownByDefault
 				hasValue={ () => 50 !== progress }
 				onDeselect={ resetProgressItem }
@@ -61,7 +61,7 @@ const ProgressPanel = ( {
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __( 'Goal', 'x3p0-progress' ) }
+				label={ __('Goal', 'x3p0-progress') }
 				isShownByDefault
 				hasValue={ () => 100 !== goal }
 				onDeselect={ resetGoalItem }
@@ -74,7 +74,7 @@ const ProgressPanel = ( {
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __( 'Height', 'x3p0-progress' ) }
+				label={ __('Height', 'x3p0-progress') }
 				hasValue={ () => !! height }
 				onDeselect={ resetHeightItem }
 				panelId={ panelId }

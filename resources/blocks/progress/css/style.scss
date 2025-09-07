@@ -13,16 +13,13 @@
 .wp-block-x3p0-progress {
 
 	// Set up some default custom properties.  Theme authors can overrule
-	// these via `settings.custom.x3p0Progress.{name}` in their `theme.json`
+	// these via `settings.custom.x3p0/progress.{name}` in their `theme.json`
 	// files.  Don't blame me for the crazy hyphens. That's all on WP for
 	// hyphenating numbers + letters instead of by letter case.  Regardless,
 	// I'm fixing it in the actual CSS here so that it's somewhat readable.
 
 	// Set progress bar height via `settings.x3p0Progress.height`.
-	--x3p0-progress--height: var( --wp--custom--x-3-p-0-progress--height, 1.5rem );
-
-	// Set label + progress gap via `settings.x3p0Progress.gap`.
-	--x3p0-progress--gap: var( --wp--custom--x-3-p-0-progress--gap, 0.5rem );
+	--x3p0-progress--height: var(--wp--custom--x-3-p-0-progress--height, 1.5rem);
 
 	// Set the label's `justify-content` via `settings.x3p0Progress.justifyLabel`.
 	--x3p0-progress--justify-label: var(
@@ -32,14 +29,14 @@
 
 	// Set a foreground color via `settings.x3p0Progress.foregroundColor`.
 	--x3p0-progress--foreground-color: var(
-		--wp--custom--x-3-p-0-progress--foreground-color,
-		var( --wp--preset--color--primary, var( --wp--preset--color--vivid-cyan-blue ) )
+		--wp--custom--x-3-p-0-progress--color--foreground,
+		var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue))
 	);
 
 	// Set a background color via `settings.x3p0Progress.backgroundColor`.
 	--x3p0-progress--background-color: var(
-		--wp--custom--x-3-p-0-progress--background-color,
-		var( --wp--preset--color--secondary, var( --wp--preset--color--pale-cyan-blue ) )
+		--wp--custom--x-3-p-0-progress--color--background,
+		var(--wp--preset--color--secondary, var(--wp--preset--color--pale-cyan-blue))
 	);
 
 	// Set foreground gradient via `settings.x3p0Progress.foregroundGradient`.
@@ -54,17 +51,12 @@
 		none
 	);
 
-	// Flex layout.
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+	// Border-box FTW! 🏆
+	box-sizing: border-box;
 
 	// Fall back for themes where there is no consistent gap/margin between
 	// elements. This is about the best we can do.
-	margin-top: var( --wp--style--block-gap, 2em );
-
-	// Sets the gap between the `<label>` and `<progress>` elements.
-	gap: var( --x3p0-progress--gap );
+	margin-top: var(--wp--style--block-gap, 2em);
 
 	// Need a 100% width to make sure it fills the width in flex layouts.
 	width: 100%;
@@ -85,7 +77,7 @@
 		gap: 1ch;
 
 		// Justify the label content.
-		justify-content: var( --x3p0-progress--justify-label );
+		justify-content: var(--x3p0-progress--justify-label);
 
 		&.justify-left    { --x3p0-progress--justify-label: left;          }
 		&.justify-center  { --x3p0-progress--justify-label: center;        }
@@ -122,42 +114,19 @@
 	// =====================================================================
 
 	// Wrapper `<div>` for the `<progress>` element. The extra wrapper
-	// gives us more flexibility for custom styles.  Also, the user-supplied
+	// gives us more flexibility for custom styles. Also, the user-supplied
 	// border (or `theme.json`-supplied) is added to this element instead of
 	// the block wrapper.
 	&__container {
 		box-sizing: border-box;
 		width: 100%;
 		overflow: hidden;
-
-		// Sets a color for the container, which actually doesn't have
-		// any text.  However, when there is no color set for the box-
-		// shadow, it falls back to currentColor.  We're just controlling
-		// that default by setting it here.
-		color: var( --x3p0-progress--foreground-color );
-
-		// Match the default border color to the progress value color.
-		// This at least gives us something that looks halfway decent in
-		// most scenarios where a specific color isn't set.
-		border-color: var( --x3p0-progress--foreground-color );
-
-		// Fall back to transparent background when there is a border
-		// color. !IMPORTANT! Don't remove the extra call to the same
-		// custom property. Otherwise, this will overwrite user
-		// customizations from the editor with its higher specificity.
-		&.has-border-color {
-			--x3p0-progress--background-color: var(
-				--x3p0-progress--background-color(
-				--wp--custom--x-3-p-0-progress--background,
-				var( --wp--preset--color--secondary, transparent )
-			) );
-		}
 	}
 
 	// Handling for the `<progress>` element. It's probably best not to muck
 	// around with most of these values. Fire, smoke, and dragons lie ahead.
 	// I've already walked through the fire and smoke to eventually slay the
-	// beast at the end.  But, hey, if there's a better cross-browser way of
+	// beast at the end. But, hey, if there's a better cross-browser way of
 	// handling this, let me know.
 	&__bar {
 		// Kill browsers' default handling for this.
@@ -166,13 +135,13 @@
 		        appearance: none;
 
 		// Finally getting to the actual fun part of the CSS for our
-		// beloved `<progress>` element.  *Maybe.*
+		// beloved `<progress>` element. *Maybe.*
 		display: block;
 		overflow: hidden;
 		width: 100%;
-		height: var( --x3p0-progress--height );
-		background-color: var( --x3p0-progress--background-color );
-		background-image: var( --x3p0-progress--background-gradient );
+		height: var(--x3p0-progress--height);
+		background-color: var(--x3p0-progress--background-color);
+		background-image: var(--x3p0-progress--background-gradient);
 		border-radius: inherit;
 
 		// Remove border from Firefox that's left over, despite setting
@@ -182,10 +151,10 @@
 		// Possibly works in IE for the foreground color. Not bothering
 		// to actually check this because I value my sanity too much to
 		// ever install IE again.
-		color: var( --x3p0-progress--foreground-color );
+		color: var(--x3p0-progress--foreground-color);
 
 		// Wrapper element for the bar and value pseudo elements in
-		// webkit browsers.  We need this so that border-radius
+		// webkit browsers. We need this so that border-radius
 		// inheritance trickles down the stack.
 		&::-webkit-progress-inner-element {
 			border-radius: inherit;
@@ -204,13 +173,13 @@
 
 		// This is the foreground pseudo element for webkit browsers.
 		// Note that this must be kept separate from the following
-		// code for `::moz-progress-bar`.  Otherwise, it breaks in Edge,
+		// code for `::moz-progress-bar`. Otherwise, it breaks in Edge,
 		// leaving the value at the default green color.
 		&::-webkit-progress-value {
 			height: 100%;
 			display: block;
-			background-color: var( --x3p0-progress--foreground-color );
-			background-image: var( --x3p0-progress--foreground-gradient );
+			background-color: var(--x3p0-progress--foreground-color);
+			background-image: var(--x3p0-progress--foreground-gradient);
 			border-radius: inherit;
 		}
 
@@ -218,8 +187,8 @@
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;
-			background-color: var( --x3p0-progress--foreground-color );
-			background-image: var( --x3p0-progress--foreground-gradient );
+			background-color: var(--x3p0-progress--foreground-color);
+			background-image: var(--x3p0-progress--foreground-gradient);
 			border-radius: inherit;
 		}
 	}
@@ -232,50 +201,10 @@
 	// `<label>` and `<progress>` element, at least visually. In reality,
 	// the markup stays the same.
 	&.is-reversed {
-		// Use some `!important` magic to overrule whatever it is that
-		// WordPress thinks should happen.
 		flex-direction: column-reverse;
 
 		.wp-block-x3p0-progress__label {
 			align-items: flex-start;
-		}
-	}
-
-	// =====================================================================
-	// Custom block styles.
-	// =====================================================================
-
-	// Hand-drawn style.
-	&.is-style-hand-drawn {
-		// We don't want to overwrite the full shadow for this style.
-		// We just want to overwrite the default while still allowing
-		// theme styles to rule.
-		--x3p0-progress--shadow: var(
-			--wp--custom--x-3-p-0-progress--foreground-color,
-			var(
-				--wp--custom--shadow,
-				0 1px 3px 0 rgba( 0, 0, 0, 0.1 ),
-		                        0 1px 2px 0 rgba( 0, 0, 0, 0.06 )
-			)
-		);
-
-		// Most of the below handles the border radius for the container
-		// and pseudo elements.  We need the `!important` rule to make
-		// sure no other border-radius styles take over.  This is what
-		// creates the "hand drawn" design, so it's kind of important.
-		.wp-block-x3p0-progress__container {
-			border: 2px solid var( --x3p0-progress--foreground-color );
-			border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
-		}
-
-		.wp-block-x3p0-progress__bar {
-			&::-webkit-progress-value {
-				border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
-			}
-
-			&::-moz-progress-bar {
-				border-radius: 255px 15px 225px 15px/15px 225px 15px 255px !important;
-			}
 		}
 	}
 }

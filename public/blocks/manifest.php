@@ -78,6 +78,11 @@ return array(
 				'default' => true
 			)
 		),
+		'selectors' => array(
+			'color' => array(
+				'text' => '.wp-block-x3p0-progress, .wp-block-x3p0-progress__label'
+			)
+		),
 		'supports' => array(
 			'anchor' => true,
 			'align' => array(

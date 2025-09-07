@@ -72,6 +72,11 @@
 			"default": true
 		}
 	},
+	"selectors": {
+		"color": {
+			"text": ".wp-block-x3p0-progress, .wp-block-x3p0-progress__label"
+		}
+	},
 	"supports": {
 		"anchor": true,
 		"align": [

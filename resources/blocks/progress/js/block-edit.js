@@ -14,7 +14,8 @@ import { useEffect }     from '@wordpress/element';
 import {
 	InspectorControls,
 	useBlockProps,
-	useInnerBlocksProps
+	useInnerBlocksProps,
+	useSetting
 } from '@wordpress/block-editor';
 
 import BlockToolbarGroup from './toolbar/group-block';
@@ -48,6 +49,10 @@ export default function Edit({
 
 	// Get the ID of the current instance for label and progress elements.
 	const instanceId = useInstanceId(Edit);
+
+	// Determine whether the user is allowed to set background colors for
+	// the block.
+	const supportsBackground = useSetting('color.background');
 
 	useEffect(() => setAttributes({ progressId: instanceId }), [ instanceId ]);
 
@@ -85,7 +90,11 @@ export default function Edit({
 		</InspectorControls>
 	);
 
-	const stylesControls = (
+	// We only add the color controls if the user has permission to edit
+	// background colors. There's no specific `theme.json` setting that can
+	// be set for custom color options, but since both of the colors for the
+	// block are technically backgrounds, we use the Core setting here.
+	const stylesControls = supportsBackground && (
 		<InspectorControls group="color">
 			<ColorControl
 				attributes={ attributes }

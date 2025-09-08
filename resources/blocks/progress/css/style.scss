@@ -76,6 +76,14 @@
 		// Justify the label content.
 		justify-content: var(--x3p0-progress--justify-label);
 
+		// Inherit typography from the parent.
+		font-family: inherit;
+		font-size: inherit;
+		font-style: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		text-transform: inherit;
+
 		&.justify-left    { --x3p0-progress--justify-label: left;          }
 		&.justify-center  { --x3p0-progress--justify-label: center;        }
 		&.justify-right   { --x3p0-progress--justify-label: right;         }

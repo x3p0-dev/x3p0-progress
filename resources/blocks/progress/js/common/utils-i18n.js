@@ -7,7 +7,7 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
- import { __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 // Object pulled in via `wp_localize_script()` from `src/Block.php`.
 const { locale } = x3p0Progress;
@@ -43,7 +43,7 @@ export const locales = () => {
 	try   { locales = Intl.getCanonicalLocales(locale); }
 	catch { locales = Intl.getCanonicalLocales(DEFAULT_LOCALE); }
 
-	return [ locales ];
+	return locales;
 };
 
 /**

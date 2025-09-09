@@ -1,10 +1,8 @@
 {
 	"name": "x3p0-progress",
-	"version": "1.0.0",
 	"description": "Displays a progress element.",
-	"author": "justintadlock",
-	"homepage": "https://justintadlock.com",
-	"main": "build/index.js",
+	"author": "Justin Tadlock",
+	"homepage": "https://github.com/x3p0-dev/x3p0-progress",
 	"scripts": {
 		"start": "npm run start:blocks && npm run manifest",
 		"build": "npm run build:blocks && npm run manifest",

@@ -3,7 +3,7 @@
 return array(
 	'progress' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 2,
+		'apiVersion' => 3,
 		'name' => 'x3p0/progress',
 		'version' => '20250815',
 		'title' => 'Progress Bar',

@@ -21,13 +21,13 @@ return array(
 			'progressBackgroundColor' => array(
 				'type' => 'string'
 			),
-			'progressBackgroundGradient' => array(
+			'customProgressBackgroundColor' => array(
 				'type' => 'string'
 			),
-			'pregressForegroundColor' => array(
+			'progressForegroundColor' => array(
 				'type' => 'string'
 			),
-			'progressForegroundGradient' => array(
+			'customProgressForegroundColor' => array(
 				'type' => 'string'
 			),
 			'goal' => array(

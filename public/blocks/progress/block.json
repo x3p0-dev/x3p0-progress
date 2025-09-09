@@ -18,13 +18,13 @@
     "progressBackgroundColor": {
       "type": "string"
     },
-    "progressBackgroundGradient": {
+    "customProgressBackgroundColor": {
       "type": "string"
     },
-    "pregressForegroundColor": {
+    "progressForegroundColor": {
       "type": "string"
     },
-    "progressForegroundGradient": {
+    "customProgressForegroundColor": {
       "type": "string"
     },
     "goal": {

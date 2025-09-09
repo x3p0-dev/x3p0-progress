@@ -15,7 +15,8 @@ import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	useSetting
+	useSetting,
+	withColors
 } from '@wordpress/block-editor';
 
 import BlockToolbarGroup from './toolbar/group-block';
@@ -29,21 +30,20 @@ import ColorControl from './color/control-color';
 import LabelElement     from './label/element-label';
 import ProgressElement  from './progress/element-progress';
 
-import { colorStyle  }   from './common/utils-color';
-import { gradientStyle } from './common/utils-gradient';
-
-export default function Edit({
+const Edit = ({
 	className,
 	attributes,
 	setAttributes,
+	progressBackgroundColor,
+	progressForegroundColor,
+	setProgressBackgroundColor,
+	setProgressForegroundColor,
 	style,
 	clientId
-}) {
+}) => {
 	const {
-		progressBackgroundColor,
-		progressBackgroundGradient,
-		progressForegroundColor,
-		progressForegroundGradient,
+		customProgressBackgroundColor,
+		customProgressForegroundColor,
 		reversed
 	} = attributes;
 
@@ -100,6 +100,10 @@ export default function Edit({
 				attributes={ attributes }
 				setAttributes={ setAttributes }
 				clientId={ clientId }
+				progressBackgroundColor={ progressBackgroundColor }
+				progressForegroundColor={ progressForegroundColor }
+				setProgressBackgroundColor={ setProgressBackgroundColor }
+				setProgressForegroundColor={ setProgressForegroundColor }
 			/>
 		</InspectorControls>
 	);
@@ -117,10 +121,12 @@ export default function Edit({
 		}),
 		style: {
 			...style,
-			'--x3p0-progress--foreground-color':    colorStyle(progressForegroundColor),
-			'--x3p0-progress--background-color':    colorStyle(progressBackgroundColor),
-			'--x3p0-progress--foreground-gradient': gradientStyle(progressForegroundGradient),
-			'--x3p0-progress--background-gradient': gradientStyle(progressBackgroundGradient)
+			'--x3p0-progress--foreground-color': progressForegroundColor.slug
+				? `var(--wp--preset--color--${progressForegroundColor.slug}, ${customProgressForegroundColor})`
+				: customProgressForegroundColor,
+			'--x3p0-progress--background-color': progressBackgroundColor.slug
+				? `var(--wp--preset--color--${progressBackgroundColor.slug}, ${customProgressBackgroundColor})`
+				: customProgressBackgroundColor
 		}
 	});
 
@@ -143,4 +149,9 @@ export default function Edit({
 			</div>
 		</>
 	);
-}
+};
+
+export default withColors({
+	progressBackgroundColor: 'progress-background-color',
+	progressForegroundColor: 'progress-foreground-color'
+})(Edit);

@@ -10,18 +10,15 @@
 import classnames from 'classnames';
 import {useBlockProps, useInnerBlocksProps} from '@wordpress/block-editor';
 
-import {colorStyle}    from './common/utils-color';
-import {gradientStyle} from './common/utils-gradient';
-
 import LabelElement    from './label/element-label';
 import ProgressElement from './progress/element-progress';
 
 export default function Save({ attributes, className, style }) {
 	const {
 		progressBackgroundColor,
-		progressBackgroundGradient,
 		progressForegroundColor,
-		progressForegroundGradient,
+		customProgressBackgroundColor,
+		customProgressForegroundColor,
 		reversed
 	} = attributes;
 
@@ -35,10 +32,12 @@ export default function Save({ attributes, className, style }) {
 		}),
 		style: {
 			...style,
-			'--x3p0-progress--foreground-color':    colorStyle(progressForegroundColor),
-			'--x3p0-progress--background-color':    colorStyle(progressBackgroundColor),
-			'--x3p0-progress--foreground-gradient': gradientStyle(progressForegroundGradient),
-			'--x3p0-progress--background-gradient': gradientStyle(progressBackgroundGradient)
+			'--x3p0-progress--foreground-color': progressForegroundColor !== undefined
+				? `var(--wp--preset--color--${progressForegroundColor}, ${customProgressForegroundColor})`
+				: customProgressForegroundColor,
+			'--x3p0-progress--background-color': progressBackgroundColor !== undefined
+				? `var(--wp--preset--color--${progressBackgroundColor}, ${customProgressBackgroundColor})`
+				: customProgressBackgroundColor
 		}
 	});
 

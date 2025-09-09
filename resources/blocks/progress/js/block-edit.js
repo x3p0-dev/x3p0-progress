@@ -15,7 +15,7 @@ import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	useSetting,
+	useSettings,
 	withColors
 } from '@wordpress/block-editor';
 
@@ -52,7 +52,7 @@ const Edit = ({
 
 	// Determine whether the user is allowed to set background colors for
 	// the block.
-	const supportsBackground = useSetting('color.background');
+	const [supportsBackground] = useSettings('color.background');
 
 	useEffect(() => setAttributes({ progressId: instanceId }), [ instanceId ]);
 

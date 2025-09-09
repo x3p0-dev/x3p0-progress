@@ -1,4 +1,4 @@
-=== X3P0 Progress ===
+=== Progress Bar Block ===
 
 Contributors: greenshady
 Tags: block, blocks, gutenberg, progress

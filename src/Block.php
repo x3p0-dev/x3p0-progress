@@ -34,11 +34,6 @@ class Block
 	 */
 	public function register(): void
 	{
-		// Bail if the manifest doesn't exist.
-		if (! file_exists("{$this->path}/manifest.php")) {
-			return;
-		}
-
 		wp_register_block_types_from_metadata_collection(
 			$this->path,
 			"{$this->path}/manifest.php"

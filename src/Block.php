@@ -15,25 +15,25 @@ namespace X3P0\Progress;
  */
 class Block
 {
-        /**
-         * Sets up object state.
-         */
-        public function __construct(protected string $path)
+	/**
+	 * Sets up object state.
+	 */
+	public function __construct(protected string $path)
 	{}
 
-        /**
-         * Boots the component, running its actions/filters.
-         */
-        public function boot(): void
-        {
-                add_action('init', [$this, 'register']);
-        }
+	/**
+	 * Boots the component, running its actions/filters.
+	 */
+	public function boot(): void
+	{
+		add_action('init', [$this, 'register']);
+	}
 
 	/**
 	 * Registers the block with WordPress.
 	 */
-        public function register(): void
-        {
+	public function register(): void
+	{
 		// Bail if the manifest doesn't exist.
 		if (! file_exists("{$this->path}/manifest.php")) {
 			return;
@@ -51,5 +51,5 @@ class Block
 				'locale' => str_replace('_', '-', get_locale())
 			]
 		);
-        }
+	}
 }

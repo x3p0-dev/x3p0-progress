@@ -32,12 +32,12 @@ export default function Save({ attributes, className, style }) {
 		}),
 		style: {
 			...style,
-			'--x3p0-progress--foreground-color': progressForegroundColor !== undefined
+			'--x3p0-progress--color--background': progressBackgroundColor !== undefined
+				? `var(--wp--preset--color--${progressBackgroundColor}, ${customProgressBackgroundColor})`
+				: customProgressBackgroundColor,
+			'--x3p0-progress--color--foreground': progressForegroundColor !== undefined
 				? `var(--wp--preset--color--${progressForegroundColor}, ${customProgressForegroundColor})`
 				: customProgressForegroundColor,
-			'--x3p0-progress--background-color': progressBackgroundColor !== undefined
-				? `var(--wp--preset--color--${progressBackgroundColor}, ${customProgressBackgroundColor})`
-				: customProgressBackgroundColor
 		}
 	});
 

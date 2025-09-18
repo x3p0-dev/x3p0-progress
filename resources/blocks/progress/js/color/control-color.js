@@ -30,17 +30,26 @@ export default ({
 	// settings for our Color panel.
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
 
+	// Settings shared across all color options.
+	const sharedColorSettings = {
+		clearable: true,
+		enableAlpha: true,
+		hasColorsOrGradients: false,
+		isShownByDefault: true
+	};
+
 	const foregroundSettings = {
 		label: __('Progress (Foreground)', 'x3p0-progress'),
 		colorValue: progressForegroundColor.color || customProgressForegroundColor,
 		onColorChange: (value) => {
 			setProgressForegroundColor(value);
-
-			setAttributes({
-				customProgressForegroundColor: value
-			});
+			setAttributes({ customProgressForegroundColor: value });
 		},
-		isShownByDefault: true
+		resetAllFilter: () => {
+			setProgressForegroundColor(undefined);
+			setAttributes({ customProgressForegroundColor: undefined });
+		},
+		...sharedColorSettings
 	};
 
 	const backgroundSettings = {
@@ -48,12 +57,13 @@ export default ({
 		colorValue: progressBackgroundColor.color || customProgressBackgroundColor,
 		onColorChange: (value) => {
 			setProgressBackgroundColor(value);
-
-			setAttributes({
-				customProgressBackgroundColor: value
-			});
+			setAttributes({ customProgressBackgroundColor: value });
 		},
-		isShownByDefault: true
+		resetAllFilter: () => {
+			setProgressBackgroundColor(undefined);
+			setAttributes({ customProgressBackgroundColor: undefined });
+		},
+		...sharedColorSettings
 	};
 
 	return (
@@ -62,18 +72,12 @@ export default ({
 				settings={ [ foregroundSettings ] }
 				panelId={ clientId }
 				__experimentalIsRenderedInSidebar={ true }
-				__experimentalHasMultipleOrigins={ true }
-				hasColorsOrGradients={ false }
-				disableCustomColors={ false }
 				{ ...colorGradientOptions }
 			/>
 			<ColorGradientSettingsDropdown
 				settings={ [ backgroundSettings ] }
 				panelId={ clientId }
 				__experimentalIsRenderedInSidebar={ true }
-				__experimentalHasMultipleOrigins={ true }
-				hasColorsOrGradients={ false }
-				disableCustomColors={ false }
 				{ ...colorGradientOptions }
 			/>
 		</>

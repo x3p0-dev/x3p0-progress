@@ -12,43 +12,31 @@
 /// are used instead.
 .wp-block-x3p0-progress {
 
-	// Set up some default custom properties.  Theme authors can overrule
+	// Set up some default custom properties. Theme authors can overrule
 	// these via `settings.custom.x3p0/progress.{name}` in their `theme.json`
-	// files.  Don't blame me for the crazy hyphens. That's all on WP for
-	// hyphenating numbers + letters instead of by letter case.  Regardless,
+	// files. Don't blame me for the crazy hyphens. That's all on WP for
+	// hyphenating numbers + letters instead of by letter case. Regardless,
 	// I'm fixing it in the actual CSS here so that it's somewhat readable.
 
-	// Set progress bar height via `settings.x3p0Progress.height`.
+	// Set progress bar height via `settings.x3p0/progress.height`.
 	--x3p0-progress--height: var(--wp--custom--x-3-p-0-progress--height, 1.5rem);
 
-	// Set the label's `justify-content` via `settings.x3p0Progress.justifyLabel`.
+	// Set the label's justification via `settings.x3p0/progress.justifyLabel`.
 	--x3p0-progress--justify-label: var(
 		--wp--custom--x-3-p-0-progress--justify-label,
 		left
 	);
 
-	// Set a foreground color via `settings.x3p0Progress.foregroundColor`.
-	--x3p0-progress--foreground-color: var(
+	// Set a background color via `settings.x3p0/progress.color.background`.
+	--x3p0-progress--color--background: var(
+			--wp--custom--x-3-p-0-progress--color--background,
+			var(--wp--preset--color--secondary, var(--wp--preset--color--pale-cyan-blue))
+	);
+
+	// Set a foreground color via `settings.x3p0/progress.color.foreground`.
+	--x3p0-progress--color--foreground: var(
 		--wp--custom--x-3-p-0-progress--color--foreground,
 		var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue))
-	);
-
-	// Set a background color via `settings.x3p0Progress.backgroundColor`.
-	--x3p0-progress--background-color: var(
-		--wp--custom--x-3-p-0-progress--color--background,
-		var(--wp--preset--color--secondary, var(--wp--preset--color--pale-cyan-blue))
-	);
-
-	// Set foreground gradient via `settings.x3p0Progress.foregroundGradient`.
-	--x3p0-progress--foreground-gradient: var(
-		--wp--custom--x-3-p-0-progress--foreground-gradient,
-		none
-	);
-
-	// Set foreground gradient via `settings.x3p0Progress.backgroundGradient`.
-	--x3p0-progress--background-gradient: var(
-		--wp--custom--x-3-p-0-progress--background-gradient,
-		none
 	);
 
 	// Border-box FTW! 🏆
@@ -74,7 +62,7 @@
 		gap: 1ch;
 
 		// Justify the label content.
-		justify-content: var(--x3p0-progress--justify-label);
+		justify-content: var(--x3p0-progress--justify-label, left);
 
 		// Inherit typography from the parent.
 		font-family: inherit;
@@ -145,8 +133,7 @@
 		overflow: hidden;
 		width: 100%;
 		height: var(--x3p0-progress--height);
-		background-color: var(--x3p0-progress--background-color);
-		background-image: var(--x3p0-progress--background-gradient);
+		background-color: var(--x3p0-progress--color--background);
 		border-radius: inherit;
 
 		// Remove border from Firefox that's left over, despite setting
@@ -156,7 +143,7 @@
 		// Possibly works in IE for the foreground color. Not bothering
 		// to actually check this because I value my sanity too much to
 		// ever install IE again.
-		color: var(--x3p0-progress--foreground-color);
+		color: var(--x3p0-progress--color--foreground);
 
 		// Wrapper element for the bar and value pseudo elements in
 		// webkit browsers. We need this so that border-radius
@@ -183,8 +170,7 @@
 		&::-webkit-progress-value {
 			height: 100%;
 			display: block;
-			background-color: var(--x3p0-progress--foreground-color);
-			background-image: var(--x3p0-progress--foreground-gradient);
+			background-color: var(--x3p0-progress--color--foreground);
 			border-radius: inherit;
 		}
 
@@ -192,8 +178,7 @@
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;
-			background-color: var(--x3p0-progress--foreground-color);
-			background-image: var(--x3p0-progress--foreground-gradient);
+			background-color: var(--x3p0-progress--color--foreground);
 			border-radius: inherit;
 		}
 	}

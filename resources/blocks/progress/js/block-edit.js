@@ -121,12 +121,12 @@ const Edit = ({
 		}),
 		style: {
 			...style,
-			'--x3p0-progress--foreground-color': progressForegroundColor.slug
-				? `var(--wp--preset--color--${progressForegroundColor.slug}, ${customProgressForegroundColor})`
-				: customProgressForegroundColor,
-			'--x3p0-progress--background-color': progressBackgroundColor.slug
+			'--x3p0-progress--color--background': progressBackgroundColor.slug
 				? `var(--wp--preset--color--${progressBackgroundColor.slug}, ${customProgressBackgroundColor})`
-				: customProgressBackgroundColor
+				: customProgressBackgroundColor,
+			'--x3p0-progress--color--foreground': progressForegroundColor.slug
+				? `var(--wp--preset--color--${progressForegroundColor.slug}, ${customProgressForegroundColor})`
+				: customProgressForegroundColor
 		}
 	});
 

@@ -5,14 +5,6 @@
 /// @link   https://github.com/x3p0-dev/x3p0-progress
 ////
 
-// Adds a top border to the color-gradient dropdown in the shadow panel.
-// @todo See if we can import the border color from WordPress.
-.wp-block-x3p0-progress-panel__shadow {
-	.block-editor-tools-panel-color-gradient-settings__item {
-		border-top: 1px solid #0000001a;
-	}
-}
-
 // Don't show the regular pointer cursor over the `<label>` element's text in
 // the editor. The default experience makes it feel like its not editable.
 // Instead, use the text cursor.

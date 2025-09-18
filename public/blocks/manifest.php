@@ -104,7 +104,7 @@ return array(
 			),
 			'__experimentalStyle' => array(
 				'spacing' => array(
-					'blockGap' => 'var(--wp--preset--spacing--20, 0.5rem)'
+					'blockGap' => '0.5rem'
 				)
 			),
 			'color' => array(

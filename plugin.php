@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       X3P0: Progress
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-progress
- * Description:       A block for outputting a progress bar.
+ * Description:       A customizable progress bar block to visually track completion toward any percentage, numeric, financial, or unit-based goal.
  * Version:           2.0.0-alpha
  * Requires at least: 6.8
  * Requires PHP:      8.0

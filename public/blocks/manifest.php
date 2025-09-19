@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'x3p0/progress',
-		'version' => '20250815',
+		'version' => '20250919',
 		'title' => 'Progress Bar',
 		'category' => 'widgets',
 		'keywords' => array(

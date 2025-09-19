@@ -5,46 +5,53 @@
 /// @link   https://github.com/x3p0-dev/x3p0-progress
 ////
 
+///
 /// One ginormous container class to rule over everything. This is actually the
 /// outer wrapper for the block itself. All element classes are namespaced using
 /// the `.wp-block-x3p0-progress__` prefix, BEM style. Modifiers do not follow
-/// the same style.  Typically, utility classes, such as `.is-*` and `.has-*`
+/// the same style. Typically, utility classes, such as `.is-*` and `.has-*`
 /// are used instead.
+///
 .wp-block-x3p0-progress {
 
-	// Set up some default custom properties. Theme authors can overrule
-	// these via `settings.custom.x3p0/progress.{name}` in their `theme.json`
-	// files. Don't blame me for the crazy hyphens. That's all on WP for
-	// hyphenating numbers + letters instead of by letter case. Regardless,
-	// I'm fixing it in the actual CSS here so that it's somewhat readable.
 
-	// Set progress bar height via `settings.x3p0/progress.height`.
+	// =====================================================================
+	// Custom properties.
+	//
+	// Theme authors can overrule via `settings.custom.x3p0/progress.{name}`
+	// in their `theme.json` files. Don't blame me for the crazy hyphens.
+	// That's all on WP for hyphenating numbers + letters instead of by
+	// letter case. Regardless, I'm fixing it in the actual CSS here so that
+	// it's somewhat readable.
+	// =====================================================================
+
+	// Set height via `settings.x3p0/progress.height`.
 	--x3p0-progress--height: var(--wp--custom--x-3-p-0-progress--height, 1.5rem);
 
-	// Set the label's justification via `settings.x3p0/progress.justifyLabel`.
+	// Set label justification via `settings.x3p0/progress.justifyLabel`.
 	--x3p0-progress--justify-label: var(
 		--wp--custom--x-3-p-0-progress--justify-label,
 		left
 	);
 
-	// Set a background color via `settings.x3p0/progress.color.background`.
+	// Set background color via `settings.x3p0/progress.color.background`.
 	--x3p0-progress--color--background: var(
 			--wp--custom--x-3-p-0-progress--color--background,
 			var(--wp--preset--color--secondary, var(--wp--preset--color--pale-cyan-blue))
 	);
 
-	// Set a foreground color via `settings.x3p0/progress.color.foreground`.
+	// Set foreground color via `settings.x3p0/progress.color.foreground`.
 	--x3p0-progress--color--foreground: var(
 		--wp--custom--x-3-p-0-progress--color--foreground,
 		var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue))
 	);
 
+	// =====================================================================
+	// Block wrapper styles.
+	// =====================================================================
+
 	// Border-box FTW! 🏆
 	box-sizing: border-box;
-
-	// Fall back for themes where there is no consistent gap/margin between
-	// elements. This is about the best we can do.
-	margin-top: var(--wp--style--block-gap, 2em);
 
 	// =====================================================================
 	// Label styles.
@@ -62,7 +69,7 @@
 		gap: 1ch;
 
 		// Justify the label content.
-		justify-content: var(--x3p0-progress--justify-label, left);
+		justify-content: var(--x3p0-progress--justify-label);
 
 		// Inherit typography from the parent.
 		font-family: inherit;
@@ -107,9 +114,7 @@
 	// =====================================================================
 
 	// Wrapper `<div>` for the `<progress>` element. The extra wrapper
-	// gives us more flexibility for custom styles. Also, the user-supplied
-	// border (or `theme.json`-supplied) is added to this element instead of
-	// the block wrapper.
+	// gives us more flexibility for custom styles.
 	&__container {
 		box-sizing: border-box;
 		width: 100%;
@@ -164,8 +169,8 @@
 		}
 
 		// This is the foreground pseudo element for webkit browsers.
-		// Note that this must be kept separate from the following
-		// code for `::moz-progress-bar`. Otherwise, it breaks in Edge,
+		// Note that this must be defined separately from the below
+		// `::-moz-progress-bar` code. Otherwise, it breaks in Edge,
 		// leaving the value at the default green color.
 		&::-webkit-progress-value {
 			height: 100%;
@@ -174,7 +179,8 @@
 			border-radius: inherit;
 		}
 
-		// Foreground pseudo element for Firefox.
+		// Foreground pseudo element for Firefox. Do not combine with
+		// `::-webkit-progress-value` (see note above).
 		&::-moz-progress-bar {
 			height: 100%;
 			display: block;

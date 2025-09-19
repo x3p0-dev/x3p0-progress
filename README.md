@@ -6,43 +6,70 @@ WordPress block for outputting awesome progress bars.
 
 ## Theme Support
 
-I am a theme author at heart, so I love seeing plugins and themes working together to do awesome stuff.  This also means that I want to make this plugin as extendable as possible so that I can do cool stuff with my own themes.
+I am a theme author at heart, so I love seeing plugins and themes working together to do awesome stuff. This also means that I want to make this plugin as extendable as possible so that I can do cool stuff with my own themes.
 
-### Settings and Styles (`theme.json`)
+### Settings (`theme.json`)
 
-Aside from the normal block-related settings and styles that theme authors can attach to blocks, X3P0 Progress has a few additional custom settings.  Theme authors can adjust some custom block variables via the `settings.x3p0Progress` key.  The following is an example usage of each:
+Aside from the normal block-related settings that you can define, the block has a few additional custom settings. You can adjust some custom block variables via the `settings.x3p0/progress` key. The following is an example usage of each:
 
 ```json
 {
 	"settings": {
-		"x3p0Progress": {
-			"foregroundColor": "var( --wp--preset--color--primary )",
-			"backgroundColor": "var( --wp--preset--color--secondary )",
+		"x3p0/progress": {
+			"color": {
+				"background": "var(--wp--preset--color--secondary)",
+				"foreground": "var(--wp--preset--color--primary)"
+			},
 			"height": "1.5rem",
-			"gap": "0.25rem",
-			"justifyLabel": "space-between",
-			"shadow": "var( --wp--custom--shadow )"
+			"justifyLabel": "space-between"
 		}
 	}
 }
 ```
 
-By default, the block will try to fall back to the active theme's default color scheme when possible.  If a theme has a `primary` or `secondary` color set in its palette, the plugin will use those for the progress bar foreground and background, respectively.  It's better to simply define those colors yourself using the above method.
+If the background and foreground colors are not defined in `theme.json`, the block will fall back to reasonable defaults using CSS custom properties:
 
-WordPress has no standard on naming colors.  However, the _de facto_ standard created by the community's usage is to have a `primary` and `secondary` color slug.  Of the dozens upon dozens of themes I've tested, the vast majority of them also had a well-defined contrast between those colors.
+- **Background:** `var(--wp--preset--color--secondary, var(--wp--preset--color--pale-cyan-blue))`
+- **Foreground:** `var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue))`
+
+### Styles (`theme.json`)
+
+The block supports the full array of design tools available, so you can also style these just like most other Core WordPress blocks via `styles.blocks.x3p0/progress` in `theme.json`. Here's an example from my own theme:
+
+```json
+{
+	"styles": {
+		"blocks": {
+			"x3p0/progress": {
+				"color": {
+					"background": "transparent",
+					"text": "var(--wp--custom--color--foreground--default)"
+				},
+				"spacing": {
+					"blockGap": "var(--wp--preset--spacing--20)"
+				},
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--sm)",
+					"lineHeight": "var(--wp--custom--line-height--sm)"
+				}
+			}
+		}
+	}
+}
+```
 
 ### Custom Block Stylesheet
 
 An alternative to the `theme.json` method (or in addition to), you can load a block-specific stylesheet and work with plain ol' CSS.  Here's an example of loading a `themeslug/public/css/blocks/x3p0-progress.css` stylesheet:
 
 ```php
-add_action( 'init', function() {
-	wp_enqueue_block_style( 'x3p0/progress', [
+add_action('init', function() {
+	wp_enqueue_block_style('x3p0/progress', [
 		'handle' => 'themeslug-block-x3p0-progress',
-		'src'    => get_theme_file_uri(  'public/css/blocks/x3p0-progress.css' ),
-		'path'   => get_theme_file_path( 'public/css/blocks/x3p0-progress.css' )
-	] );
-} );
+		'src'    => get_theme_file_uri('public/css/blocks/x3p0-progress.css'),
+		'path'   => get_theme_file_path('public/css/blocks/x3p0-progress.css')
+	]);
+});
 ```
 
 And some CSS to overwrite the default custom CSS properties:
@@ -50,34 +77,16 @@ And some CSS to overwrite the default custom CSS properties:
 ```css
 .wp-block-x3p0-progress {
 	--x3p0-progress--height: 1.5rem;
-	--x3p0-progress--gap: 0.5rem;
 	--x3p0-progress--justify-label: left;
-	--x3p0-progress--foreground-color: #000000;
-	--x3p0-progress--background-color: #ffffff;
-	--x3p0-progress--shadow: 0 1px 3px 0 rgba( 0, 0, 0, 0.3 );
+	--x3p0-progress--color--background: #eeeeee;
+	--x3p0-progress--color--foreground: #000000;
 }
 ```
 
-Of course, you have full access to the plugin's style rules, so feel free to look at how the [default stylesheet](/resources/css/style.scss) is structured.  I'd warn against changing anything other than default cosmetics and breaking the user's expected use of the plugin.
-
-### Custom Block Styles
-
-The plugin currently registers a single custom block style titled "Hand Drawn," which provides a little magic with borders to give a slight hand-drawn look to the progress bar.  There's a lot of neat things you can do when mixing and matching with other design options.
-
-However, I realize this style doesn't fit in with every theme's aesthetic.  Nor does it always need to be handed over to a client.  So, feel free to pop this one-liner into `functions.php` to unregister this single style.
-
-```php
-add_action( 'init', fn() => unregister_block_style( 'x3p0/progress', 'hand-drawn' ) );
-```
-
-I don't know whether I will add other styles in the future.  _Maybe I will.  Maybe I won't._  If you prefer to opt-out of both current and future default block styles the plugin offers, use this code instead:
-
-```php
-add_filter( 'x3p0/progress/block/styles', '__return_false' );
-```
+Of course, you have full access to the plugin's style rules, so feel free to look at how the [default stylesheet](/resources/blocks/progress/css/style.scss) is structured. I'd warn against changing anything other than default cosmetics and breaking the user's expected use of the plugin.
 
 ## Copyright and License
 
 X3P0 Progress is licensed under the [GNU GPL](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html), version 2 or later.
 
-2022 &copy; [Justin Tadlock](https://justintadlock.com).
+2022-2025 &copy; [Justin Tadlock](https://justintadlock.com).

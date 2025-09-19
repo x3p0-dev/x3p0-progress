@@ -29,6 +29,7 @@ const HeightControl = ({ height, heightUnit, setAttributes }) => {
 			max={ HEIGHT_MAXES[ heightUnit ] }
 			step={ STEPS[ heightUnit ] }
 			value={ `${ height }${ heightUnit }` }
+			__next40pxDefaultSize={ true }
 			onChange={ (value) => {
 				value = parseFloat(value);
 				setAttributes({

@@ -9,7 +9,7 @@
     "progress",
     "bar"
   ],
-  "description": "Displays a progress bar.",
+  "description": "A customizable progress bar to visually track completion toward any percentage, numeric, financial, or unit-based goal.",
   "textdomain": "x3p0-progress",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",

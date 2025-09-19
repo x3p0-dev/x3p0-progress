@@ -15,13 +15,15 @@ Aside from the normal block-related settings that you can define, the block has 
 ```json
 {
 	"settings": {
-		"x3p0/progress": {
-			"color": {
-				"background": "var(--wp--preset--color--secondary)",
-				"foreground": "var(--wp--preset--color--primary)"
-			},
-			"height": "1.5rem",
-			"justifyLabel": "space-between"
+		"custom": {
+			"x3p0/progress": {
+				"color": {
+					"background": "var(--wp--preset--color--secondary)",
+					"foreground": "var(--wp--preset--color--primary)"
+				},
+				"height": "1.5rem",
+				"justifyLabel": "space-between"
+			}
 		}
 	}
 }
@@ -87,6 +89,6 @@ Of course, you have full access to the plugin's style rules, so feel free to loo
 
 ## Copyright and License
 
-X3P0 Progress is licensed under the [GNU GPL](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html), version 2 or later.
+X3P0: Progress is licensed under the [GNU GPL](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html), version 2 or later.
 
 2022-2025 &copy; [Justin Tadlock](https://justintadlock.com).

@@ -44,6 +44,8 @@ const Edit = ({
 	const {
 		customProgressBackgroundColor,
 		customProgressForegroundColor,
+		goal,
+		numberFormat,
 		reversed
 	} = attributes;
 
@@ -55,6 +57,17 @@ const Edit = ({
 	const [supportsBackground] = useSettings('color.background');
 
 	useEffect(() => setAttributes({ progressId: instanceId }), [ instanceId ]);
+
+	// The goal value should always be `100` when a percentage is being
+	// displayed.
+	useEffect(() => {
+		if (
+			! numberFormat
+			|| (numberFormat && 'unit' === numberFormat.style && 'percent' === numberFormat.unit)
+		) {
+			setAttributes({ goal: 100});
+		}
+	}, [ numberFormat ]);
 
 	// =====================================================================
 	// Build the block toolbar controls.

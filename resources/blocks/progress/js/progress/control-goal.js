@@ -14,7 +14,7 @@
 import { __ } from '@wordpress/i18n';
 import { __experimentalNumberControl as NumberControl } from '@wordpress/components';
 
-export default ({ goal, progress, setAttributes }) => {
+export default ({ goal, progress, numberFormat, setAttributes }) => {
 	return (
 		<NumberControl
 			label={ __('Goal', 'x3p0-progress') }
@@ -31,6 +31,13 @@ export default ({ goal, progress, setAttributes }) => {
 
 				setAttributes(newAttr);
 			} }
+			disabled={
+				// Disable the goal if the number format is set
+				// to a percentage (note that percentage is the
+				// default when not set).
+				! numberFormat
+				|| (numberFormat && 'unit' === numberFormat.style && 'percent' === numberFormat.unit)
+			}
 			__next40pxDefaultSize={true}
 		/>
 	);

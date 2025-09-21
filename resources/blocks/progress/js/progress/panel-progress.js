@@ -24,6 +24,7 @@ const ProgressPanel = ({
 		goal,
 		height,
 		heightUnit,
+		numberFormat,
 		progress
 	},
 	setAttributes
@@ -70,6 +71,7 @@ const ProgressPanel = ({
 				<GoalControl
 					progress={ progress }
 					goal={ goal }
+					numberFormat={ numberFormat }
 					setAttributes={ setAttributes }
 				/>
 			</ToolsPanelItem>

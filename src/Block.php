@@ -39,6 +39,11 @@ class Block
 			"{$this->path}/manifest.php"
 		);
 
+		wp_set_script_translations(
+			generate_block_asset_handle('x3p0/progress', 'editorScript'),
+			'x3p0-progress'
+		);
+
 		wp_localize_script(
 			generate_block_asset_handle('x3p0/progress', 'editorScript'),
 			'x3p0Progress',

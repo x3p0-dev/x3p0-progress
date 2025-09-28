@@ -103,6 +103,7 @@ return array(
 				)
 			),
 			'__experimentalStyle' => array(
+				'css' => '&.is-layout-flex { gap: 0.5rem; }',
 				'spacing' => array(
 					'blockGap' => '0.5rem'
 				)

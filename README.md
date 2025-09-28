@@ -43,12 +43,10 @@ The block supports the full array of design tools available, so you can also sty
 	"styles": {
 		"blocks": {
 			"x3p0/progress": {
+				"css": "&.is-layout-flex { gap: var(--wp--preset--spacing--20); }",
 				"color": {
 					"background": "transparent",
 					"text": "var(--wp--custom--color--foreground--default)"
-				},
-				"spacing": {
-					"blockGap": "var(--wp--preset--spacing--20)"
 				},
 				"typography": {
 					"fontSize": "var(--wp--preset--font-size--sm)",
@@ -59,6 +57,8 @@ The block supports the full array of design tools available, so you can also sty
 	}
 }
 ```
+
+Note that `spacing.blockGap` doesn't work as of WordPress 6.8, which is why it's defined via the `css` field.
 
 ### Custom Block Stylesheet
 

@@ -97,6 +97,7 @@
 			}
 		},
 		"__experimentalStyle": {
+			"css": "&.is-layout-flex { gap: 0.5rem; }",
 			"spacing": {
 				"blockGap": "0.5rem"
 			}

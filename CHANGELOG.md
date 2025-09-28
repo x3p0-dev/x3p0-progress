@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2025-09-28
+
+### Fixed
+
+- Percentage-based goals should be limited to 100% (i.e., per hundred).
+- Default block gap spacing corrected for WordPress 6.8.
+- Ensure that editor scripts can be translated.
+
 ## [2.0.0] - 2025-09-19
 
 ### Added
